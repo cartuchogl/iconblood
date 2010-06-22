@@ -630,6 +630,29 @@
          id="feComposite4260"
          in2="result7" />
     </filter>
+    <filter
+       id="filter4283"
+       inkscape:label="Darken edges"
+       inkscape:menu="Shadows and Glows"
+       inkscape:menu-tooltip="Darken the edges with an inner blur"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         id="feGaussianBlur4285"
+         result="result6"
+         stdDeviation="1.5" />
+      <feComposite
+         id="feComposite4287"
+         in2="result6"
+         operator="atop"
+         in="SourceGraphic"
+         result="result8" />
+      <feComposite
+         id="feComposite4289"
+         in2="SourceAlpha"
+         in="result8"
+         operator="atop"
+         result="result9" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -639,8 +662,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.5"
-     inkscape:cx="-101"
-     inkscape:cy="520"
+     inkscape:cx="302"
+     inkscape:cy="522"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -716,7 +739,7 @@
          y="266.36218">ICON</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ef091e;fill-opacity:1;stroke:none;font-family:Kinnari;-inkscape-font-specification:Kinnari Medium;"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ef091e;fill-opacity:1;stroke:none;font-family:Kinnari;-inkscape-font-specification:Kinnari Medium;filter:url(#filter4283)"
        x="276.52188"
        y="308.36218"
        id="text3960"

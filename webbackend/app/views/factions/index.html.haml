@@ -1,16 +1,17 @@
 - title "Factions"
 
+%p.model_actions
+  = link_to "New Faction", new_faction_path
+
 %table#main_table
-  %tr
-    %th Name
-    %th Image
-    = '<th/>'*3
   - for faction in @factions
     %tr
+      %td= image_tag faction.image.data.url(:thumb) if faction.image
       %td= h faction.name
-      %td= h faction.image_id
-      %td= link_to 'Show', faction
-      %td= link_to 'Edit', edit_faction_path(faction)
-      %td= link_to 'Destroy', faction, :confirm => 'Are you sure?', :method => :delete
+      %td
+        = link_to 'Show', faction
+        |
+        = link_to 'Edit', edit_faction_path(faction)
+        |
+        = link_to 'Destroy', faction, :confirm => 'Are you sure?', :method => :delete
 
-%p= link_to "New Faction", new_faction_path

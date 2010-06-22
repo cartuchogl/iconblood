@@ -1,14 +1,18 @@
 - title "Backgrounds"
 
+%p.model_actions= link_to "New Background", new_background_path
+
 %table#main_table
   %tr
     %th Name
-    = '<th/>'*3
+    %th
   - for background in @backgrounds
     %tr
       %td= h background.name
-      %td= link_to 'Show', background
-      %td= link_to 'Edit', edit_background_path(background)
-      %td= link_to 'Destroy', background, :confirm => 'Are you sure?', :method => :delete
+      %td
+        = link_to 'Show', background
+        |
+        = link_to 'Edit', edit_background_path(background)
+        |
+        = link_to 'Destroy', background, :confirm => 'Are you sure?', :method => :delete
 
-%p= link_to "New Background", new_background_path

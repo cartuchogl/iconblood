@@ -1,8 +1,10 @@
 - title "Edit Image"
 
-= render :partial => 'form'
-
-%p
+%p.model_actions
   = link_to "Show", image_path(@image)
   |
   = link_to "View All", images_path
+
+= render :partial => 'form'
+
+

@@ -1,12 +1,14 @@
-- form_for @faction do |f|
+- form_for @faction, :html => {:multipart => true} do |f|
   = f.error_messages
   %p
     = f.label :name
     %br
     = f.text_field :name
   %p
-    = f.label :image_id
+    Image
     %br
-    = f.text_field :image_id
+    - if @faction.image
+      = image_tag @faction.image.data.url(:thumb)
+    = file_field_tag "attachfile"
   %p
     = f.submit

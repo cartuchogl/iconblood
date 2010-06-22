@@ -1,24 +1,14 @@
-- form_for @image do |f|
+- form_for @image, :html => { :multipart => true } do |f|
   = f.error_messages
   %p
     = f.label :title
     %br
     = f.text_field :title
   %p
-    = f.label :data_file_name
+    = f.label :data
     %br
-    = f.text_field :data_file_name
-  %p
-    = f.label :data_content_type
-    %br
-    = f.text_field :data_content_type
-  %p
-    = f.label :data_file_size
-    %br
-    = f.text_field :data_file_size
-  %p
-    = f.label :data_updated_at
-    %br
-    = f.datetime_select :data_updated_at
+    - unless @image.new_record?
+      = image_tag @image.data.url(:thumb)
+    = f.file_field :data
   %p
     = f.submit

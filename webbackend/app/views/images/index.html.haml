@@ -1,22 +1,25 @@
 - title "Images"
 
+%p.model_actions= link_to "New Image", new_image_path
+
 %table#main_table
   %tr
+    %th 
     %th Title
-    %th Data file name
-    %th Data content type
-    %th Data file size
-    %th Data updated at
-    = '<th/>'*3
+    %th Original file name
+    %th Content type
+    %th File size
+    %th
   - for image in @images
     %tr
+      %td= image_tag(image.data.url(:thumb))
       %td= h image.title
       %td= h image.data_file_name
       %td= h image.data_content_type
-      %td= h image.data_file_size
-      %td= h image.data_updated_at
-      %td= link_to 'Show', image
-      %td= link_to 'Edit', edit_image_path(image)
-      %td= link_to 'Destroy', image, :confirm => 'Are you sure?', :method => :delete
+      %td= h number_to_human_size(image.data_file_size)
+      %td
+        = link_to 'Show', image
+        = link_to 'Edit', edit_image_path(image)
+        = link_to 'Destroy', image, :confirm => 'Are you sure?', :method => :delete
 
-%p= link_to "New Image", new_image_path
+

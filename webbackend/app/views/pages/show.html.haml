@@ -1,5 +1,12 @@
 - title "Page"
 
+%p.model_actions
+  = link_to "Edit", edit_page_path(@page)
+  |
+  = link_to "Destroy", @page, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", pages_path
+
 %p
   %strong Position:
   =h @page.position
@@ -13,9 +20,3 @@
   %strong Txt:
   =h @page.txt
 
-%p
-  = link_to "Edit", edit_page_path(@page)
-  |
-  = link_to "Destroy", @page, :confirm => 'Are you sure?', :method => :delete
-  |
-  = link_to "View All", pages_path

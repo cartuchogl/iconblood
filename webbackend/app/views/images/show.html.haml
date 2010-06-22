@@ -1,5 +1,12 @@
 - title "Image"
 
+%p.model_actions
+  = link_to "Edit", edit_image_path(@image)
+  |
+  = link_to "Destroy", @image, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", images_path
+
 %p
   %strong Title:
   =h @image.title
@@ -16,9 +23,4 @@
   %strong Data Updated At:
   =h @image.data_updated_at
 
-%p
-  = link_to "Edit", edit_image_path(@image)
-  |
-  = link_to "Destroy", @image, :confirm => 'Are you sure?', :method => :delete
-  |
-  = link_to "View All", images_path
+
