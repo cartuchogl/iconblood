@@ -9,6 +9,32 @@
     = yield(:head)
   
   %body
+    %p#menu
+      = link_to 'Backgrounds', backgrounds_path
+      |
+      = link_to 'Campaigns', campaigns_path
+      |
+      = link_to 'Environments', environments_path
+      |
+      = link_to 'Factions', factions_path
+      |
+      = link_to 'Games', games_path
+      |
+      = link_to 'Images', images_path
+      |
+      = link_to 'Levels', levels_path
+      |
+      = link_to 'Pages', pages_path
+      |
+      = link_to 'Players', players_path
+      |
+      = link_to 'Squadrons', squadrons_path
+      |
+      = link_to 'Squadron Units', squadron_units_path
+      |
+      = link_to 'Unit', units_path
+      |
+      = link_to 'Unit Options', unit_options_path
     #container
       - flash.each do |name, msg|
         = content_tag :div, msg, :id => "flash_#{name}"
