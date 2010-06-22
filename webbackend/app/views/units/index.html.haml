@@ -5,21 +5,19 @@
     %th Name
     %th Cost
     %th Faction
-    %th Background
-    %th Move
-    %th Force
-    %th Skill
-    %th Resistance
+    %th M
+    %th F
+    %th S
+    %th R
     %th Move type
     %th Max equip
     %th Image
-    = '<th/>'*3
+    %th
   - for unit in @units
     %tr
       %td= h unit.name
       %td= h unit.cost
       %td= h unit.faction_id
-      %td= h unit.background_id
       %td= h unit.move
       %td= h unit.force
       %td= h unit.skill
@@ -27,8 +25,11 @@
       %td= h unit.move_type
       %td= h unit.max_equip
       %td= h unit.image_id
-      %td= link_to 'Show', unit
-      %td= link_to 'Edit', edit_unit_path(unit)
-      %td= link_to 'Destroy', unit, :confirm => 'Are you sure?', :method => :delete
+      %td
+        = link_to 'Show', unit
+        |
+        = link_to 'Edit', edit_unit_path(unit)
+        |
+        = link_to 'Destroy', unit, :confirm => 'Are you sure?', :method => :delete
 
 %p= link_to "New Unit", new_unit_path
