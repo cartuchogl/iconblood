@@ -1,0 +1,30 @@
+- title "Level"
+
+%p
+  %strong Position:
+  =h @level.position
+%p
+  %strong Name:
+  =h @level.name
+%p
+  %strong Environment:
+  =h @level.environment_id
+%p
+  %strong Campaign:
+  =h @level.campaign_id
+%p
+  %strong Pre Background:
+  =h @level.pre_background_id
+%p
+  %strong Post Background:
+  =h @level.post_background_id
+%p
+  %strong Image:
+  =h @level.image_id
+
+%p
+  = link_to "Edit", edit_level_path(@level)
+  |
+  = link_to "Destroy", @level, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", levels_path

@@ -1,0 +1,16 @@
+- form_for @player do |f|
+  = f.error_messages
+  %p
+    = f.label :alias
+    %br
+    = f.text_field :alias
+  %p
+    = f.label :email
+    %br
+    = f.text_field :email
+  %p
+    = f.label :image_id
+    %br
+    = f.text_field :image_id
+  %p
+    = f.submit

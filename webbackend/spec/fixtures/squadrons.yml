@@ -1,0 +1,11 @@
+one:
+  name: MyString
+  player_id: 1
+  game_id: 1
+  image_id: 1
+
+two:
+  name: MyString
+  player_id: 1
+  game_id: 1
+  image_id: 1

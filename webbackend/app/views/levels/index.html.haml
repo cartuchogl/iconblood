@@ -1,0 +1,25 @@
+- title "Levels"
+
+%table
+  %tr
+    %th Position
+    %th Name
+    %th Environment
+    %th Campaign
+    %th Pre background
+    %th Post background
+    %th Image
+  - for level in @levels
+    %tr
+      %td= h level.position
+      %td= h level.name
+      %td= h level.environment_id
+      %td= h level.campaign_id
+      %td= h level.pre_background_id
+      %td= h level.post_background_id
+      %td= h level.image_id
+      %td= link_to 'Show', level
+      %td= link_to 'Edit', edit_level_path(level)
+      %td= link_to 'Destroy', level, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Level", new_level_path

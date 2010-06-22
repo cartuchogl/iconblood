@@ -1,0 +1,42 @@
+- title "Unit"
+
+%p
+  %strong Name:
+  =h @unit.name
+%p
+  %strong Cost:
+  =h @unit.cost
+%p
+  %strong Faction:
+  =h @unit.faction_id
+%p
+  %strong Background:
+  =h @unit.background_id
+%p
+  %strong Move:
+  =h @unit.move
+%p
+  %strong Force:
+  =h @unit.force
+%p
+  %strong Skill:
+  =h @unit.skill
+%p
+  %strong Resistance:
+  =h @unit.resistance
+%p
+  %strong Move Type:
+  =h @unit.move_type
+%p
+  %strong Max Equip:
+  =h @unit.max_equip
+%p
+  %strong Image:
+  =h @unit.image_id
+
+%p
+  = link_to "Edit", edit_unit_path(@unit)
+  |
+  = link_to "Destroy", @unit, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", units_path

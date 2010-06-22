@@ -1,0 +1,29 @@
+one:
+  name: MyString
+  unit_id: 1
+  cost: 1
+  move: 1
+  force: 1
+  skill: 1
+  resistance: 1
+  fly: false
+  background_id: 1
+  equip_type: 1
+  use: 1
+  quantity: 1
+  image_id: 1
+
+two:
+  name: MyString
+  unit_id: 1
+  cost: 1
+  move: 1
+  force: 1
+  skill: 1
+  resistance: 1
+  fly: false
+  background_id: 1
+  equip_type: 1
+  use: 1
+  quantity: 1
+  image_id: 1

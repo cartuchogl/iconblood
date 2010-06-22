@@ -1,0 +1,21 @@
+- title "Squadron"
+
+%p
+  %strong Name:
+  =h @squadron.name
+%p
+  %strong Player:
+  =h @squadron.player_id
+%p
+  %strong Game:
+  =h @squadron.game_id
+%p
+  %strong Image:
+  =h @squadron.image_id
+
+%p
+  = link_to "Edit", edit_squadron_path(@squadron)
+  |
+  = link_to "Destroy", @squadron, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", squadrons_path

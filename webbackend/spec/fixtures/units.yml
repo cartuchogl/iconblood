@@ -1,0 +1,25 @@
+one:
+  name: MyString
+  cost: 1
+  faction_id: 1
+  background_id: 1
+  move: 1
+  force: 1
+  skill: 1
+  resistance: 1
+  move_type: 1
+  max_equip: 1
+  image_id: 1
+
+two:
+  name: MyString
+  cost: 1
+  faction_id: 1
+  background_id: 1
+  move: 1
+  force: 1
+  skill: 1
+  resistance: 1
+  move_type: 1
+  max_equip: 1
+  image_id: 1

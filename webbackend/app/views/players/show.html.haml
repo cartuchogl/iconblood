@@ -1,0 +1,18 @@
+- title "Player"
+
+%p
+  %strong Alias:
+  =h @player.alias
+%p
+  %strong Email:
+  =h @player.email
+%p
+  %strong Image:
+  =h @player.image_id
+
+%p
+  = link_to "Edit", edit_player_path(@player)
+  |
+  = link_to "Destroy", @player, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", players_path

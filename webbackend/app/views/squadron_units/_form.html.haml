@@ -1,0 +1,24 @@
+- form_for @squadron_unit do |f|
+  = f.error_messages
+  %p
+    = f.label :squadron_id
+    %br
+    = f.text_field :squadron_id
+  %p
+    = f.label :unit_id
+    %br
+    = f.text_field :unit_id
+  %p
+    = f.label :level
+    %br
+    = f.text_field :level
+  %p
+    = f.label :exp
+    %br
+    = f.text_field :exp
+  %p
+    = f.label :position
+    %br
+    = f.text_field :position
+  %p
+    = f.submit

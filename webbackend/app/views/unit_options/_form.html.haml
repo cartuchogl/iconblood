@@ -1,0 +1,56 @@
+- form_for @unit_option do |f|
+  = f.error_messages
+  %p
+    = f.label :name
+    %br
+    = f.text_field :name
+  %p
+    = f.label :unit_id
+    %br
+    = f.text_field :unit_id
+  %p
+    = f.label :cost
+    %br
+    = f.text_field :cost
+  %p
+    = f.label :move
+    %br
+    = f.text_field :move
+  %p
+    = f.label :force
+    %br
+    = f.text_field :force
+  %p
+    = f.label :skill
+    %br
+    = f.text_field :skill
+  %p
+    = f.label :resistance
+    %br
+    = f.text_field :resistance
+  %p
+    = f.label :fly
+    %br
+    = f.check_box :fly
+  %p
+    = f.label :background_id
+    %br
+    = f.text_field :background_id
+  %p
+    = f.label :equip_type
+    %br
+    = f.text_field :equip_type
+  %p
+    = f.label :use
+    %br
+    = f.text_field :use
+  %p
+    = f.label :quantity
+    %br
+    = f.text_field :quantity
+  %p
+    = f.label :image_id
+    %br
+    = f.text_field :image_id
+  %p
+    = f.submit

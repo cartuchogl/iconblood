@@ -1,0 +1,19 @@
+- title "Pages"
+
+%table
+  %tr
+    %th Position
+    %th Image
+    %th Background
+    %th Txt
+  - for page in @pages
+    %tr
+      %td= h page.position
+      %td= h page.image_id
+      %td= h page.background_id
+      %td= h page.txt
+      %td= link_to 'Show', page
+      %td= link_to 'Edit', edit_page_path(page)
+      %td= link_to 'Destroy', page, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Page", new_page_path

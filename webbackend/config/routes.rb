@@ -1,4 +1,30 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :games
+
+  map.resources :players
+
+  map.resources :environments
+
+  map.resources :levels
+
+  map.resources :campaigns
+
+  map.resources :unit_options
+
+  map.resources :squadron_units
+
+  map.resources :squadrons
+
+  map.resources :units
+
+  map.resources :backgrounds
+
+  map.resources :pages
+
+  map.resources :factions
+
+  map.resources :images
+
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

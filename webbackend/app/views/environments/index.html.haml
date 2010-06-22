@@ -1,0 +1,15 @@
+- title "Environments"
+
+%table
+  %tr
+    %th Name
+    %th Image
+  - for environment in @environments
+    %tr
+      %td= h environment.name
+      %td= h environment.image_id
+      %td= link_to 'Show', environment
+      %td= link_to 'Edit', edit_environment_path(environment)
+      %td= link_to 'Destroy', environment, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Environment", new_environment_path

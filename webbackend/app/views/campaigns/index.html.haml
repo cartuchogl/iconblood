@@ -1,0 +1,15 @@
+- title "Campaigns"
+
+%table
+  %tr
+    %th Background
+    %th Image
+  - for campaign in @campaigns
+    %tr
+      %td= h campaign.background_id
+      %td= h campaign.image_id
+      %td= link_to 'Show', campaign
+      %td= link_to 'Edit', edit_campaign_path(campaign)
+      %td= link_to 'Destroy', campaign, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Campaign", new_campaign_path

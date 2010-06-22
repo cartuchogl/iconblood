@@ -1,0 +1,15 @@
+- title "Environment"
+
+%p
+  %strong Name:
+  =h @environment.name
+%p
+  %strong Image:
+  =h @environment.image_id
+
+%p
+  = link_to "Edit", edit_environment_path(@environment)
+  |
+  = link_to "Destroy", @environment, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", environments_path

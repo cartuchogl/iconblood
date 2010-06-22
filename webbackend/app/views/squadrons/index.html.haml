@@ -1,0 +1,19 @@
+- title "Squadrons"
+
+%table
+  %tr
+    %th Name
+    %th Player
+    %th Game
+    %th Image
+  - for squadron in @squadrons
+    %tr
+      %td= h squadron.name
+      %td= h squadron.player_id
+      %td= h squadron.game_id
+      %td= h squadron.image_id
+      %td= link_to 'Show', squadron
+      %td= link_to 'Edit', edit_squadron_path(squadron)
+      %td= link_to 'Destroy', squadron, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Squadron", new_squadron_path

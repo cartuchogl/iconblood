@@ -1,0 +1,15 @@
+- title "Faction"
+
+%p
+  %strong Name:
+  =h @faction.name
+%p
+  %strong Image:
+  =h @faction.image_id
+
+%p
+  = link_to "Edit", edit_faction_path(@faction)
+  |
+  = link_to "Destroy", @faction, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", factions_path

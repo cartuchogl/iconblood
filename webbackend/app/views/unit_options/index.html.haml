@@ -1,0 +1,37 @@
+- title "Unit Options"
+
+%table
+  %tr
+    %th Name
+    %th Unit
+    %th Cost
+    %th Move
+    %th Force
+    %th Skill
+    %th Resistance
+    %th Fly
+    %th Background
+    %th Equip Type
+    %th Use
+    %th Quantity
+    %th Image
+  - for unit_option in @unit_options
+    %tr
+      %td= h unit_option.name
+      %td= h unit_option.unit_id
+      %td= h unit_option.cost
+      %td= h unit_option.move
+      %td= h unit_option.force
+      %td= h unit_option.skill
+      %td= h unit_option.resistance
+      %td= h unit_option.fly
+      %td= h unit_option.background_id
+      %td= h unit_option.equip_type
+      %td= h unit_option.use
+      %td= h unit_option.quantity
+      %td= h unit_option.image_id
+      %td= link_to 'Show', unit_option
+      %td= link_to 'Edit', edit_unit_option_path(unit_option)
+      %td= link_to 'Destroy', unit_option, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Unit Option", new_unit_option_path

@@ -1,0 +1,32 @@
+- form_for @level do |f|
+  = f.error_messages
+  %p
+    = f.label :position
+    %br
+    = f.text_field :position
+  %p
+    = f.label :name
+    %br
+    = f.text_field :name
+  %p
+    = f.label :environment_id
+    %br
+    = f.text_field :environment_id
+  %p
+    = f.label :campaign_id
+    %br
+    = f.text_field :campaign_id
+  %p
+    = f.label :pre_background_id
+    %br
+    = f.text_field :pre_background_id
+  %p
+    = f.label :post_background_id
+    %br
+    = f.text_field :post_background_id
+  %p
+    = f.label :image_id
+    %br
+    = f.text_field :image_id
+  %p
+    = f.submit

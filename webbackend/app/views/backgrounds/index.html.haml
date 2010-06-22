@@ -1,0 +1,13 @@
+- title "Backgrounds"
+
+%table
+  %tr
+    %th Name
+  - for background in @backgrounds
+    %tr
+      %td= h background.name
+      %td= link_to 'Show', background
+      %td= link_to 'Edit', edit_background_path(background)
+      %td= link_to 'Destroy', background, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Background", new_background_path

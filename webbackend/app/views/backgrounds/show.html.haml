@@ -1,0 +1,12 @@
+- title "Background"
+
+%p
+  %strong Name:
+  =h @background.name
+
+%p
+  = link_to "Edit", edit_background_path(@background)
+  |
+  = link_to "Destroy", @background, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", backgrounds_path

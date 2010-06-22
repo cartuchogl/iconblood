@@ -1,0 +1,15 @@
+- title "Campaign"
+
+%p
+  %strong Background:
+  =h @campaign.background_id
+%p
+  %strong Image:
+  =h @campaign.image_id
+
+%p
+  = link_to "Edit", edit_campaign_path(@campaign)
+  |
+  = link_to "Destroy", @campaign, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", campaigns_path

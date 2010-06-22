@@ -1,0 +1,15 @@
+- title "Factions"
+
+%table
+  %tr
+    %th Name
+    %th Image
+  - for faction in @factions
+    %tr
+      %td= h faction.name
+      %td= h faction.image_id
+      %td= link_to 'Show', faction
+      %td= link_to 'Edit', edit_faction_path(faction)
+      %td= link_to 'Destroy', faction, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Faction", new_faction_path

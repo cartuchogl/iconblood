@@ -1,0 +1,21 @@
+- title "Page"
+
+%p
+  %strong Position:
+  =h @page.position
+%p
+  %strong Image:
+  =h @page.image_id
+%p
+  %strong Background:
+  =h @page.background_id
+%p
+  %strong Txt:
+  =h @page.txt
+
+%p
+  = link_to "Edit", edit_page_path(@page)
+  |
+  = link_to "Destroy", @page, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", pages_path

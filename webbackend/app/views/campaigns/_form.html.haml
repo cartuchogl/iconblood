@@ -1,0 +1,12 @@
+- form_for @campaign do |f|
+  = f.error_messages
+  %p
+    = f.label :background_id
+    %br
+    = f.text_field :background_id
+  %p
+    = f.label :image_id
+    %br
+    = f.text_field :image_id
+  %p
+    = f.submit

@@ -1,0 +1,15 @@
+- title "Games"
+
+%table
+  %tr
+    %th Environment
+    %th Level
+  - for game in @games
+    %tr
+      %td= h game.environment_id
+      %td= h game.level_id
+      %td= link_to 'Show', game
+      %td= link_to 'Edit', edit_game_path(game)
+      %td= link_to 'Destroy', game, :confirm => 'Are you sure?', :method => :delete
+
+%p= link_to "New Game", new_game_path
