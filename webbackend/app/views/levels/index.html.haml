@@ -1,6 +1,6 @@
 - title "Levels"
 
-%table
+%table#main_table
   %tr
     %th Position
     %th Name
@@ -9,6 +9,7 @@
     %th Pre background
     %th Post background
     %th Image
+    = '<th/>'*3
   - for level in @levels
     %tr
       %td= h level.position

@@ -1,12 +1,13 @@
 - title "Squadron Units"
 
-%table
+%table#main_table
   %tr
     %th Squadron
     %th Unit
     %th Level
     %th Exp
     %th Position
+    = '<th/>'*3
   - for squadron_unit in @squadron_units
     %tr
       %td= h squadron_unit.squadron_id

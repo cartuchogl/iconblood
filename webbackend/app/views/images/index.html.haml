@@ -1,12 +1,13 @@
 - title "Images"
 
-%table
+%table#main_table
   %tr
     %th Title
     %th Data file name
     %th Data content type
     %th Data file size
     %th Data updated at
+    = '<th/>'*3
   - for image in @images
     %tr
       %td= h image.title

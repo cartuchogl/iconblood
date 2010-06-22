@@ -1,6 +1,6 @@
 - title "Unit Options"
 
-%table
+%table#main_table
   %tr
     %th Name
     %th Unit
@@ -15,6 +15,7 @@
     %th Use
     %th Quantity
     %th Image
+    = '<th/>'*3
   - for unit_option in @unit_options
     %tr
       %td= h unit_option.name

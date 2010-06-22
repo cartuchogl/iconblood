@@ -1,10 +1,11 @@
 - title "Players"
 
-%table
+%table#main_table
   %tr
     %th Alias
     %th Email
     %th Image
+    = '<th/>'*3
   - for player in @players
     %tr
       %td= h player.alias

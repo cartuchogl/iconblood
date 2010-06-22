@@ -1,9 +1,10 @@
 - title "Environments"
 
-%table
+%table#main_table
   %tr
     %th Name
     %th Image
+    = '<th/>'*3
   - for environment in @environments
     %tr
       %td= h environment.name

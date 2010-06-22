@@ -1,11 +1,12 @@
 - title "Pages"
 
-%table
+%table#main_table
   %tr
     %th Position
     %th Image
     %th Background
     %th Txt
+    = '<th/>'*3
   - for page in @pages
     %tr
       %td= h page.position

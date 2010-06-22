@@ -1,8 +1,9 @@
 - title "Backgrounds"
 
-%table
+%table#main_table
   %tr
     %th Name
+    = '<th/>'*3
   - for background in @backgrounds
     %tr
       %td= h background.name

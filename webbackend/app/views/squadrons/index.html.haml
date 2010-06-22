@@ -1,11 +1,12 @@
 - title "Squadrons"
 
-%table
+%table#main_table
   %tr
     %th Name
     %th Player
     %th Game
     %th Image
+    = '<th/>'*3
   - for squadron in @squadrons
     %tr
       %td= h squadron.name

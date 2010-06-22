@@ -1,9 +1,10 @@
 - title "Campaigns"
 
-%table
+%table#main_table
   %tr
     %th Background
     %th Image
+    = '<th/>'*3
   - for campaign in @campaigns
     %tr
       %td= h campaign.background_id

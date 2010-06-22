@@ -1,9 +1,10 @@
 - title "Games"
 
-%table
+%table#main_table
   %tr
     %th Environment
     %th Level
+    = '<th/>'*3
   - for game in @games
     %tr
       %td= h game.environment_id

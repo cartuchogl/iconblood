@@ -1,6 +1,6 @@
 - title "Units"
 
-%table
+%table#main_table
   %tr
     %th Name
     %th Cost
@@ -13,6 +13,7 @@
     %th Move type
     %th Max equip
     %th Image
+    = '<th/>'*3
   - for unit in @units
     %tr
       %td= h unit.name

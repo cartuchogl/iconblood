@@ -1,9 +1,10 @@
 - title "Factions"
 
-%table
+%table#main_table
   %tr
     %th Name
     %th Image
+    = '<th/>'*3
   - for faction in @factions
     %tr
       %td= h faction.name
