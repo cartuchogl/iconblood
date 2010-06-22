@@ -14,7 +14,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="Nuevo documento 1">
+   sodipodi:docname="art01.svg">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -639,7 +639,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.5"
-     inkscape:cx="302"
+     inkscape:cx="-101"
      inkscape:cy="520"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -674,7 +674,9 @@
        y="0.31600183" />
     <g
        id="g3002"
-       style="filter:url(#filter3906)">
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       style="filter:url(#filter4074)">
       <path
          d="m 43.603357,124.95454 c -0.154735,4.08575 -0.574451,8.15518 -0.808379,12.23742 -0.338262,6.1089 -0.356927,12.22971 -0.396923,18.34609 -0.263956,13.82605 -0.42495,27.65331 -0.496035,41.48235 -0.287374,24.23434 -0.2844,48.46948 -0.266525,72.70541 0.06214,24.60498 -0.02919,49.20912 0.07389,73.81409 -0.09408,18.71505 1.097205,37.40126 1.754414,56.09801 0.565485,13.28399 0.594108,26.5782 0.695518,39.87083 0.07088,9.45139 0.169552,18.90236 0.212687,28.35389 0.04998,4.74777 0.11757,9.49532 0.181096,14.24293 5.19e-4,1.17785 0.0019,2.34499 0.124734,3.51613 0,0 -13.116513,6.87865 -13.116513,6.87865 l 0,0 c -0.160583,-1.24175 -0.169591,-2.46483 -0.113255,-3.71797 0.06658,-4.81194 0.140069,-9.62379 0.196679,-14.43586 0.05488,-9.51736 0.168913,-19.03418 0.188777,-28.55178 0.0039,-13.32774 -0.148637,-26.65586 -0.398606,-39.98115 -0.49611,-18.81511 -1.383124,-37.62985 -1.144213,-56.45557 0.102762,-24.62995 0.01213,-49.25906 0.07321,-73.88901 0.01682,-24.14405 0.02005,-48.28731 -0.274316,-72.42968 -0.07408,-13.66437 -0.252052,-27.32688 -0.484081,-40.98847 3.85e-4,-6.10225 -0.01648,-12.20603 0.150147,-18.30652 0.219215,-4.01868 0.67702,-8.03778 0.640974,-12.06063 0,0 13.206714,-6.72916 13.206714,-6.72916 z"
          id="path2920"
@@ -686,7 +688,10 @@
     </g>
     <g
        id="g4230"
-       style="filter:url(#filter4234)">
+       style="filter:url(#filter4234)"
+       inkscape:export-filename="/home/cartucho/fuse/Repositories/iconblood/design/g3002.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <path
          id="path4226"
          d="m 232,136.06008 0,168.60421"
@@ -701,17 +706,23 @@
        style="font-size:144px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#f3f9fa;fill-opacity:1;stroke:none;font-family:Kinnari;-inkscape-font-specification:Kinnari Medium;filter:url(#filter4206)"
        x="34.187881"
        y="266.36218"
-       id="text3930"><tspan
+       id="text3930"
+       inkscape:export-filename="/home/cartucho/fuse/Repositories/iconblood/design/g3002.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3932"
          x="34.187881"
          y="266.36218">ICON</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ef091e;fill-opacity:1;stroke:none;font-family:Kinnari;-inkscape-font-specification:Kinnari Medium;filter:url(#filter4074)"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ef091e;fill-opacity:1;stroke:none;font-family:Kinnari;-inkscape-font-specification:Kinnari Medium;"
        x="276.52188"
        y="308.36218"
-       id="text3960"><tspan
+       id="text3960"
+       inkscape:export-filename="/home/cartucho/fuse/Repositories/iconblood/design/g3002.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3962"
          x="276.52188"
@@ -723,6 +734,9 @@
        height="22"
        x="-1.0794209"
        y="305.76276"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
+       inkscape:export-filename="/home/cartucho/fuse/Repositories/iconblood/design/g3002.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>
