@@ -1,5 +1,12 @@
 - title "Unit Option"
 
+%p.model_actions
+  = link_to "Edit", edit_unit_option_path(@unit_option)
+  |
+  = link_to "Destroy", @unit_option, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", unit_options_path
+
 %p
   %strong Name:
   =h @unit_option.name
@@ -40,9 +47,3 @@
   %strong Image:
   =h @unit_option.image_id
 
-%p
-  = link_to "Edit", edit_unit_option_path(@unit_option)
-  |
-  = link_to "Destroy", @unit_option, :confirm => 'Are you sure?', :method => :delete
-  |
-  = link_to "View All", unit_options_path

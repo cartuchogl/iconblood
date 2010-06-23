@@ -1,18 +1,20 @@
 - title "Players"
 
+%p.model_actions= link_to "New Player", new_player_path
+
 %table#main_table
   %tr
     %th Alias
     %th Email
     %th Image
-    = '<th/>'*3
+    %th
   - for player in @players
     %tr
       %td= h player.alias
       %td= h player.email
       %td= h player.image_id
-      %td= link_to 'Show', player
-      %td= link_to 'Edit', edit_player_path(player)
-      %td= link_to 'Destroy', player, :confirm => 'Are you sure?', :method => :delete
+      %td
+        = link_to 'Show', player
+        = link_to 'Edit', edit_player_path(player)
+        = link_to 'Destroy', player, :confirm => 'Are you sure?', :method => :delete
 
-%p= link_to "New Player", new_player_path

@@ -1,8 +1,9 @@
 - title "Edit Game"
 
-= render :partial => 'form'
-
-%p
+%p.model_actions
   = link_to "Show", game_path(@game)
   |
   = link_to "View All", games_path
+
+= render :partial => 'form'
+

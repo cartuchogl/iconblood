@@ -1,5 +1,7 @@
 - title "Units"
 
+%p.model_actions= link_to "New Unit", new_unit_path
+
 %table#main_table
   %tr
     %th Name
@@ -32,4 +34,3 @@
         |
         = link_to 'Destroy', unit, :confirm => 'Are you sure?', :method => :delete
 
-%p= link_to "New Unit", new_unit_path

@@ -1,5 +1,12 @@
 - title "Level"
 
+%p.model_actions
+  = link_to "Edit", edit_level_path(@level)
+  |
+  = link_to "Destroy", @level, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", levels_path
+
 %p
   %strong Position:
   =h @level.position
@@ -22,9 +29,3 @@
   %strong Image:
   =h @level.image_id
 
-%p
-  = link_to "Edit", edit_level_path(@level)
-  |
-  = link_to "Destroy", @level, :confirm => 'Are you sure?', :method => :delete
-  |
-  = link_to "View All", levels_path

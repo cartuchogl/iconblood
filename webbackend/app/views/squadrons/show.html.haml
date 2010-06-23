@@ -1,5 +1,12 @@
 - title "Squadron"
 
+%p.model_actions
+  = link_to "Edit", edit_squadron_path(@squadron)
+  |
+  = link_to "Destroy", @squadron, :confirm => 'Are you sure?', :method => :delete
+  |
+  = link_to "View All", squadrons_path
+
 %p
   %strong Name:
   =h @squadron.name
@@ -13,9 +20,3 @@
   %strong Image:
   =h @squadron.image_id
 
-%p
-  = link_to "Edit", edit_squadron_path(@squadron)
-  |
-  = link_to "Destroy", @squadron, :confirm => 'Are you sure?', :method => :delete
-  |
-  = link_to "View All", squadrons_path

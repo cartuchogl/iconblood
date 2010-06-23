@@ -1,8 +1,9 @@
 - title "Edit Player"
 
-= render :partial => 'form'
-
-%p
+%p.model_actions
   = link_to "Show", player_path(@player)
   |
   = link_to "View All", players_path
+
+= render :partial => 'form'
+

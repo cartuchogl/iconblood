@@ -1,8 +1,9 @@
 - title "Edit Unit Option"
 
-= render :partial => 'form'
-
-%p
+%p.model_actions
   = link_to "Show", unit_option_path(@unit_option)
   |
   = link_to "View All", unit_options_path
+
+= render :partial => 'form'
+
