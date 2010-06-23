@@ -14,15 +14,7 @@ class FactionsController < ApplicationController
   def create
     @faction = Faction.new(params[:faction])
     if @faction.save
-      unless params["attachfile"].blank?
-        unless @faction.image
-          @faction.reload
-          @faction.create_image(:title=>"#{@faction.name} emblem")
-          @faction.save
-        end
-        @faction.image.data = params["attachfile"]
-        @faction.image.save
-      end
+      attach_image(@faction,params["attachfile"],"#{@faction.name} emblem")
       flash[:notice] = "Successfully created faction."
       redirect_to @faction
     else
@@ -37,15 +29,7 @@ class FactionsController < ApplicationController
   def update
     @faction = Faction.find(params[:id])
     if @faction.update_attributes(params[:faction])
-      unless params["attachfile"].blank?
-        unless @faction.image
-          @faction.reload
-          @faction.create_image(:title=>"#{@faction.name} emblem")
-          @faction.save
-        end
-        @faction.image.data = params["attachfile"]
-        @faction.image.save
-      end
+      attach_image(@faction,params["attachfile"],"#{@faction.name} emblem")
       flash[:notice] = "Successfully updated faction."
       redirect_to @faction
     else

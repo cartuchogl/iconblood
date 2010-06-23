@@ -1,16 +1,20 @@
 - title "Campaigns"
 
+%p.model_actions= link_to "New Campaign", new_campaign_path
+
 %table#main_table
   %tr
     %th Background
     %th Image
-    = '<th/>'*3
+    %th
   - for campaign in @campaigns
     %tr
       %td= h campaign.background_id
       %td= h campaign.image_id
-      %td= link_to 'Show', campaign
-      %td= link_to 'Edit', edit_campaign_path(campaign)
-      %td= link_to 'Destroy', campaign, :confirm => 'Are you sure?', :method => :delete
+      %td
+        = link_to 'Show', campaign
+        |
+        = link_to 'Edit', edit_campaign_path(campaign)
+        |
+        = link_to 'Destroy', campaign, :confirm => 'Are you sure?', :method => :delete
 
-%p= link_to "New Campaign", new_campaign_path

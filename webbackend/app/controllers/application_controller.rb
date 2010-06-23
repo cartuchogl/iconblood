@@ -7,4 +7,16 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
+  private
+  def attach_image(obj,param,title)
+    unless param.blank?
+      unless obj.image
+        obj.reload
+        obj.create_image(:title=>title)
+        obj.save
+      end
+      obj.image.data = param
+      obj.image.save
+    end
+  end
 end
