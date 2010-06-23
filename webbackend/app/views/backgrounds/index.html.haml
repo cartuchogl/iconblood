@@ -10,6 +10,7 @@
     %tr
       %td= h background.name
       %td
+        = link_to "#{background.pages.length} pages", background_pages_path(background)
         = link_to 'Show', background
         |
         = link_to 'Edit', edit_background_path(background)

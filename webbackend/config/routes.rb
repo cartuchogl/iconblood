@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :units
 
-  map.resources :backgrounds
+  map.resources :backgrounds, :has_many => [:pages]
 
   map.resources :pages
 

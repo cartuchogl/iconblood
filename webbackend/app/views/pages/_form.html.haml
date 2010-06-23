@@ -1,17 +1,22 @@
-- form_for @page do |f|
+- if @background
+  - final_url = @page.new_record? ? background_pages_path(@background) : background_page_url(@background,@page)
+- else
+  - final_url =  @page.new_record? ? pages_path : page_url(@image)
+- form_for @page, :url =>final_url, :html => { :multipart => true } do |f|
   = f.error_messages
   %p
-    = f.label :position
+    Image
     %br
-    = f.text_field :position
-  %p
-    = f.label :image_id
-    %br
-    = f.text_field :image_id
-  %p
-    = f.label :background_id
-    %br
-    = f.text_field :background_id
+    - if @page.image
+      = image_tag @page.image.data.url(:thumb)
+    = file_field_tag "attachfile"
+  - if @background
+    = f.hidden_field :background_id
+  - else
+    %p
+      = f.label :background_id
+      %br
+      = f.text_field :background_id
   %p
     = f.label :txt
     %br

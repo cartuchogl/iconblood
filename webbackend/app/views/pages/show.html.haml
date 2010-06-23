@@ -1,11 +1,11 @@
 - title "Page"
 
 %p.model_actions
-  = link_to "Edit", edit_page_path(@page)
+  = link_to "Edit", @background ? edit_background_page_path(@background,@page) : edit_page_path(@page)
   |
-  = link_to "Destroy", @page, :confirm => 'Are you sure?', :method => :delete
+  = link_to "Destroy", @background ? background_page_path(@background,@page) : @page, :confirm => 'Are you sure?', :method => :delete
   |
-  = link_to "View All", pages_path
+  = link_to "View All", @background ? background_pages_path(@background) : pages_path
 
 %p
   %strong Position:

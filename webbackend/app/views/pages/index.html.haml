@@ -1,6 +1,7 @@
 - title "Pages"
 
-%p.model_actions= link_to "New Page", new_page_path
+%p.model_actions
+  = link_to "New Page", @background ? new_background_page_path(@background) : new_page_path
 
 %table#main_table
   %tr
@@ -16,9 +17,9 @@
       %td= h page.background_id
       %td= h page.txt
       %td
-        = link_to 'Show', page
+        = link_to 'Show', @background ? background_page_path(@background,page) : page
         |
-        = link_to 'Edit', edit_page_path(page)
+        = link_to 'Edit', @background ? edit_background_page_path(@background,page) : edit_page_path(page)
         |
-        = link_to 'Destroy', page, :confirm => 'Are you sure?', :method => :delete
+        = link_to 'Destroy', @background ? background_page_path(@background,page) : page, :confirm => 'Are you sure?', :method => :delete
 

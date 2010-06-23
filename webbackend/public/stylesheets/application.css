@@ -57,7 +57,10 @@ input[type=text] {
 #flash_notice,
 #flash_error {
   padding: 5px 8px;
-  margin: 10px 0; }
+  margin: 10px 0;
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px; }
 
 #flash_notice {
   background-color: #CFC;
@@ -76,7 +79,10 @@ input[type=text] {
   padding: 0;
   padding-bottom: 12px;
   margin-bottom: 20px;
-  background-color: #f0f0f0; }
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px; }
   #errorExplanation h2 {
     text-align: left;
     padding: 5px 5px 5px 15px;
@@ -160,3 +166,10 @@ h1.page {
   background: url(/images/pages.png) no-repeat left center;
   padding: 0.75em 0 0.75em 100px;
   text-shadow: #464 2px 0px 6px; }
+
+#page_txt-mooeditable-container {
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  background-color: white; }
