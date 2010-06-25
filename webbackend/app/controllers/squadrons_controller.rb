@@ -14,6 +14,7 @@ class SquadronsController < ApplicationController
   def create
     @squadron = Squadron.new(params[:squadron])
     if @squadron.save
+      attach_image(@squadron,params["attachfile"],"#{@squadron.name} squadron")
       flash[:notice] = "Successfully created squadron."
       redirect_to @squadron
     else
@@ -28,6 +29,7 @@ class SquadronsController < ApplicationController
   def update
     @squadron = Squadron.find(params[:id])
     if @squadron.update_attributes(params[:squadron])
+      attach_image(@squadron,params["attachfile"],"#{@squadron.name} squadron")
       flash[:notice] = "Successfully updated squadron."
       redirect_to @squadron
     else

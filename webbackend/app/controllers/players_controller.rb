@@ -14,6 +14,7 @@ class PlayersController < ApplicationController
   def create
     @player = Player.new(params[:player])
     if @player.save
+      attach_image(@player,params["attachfile"],"#{@player.alias} avatar")
       flash[:notice] = "Successfully created player."
       redirect_to @player
     else
@@ -28,6 +29,7 @@ class PlayersController < ApplicationController
   def update
     @player = Player.find(params[:id])
     if @player.update_attributes(params[:player])
+      attach_image(@player,params["attachfile"],"#{@player.alias} avatar")
       flash[:notice] = "Successfully updated player."
       redirect_to @player
     else

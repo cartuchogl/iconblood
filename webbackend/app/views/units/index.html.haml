@@ -4,6 +4,7 @@
 
 %table#main_table
   %tr
+    %th Image
     %th Name
     %th Cost
     %th Faction
@@ -13,10 +14,10 @@
     %th R
     %th Move type
     %th Max equip
-    %th Image
     %th
   - for unit in @units
     %tr
+      %td= image_tag unit.image.data.url(:thumb) if unit.image
       %td= h unit.name
       %td= h unit.cost
       %td= h unit.faction_id
@@ -26,7 +27,6 @@
       %td= h unit.resistance
       %td= h unit.move_type
       %td= h unit.max_equip
-      %td= h unit.image_id
       %td
         = link_to 'Show', unit
         |

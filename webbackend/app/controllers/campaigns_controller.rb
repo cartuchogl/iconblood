@@ -14,6 +14,7 @@ class CampaignsController < ApplicationController
   def create
     @campaign = Campaign.new(params[:campaign])
     if @campaign.save
+      attach_image(@campaign,params["attachfile"],"#{@campaign.id} campaign")
       flash[:notice] = "Successfully created campaign."
       redirect_to @campaign
     else
@@ -28,6 +29,7 @@ class CampaignsController < ApplicationController
   def update
     @campaign = Campaign.find(params[:id])
     if @campaign.update_attributes(params[:campaign])
+      attach_image(@campaign,params["attachfile"],"#{@campaign.id} campaign")
       flash[:notice] = "Successfully updated campaign."
       redirect_to @campaign
     else

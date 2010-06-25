@@ -14,6 +14,7 @@ class UnitOptionsController < ApplicationController
   def create
     @unit_option = UnitOption.new(params[:unit_option])
     if @unit_option.save
+      attach_image(@unit_option,params["attachfile"],"#{@unit_option.name} equip")
       flash[:notice] = "Successfully created unit option."
       redirect_to @unit_option
     else
@@ -28,6 +29,7 @@ class UnitOptionsController < ApplicationController
   def update
     @unit_option = UnitOption.find(params[:id])
     if @unit_option.update_attributes(params[:unit_option])
+      attach_image(@unit_option,params["attachfile"],"#{@unit_option.name} equip")
       flash[:notice] = "Successfully updated unit option."
       redirect_to @unit_option
     else

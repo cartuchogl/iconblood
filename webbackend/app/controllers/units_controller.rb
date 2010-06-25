@@ -14,6 +14,7 @@ class UnitsController < ApplicationController
   def create
     @unit = Unit.new(params[:unit])
     if @unit.save
+      attach_image(@unit,params["attachfile"],"#{@unit.name} unit")
       flash[:notice] = "Successfully created unit."
       redirect_to @unit
     else
@@ -28,6 +29,7 @@ class UnitsController < ApplicationController
   def update
     @unit = Unit.find(params[:id])
     if @unit.update_attributes(params[:unit])
+      attach_image(@unit,params["attachfile"],"#{@unit.name} unit")
       flash[:notice] = "Successfully updated unit."
       redirect_to @unit
     else

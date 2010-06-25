@@ -4,15 +4,15 @@
 
 %table#main_table
   %tr
+    %th Image
     %th Alias
     %th Email
-    %th Image
     %th
   - for player in @players
     %tr
+      %td= image_tag player.image.data.url(:thumb) if player.image
       %td= h player.alias
       %td= h player.email
-      %td= h player.image_id
       %td
         = link_to 'Show', player
         = link_to 'Edit', edit_player_path(player)

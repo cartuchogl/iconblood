@@ -19,7 +19,7 @@
     %th
   - for unit_option in @unit_options
     %tr
-      %td= h unit_option.image_id
+      %td= image_tag unit_option.image.data.url(:thumb) if unit_option.image
       %td= h unit_option.name
       %td= h unit_option.unit_id
       %td= h unit_option.cost

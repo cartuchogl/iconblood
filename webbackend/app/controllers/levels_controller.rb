@@ -14,6 +14,7 @@ class LevelsController < ApplicationController
   def create
     @level = Level.new(params[:level])
     if @level.save
+      attach_image(@level,params["attachfile"],"#{@level.name} campaign")
       flash[:notice] = "Successfully created level."
       redirect_to @level
     else
@@ -28,6 +29,7 @@ class LevelsController < ApplicationController
   def update
     @level = Level.find(params[:id])
     if @level.update_attributes(params[:level])
+      attach_image(@level,params["attachfile"],"#{@level.name} campaign")
       flash[:notice] = "Successfully updated level."
       redirect_to @level
     else

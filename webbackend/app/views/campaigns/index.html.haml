@@ -4,13 +4,13 @@
 
 %table#main_table
   %tr
-    %th Background
     %th Image
+    %th Background
     %th
   - for campaign in @campaigns
     %tr
+      %td= image_tag campaign.image.data.url(:thumb) if campaign.image
       %td= h campaign.background_id
-      %td= h campaign.image_id
       %td
         = link_to 'Show', campaign
         |

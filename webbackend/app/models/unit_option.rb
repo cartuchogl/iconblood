@@ -3,5 +3,6 @@ class UnitOption < ActiveRecord::Base
     :equip_type, :use, :quantity, :image_id
   belongs_to :unit
   belongs_to :background
+  belongs_to :image
   has_and_belongs_to_many :squadron_units
 end

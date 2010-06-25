@@ -1,4 +1,4 @@
-- form_for @campaign do |f|
+- form_for @campaign, :html => {:multipart => true} do |f|
   = f.error_messages
   %p
     = f.label :background_id
@@ -7,6 +7,8 @@
   %p
     = f.label :image_id
     %br
-    = f.text_field :image_id
+    - if @campaign.image
+      = image_tag @campaign.image.data.url(:thumb)
+    = file_field_tag "attachfile"
   %p
     = f.submit

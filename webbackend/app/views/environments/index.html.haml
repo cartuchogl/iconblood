@@ -4,13 +4,13 @@
 
 %table#main_table
   %tr
-    %th Name
     %th Image
+    %th Name
     %th
   - for environment in @environments
     %tr
+      %td= image_tag environment.image.data.url(:thumb) if environment.image
       %td= h environment.name
-      %td= h environment.image_id
       %td
         = link_to 'Show', environment
         = link_to 'Edit', edit_environment_path(environment)

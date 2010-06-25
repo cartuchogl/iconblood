@@ -1,4 +1,4 @@
-- form_for @level do |f|
+- form_for @level, :html => {:multipart => true} do |f|
   = f.error_messages
   %p
     = f.label :position
@@ -27,6 +27,8 @@
   %p
     = f.label :image_id
     %br
-    = f.text_field :image_id
+    - if @level.image
+      = image_tag @level.image.data.url(:thumb)
+    = file_field_tag "attachfile"
   %p
     = f.submit

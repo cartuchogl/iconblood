@@ -5,15 +5,15 @@
 
 %table#main_table
   %tr
-    %th Position
     %th Image
+    %th Position
     %th Background
     %th Txt
     %th
   - for page in @pages
     %tr
+      %td= image_tag page.image.data.url(:thumb) if page.image
       %td= h page.position
-      %td= h page.image_id
       %td= h page.background_id
       %td= h page.txt
       %td
