@@ -401,34 +401,6 @@ def get_ipo_from_ipo(ipo):
 		nipo.curves.append(curve)
 	return nipo
 
-class Actor(object):
-	def __init__(self):
-		super(Actor, self).__init__()
-
-		self.name = ''
-		self.parent = ''
-		self.script = ''
-
-		self.position = [0.0, 0.0, 0.0]
-		self.rotation = [0.0, 0.0, 0.0]
-
-		self.bounding_lengths = [0.0, 0.0, 0.0]
-		self.bounding_offset = [0.0, 0.0, 0.0]
-		self.shape = 0
-		self.mass = 0.0
-		self.lin_damp = 0.0
-		self.ang_damp = 0.0
-		self.lin_sleep = 0.8
-		self.ang_sleep = 1.0
-		self.restitution = 0.0
-		self.anis_fric = [1.0, 1.0, 1.0]
-		self.lin_factor = [1.0, 1.0, 1.0]
-		self.ang_factor = [1.0, 1.0, 1.0]
-
-		self.ipo = None
-
-		self.size_bytes = 0
-
 def get_actor_header_from_object(obj, eobj):
 	Blender.Set("curframe", 1)
 	Blender.Window.Redraw()
@@ -459,30 +431,6 @@ def get_actor_header_from_object(obj, eobj):
 	if obj.getIpo() != None:
 		eobj.ipo = get_ipo_from_ipo(obj.getIpo())
 
-	try:
-		prop = obj.getProperty('shape')
-		if prop.getType() == 'STRING':
-			if prop.getData() == 'CAPSULE': eobj.shape = 4
-			if prop.getData() == 'MESH': eobj.shape = 3
-			if prop.getData() == 'SPHERE': eobj.shape = 2
-			if prop.getData() == 'BOX': eobj.shape = 1
-	except: pass
-	try:
-		prop = obj.getProperty('mass')
-		if prop.getType() == 'FLOAT':
-			eobj.mass = prop.getData()
-	except: pass
-	try:
-		prop = obj.getProperty('lin_damp')
-		if prop.getType() == 'STRING':
-			eobj.lin_damp = prop.getData()
-	except: pass
-	try:
-		prop = obj.getProperty('ang_damp')
-		if prop.getType() == 'STRING':
-			eobj.ang_damp = prop.getData()
-	except: pass
-
 def write_actor_header(eobj, f):
 	# write name
 	write_name_to_file(eobj.name, f)
@@ -503,19 +451,6 @@ def write_actor_header(eobj, f):
 			for point in curve.points:
 				f.write(struct.pack('<ffffff', point.c1[0], point.c1[1], point.p[0], point.p[1], point.c2[0], point.c2[0]))
 
-	f.write(struct.pack('<fff', eobj.bounding_lengths[0], eobj.bounding_lengths[1], eobj.bounding_lengths[2]))
-	f.write(struct.pack('<fff', eobj.bounding_offset[0], eobj.bounding_offset[1], eobj.bounding_offset[2]))
-	f.write(struct.pack('<B', eobj.shape))
-	f.write(struct.pack('<f', eobj.mass))
-	f.write(struct.pack('<f', eobj.lin_damp))
-	f.write(struct.pack('<f', eobj.ang_damp))
-	f.write(struct.pack('<f', eobj.lin_sleep))
-	f.write(struct.pack('<f', eobj.ang_sleep))
-	f.write(struct.pack('<f', eobj.restitution))
-	f.write(struct.pack('<fff', eobj.anis_fric[0], eobj.anis_fric[1], eobj.anis_fric[2]))
-	f.write(struct.pack('<fff', eobj.lin_factor[0], eobj.lin_factor[1], eobj.lin_factor[2]))
-	f.write(struct.pack('<fff', eobj.ang_factor[0], eobj.ang_factor[1], eobj.ang_factor[2]))
-
 def get_actor_header_size(eobj):
 	size_bytes = 0
 	# name, parent, script
@@ -528,30 +463,21 @@ def get_actor_header_size(eobj):
 		for curve in eobj.ipo.curves:
 			size_bytes += struct.calcsize('<BBi')
 			size_bytes += struct.calcsize('<ffffff')*len(curve.points)
-
-	size_bytes += struct.calcsize('<fff')	# bounding lengths
-	size_bytes += struct.calcsize('<fff')	# bounding offsets
-	size_bytes += struct.calcsize('<B')	# shape
-	size_bytes += struct.calcsize('<f')	# mass
-	size_bytes += struct.calcsize('<f')	# linear damp
-	size_bytes += struct.calcsize('<f')	# angular damp
-	size_bytes += struct.calcsize('<f')	# linear sleep threshold
-	size_bytes += struct.calcsize('<f')	# angular sleep threshold
-	size_bytes += struct.calcsize('<f')	# restitution
-	size_bytes += struct.calcsize('<fff')	# anisotropic friction
-	size_bytes += struct.calcsize('<fff')	# linear factor
-	size_bytes += struct.calcsize('<fff')	# angular factor
-
 	return size_bytes
 
 
-class Camera(Actor):
+class Camera:
 	def __init__(self):
-		super(Camera, self).__init__()
-
+		self.name = ''
+		self.parent = ''
+		self.script = ''
+		self.position = [0.0, 0.0, 0.0]
+		self.rotation = [0.0, 0.0, 0.0]
 		self.fov = 35.0
 		self.clip_near = 1.0
 		self.clip_far = 1000.0
+		self.ipo = None
+		self.size_bytes = 0
 
 	def load(self, obj):
 		get_actor_header_from_object(obj, self)
@@ -569,7 +495,7 @@ class Camera(Actor):
 		# field of view, clip
 		self.size_bytes += struct.calcsize('<fff')
 
-		print 'Camera \"'+self.name+'\" converted'
+		print 'Camera \"'+self.name+'\" exported'
 		print '  size: '+str(self.size_bytes)+' bytes'
 
 	def save(self, f):
@@ -586,14 +512,23 @@ class Camera(Actor):
 
 		print 'Camera \"'+self.name+'\" saved'
 
-class Entity(Actor):
+class Entity:
 	def __init__(self):
-		super(Entity, self).__init__()
-
-		self.scale = [1.0, 1.0, 1.0]
+		self.name = ''
+		self.parent = ''
+		self.script = ''
 		self.model = ''
 		self.armature = ''
 		self.materials = []
+		self.position = [0.0, 0.0, 0.0]
+		self.rotation = [0.0, 0.0, 0.0]
+		self.scale = [1.0, 1.0, 1.0]
+		self.shape = 0
+		self.mass = 0.0
+		self.lin_damp = 0.025
+		self.ang_damp = 0.180
+		self.ipo = None
+		self.size_bytes = 0
 
 	def load(self, obj):
 		get_actor_header_from_object(obj, self)
@@ -606,6 +541,30 @@ class Entity(Actor):
 		data = obj.getData()
 		scl = obj.getSize()
 		ipo = obj.getIpo()
+		
+		try:
+			prop = obj.getProperty('shape')
+			if prop.getType() == 'STRING':
+				if prop.getData() == 'CAPSULE': self.shape = 4
+				if prop.getData() == 'MESH': self.shape = 3
+				if prop.getData() == 'SPHERE': self.shape = 2
+				if prop.getData() == 'BOX': self.shape = 1
+		except: pass
+		try:
+			prop = obj.getProperty('mass')
+			if prop.getType() == 'FLOAT':
+				self.mass = prop.getData()
+		except: pass
+		try:
+			prop = obj.getProperty('lin_damp')
+			if prop.getType() == 'STRING':
+				self.lin_damp = prop.getData()
+		except: pass
+		try:
+			prop = obj.getProperty('ang_damp')
+			if prop.getType() == 'STRING':
+				self.ang_damp = prop.getData()
+		except: pass
 
 		self.scale = scl
 
@@ -614,14 +573,19 @@ class Entity(Actor):
 		for mat in data.materials:
 			self.materials.append(mat.getName())
 
-		self.size_bytes += struct.calcsize('<i')	# magic
-		self.size_bytes += get_actor_header_size(self)	# actor header
-		self.size_bytes += struct.calcsize('<fff')	# scale
-		self.size_bytes += struct.calcsize('<64s')	# model
-		self.size_bytes += struct.calcsize('<64s')	# armature
-		
-		self.size_bytes += struct.calcsize('<i')	# material count
-		self.size_bytes += struct.calcsize('<64s')*len(self.materials)	# material names
+		# magic
+		self.size_bytes += struct.calcsize('<i')
+		# actor header
+		self.size_bytes += get_actor_header_size(self)
+		# scale
+		self.size_bytes += struct.calcsize('<fff')
+		# model, armature
+		self.size_bytes += struct.calcsize('<64s')*2
+		# physics props
+		self.size_bytes += struct.calcsize('<Bfff')
+		# materials
+		self.size_bytes += struct.calcsize('<I')
+		self.size_bytes += struct.calcsize('<64s')*len(self.materials)
 
 		print 'Entity \"'+self.name+"\" converted"
 		print '  model: '+self.model
@@ -641,18 +605,23 @@ class Entity(Actor):
 		write_name_to_file(self.model, f)
 		# write armature
 		write_name_to_file(self.armature, f)
+		# physics props
+		f.write(struct.pack('<Bfff', self.shape, self.mass, self.lin_damp, self.ang_damp))
 		# write materials
-		f.write(struct.pack('<i', len(self.materials)))
+		f.write(struct.pack('<I', len(self.materials)))
 		for mat in self.materials:
 			write_name_to_file(mat, f)
 
 		print 'Entity \"'+self.name+"\" saved"
 
-class Light(Actor):
+class Light:
 	def __init__(self):
-		super(Light, self).__init__()
-
+		self.name = ''
+		self.parent = ''
+		self.script = ''
 		self.type = 'point'
+		self.position = [0.0, 0.0, 0.0]
+		self.rotation = [0.0, 0.0, 0.0]
 		self.color = [1.0, 1.0, 1.0, 1.0]
 		self.distance = 0.0
 		self.fade_speed = 0.0
@@ -660,6 +629,8 @@ class Light(Actor):
 		self.outer_cone = 0.0
 		self.shadow_map_size = 512
 		self.shadow_caster = 1
+		self.ipo = None
+		self.size_bytes = 0
 
 	def load(self, obj):
 		get_actor_header_from_object(obj, self)
@@ -685,14 +656,20 @@ class Light(Actor):
 		if data.getMode() is 1: self.shadow_caster = 1
 		else: self.shadow_caster = 0
 
-		self.size_bytes += struct.calcsize('<i')	# magic
-		self.size_bytes += get_actor_header_size(self)	# actor header
-		self.size_bytes += struct.calcsize('<B')	# type
-		self.size_bytes += struct.calcsize('<ffff')	# color
-		self.size_bytes += struct.calcsize('<ff')	# attenuation
-		self.size_bytes += struct.calcsize('<ff')	# spot light specs
-		self.size_bytes += struct.calcsize('<IB')	# shadow specs
-		self.size_bytes += struct.calcsize('<Bfff')	# light shaft specs
+		# magic
+		self.size_bytes += struct.calcsize('<i')
+		# actor header
+		self.size_bytes += get_actor_header_size(self)
+		# type
+		self.size_bytes += struct.calcsize('<B')
+		# color
+		self.size_bytes += struct.calcsize('<ffff')
+		# attenuation
+		self.size_bytes += struct.calcsize('<ff')
+		# spot light specs
+		self.size_bytes += struct.calcsize('<ff')
+		# shadow specs
+		self.size_bytes += struct.calcsize('<IB')
 		
 		print 'Light \"'+self.name+'\" converted'
 		print '  type: '+self.type
@@ -723,10 +700,8 @@ class Light(Actor):
 		f.write(struct.pack('<ff', self.inner_cone, self.outer_cone))
 		
 		# write shadow specs
+		
 		f.write(struct.pack('<IB', self.shadow_map_size, self.shadow_caster))
-
-		# write ligth shaft specs
-		f.write(struct.pack('<Bfff', 0, 0.0, 0.0, 0.0))
 
 		print 'Light \"'+self.name+'\" saved'
 
@@ -881,7 +856,7 @@ class Script:
 		self.size_bytes = struct.calcsize('<i')
 		self.size_bytes += struct.calcsize('<64s')
 		# text length, text
-		self.size_bytes += struct.calcsize('<i')
+		self.size_bytes += struct.calcsize('<I')
 		self.size_bytes += len(self.text)
 		
 		print 'Script: '+text.name+' converted'
@@ -892,7 +867,7 @@ class Script:
 		# write name
 		write_name_to_file(self.name, f)
 		# write text
-		f.write(struct.pack('<i', len(self.text)))
+		f.write(struct.pack('<I', len(self.text)))
 		if len(self.text) > 0: f.write(struct.pack('<'+str(len(self.text))+'s', self.text))
 		
 		print 'Script: '+self.name+' saved'
@@ -996,19 +971,16 @@ def export(path):
 			armature.load(obj)
 			armatures.append(armature)
 
-	print
-	print
-
 	offset = 0
 
 	# calculate the index offset
 	offset += struct.calcsize('<B')
 	offset += struct.calcsize('<64s')
-	offset += struct.calcsize('<i')
+	offset += struct.calcsize('<I')
 	offset *= len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)
-	# magic and number of indexes
+	# magic, ambient and number of indexes
 	offset += struct.calcsize('<i')
-	offset += struct.calcsize('<i')
+	offset += struct.calcsize('<I')
 
 	f = open(path, 'wb')
 
@@ -1016,53 +988,53 @@ def export(path):
 	f.write(struct.pack('<i', 179532100))
 
 	# index count
-	f.write(struct.pack('<i', len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)))
+	f.write(struct.pack('<I', len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)))
 
 	# write the index
 	for scene in scenes:
 		f.write(struct.pack('<B', 6))
 		write_name_to_file(scene.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += scene.size_bytes
 	for script in scripts:
 		f.write(struct.pack('<B', 17))
 		write_name_to_file(script.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += script.size_bytes
 	for texture in textures:
 		f.write(struct.pack('<B', 0))
 		write_name_to_file(texture.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += texture.size_bytes
 	for material in materials:
 		f.write(struct.pack('<B', 1))
 		write_name_to_file(material.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += material.size_bytes
 	for model in models:
 		f.write(struct.pack('<B', 2))
 		write_name_to_file(model.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += model.size_bytes
 	for camera in cameras:
 		f.write(struct.pack('<B', 3))
 		write_name_to_file(camera.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += camera.size_bytes
 	for entity in entities:
 		f.write(struct.pack('<B', 4))
 		write_name_to_file(entity.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += entity.size_bytes
 	for light in lights:
 		f.write(struct.pack('<B', 5))
 		write_name_to_file(light.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += light.size_bytes
 	for armature in armatures:
 		f.write(struct.pack('<B', 22))
 		write_name_to_file(armature.name, f)
-		f.write(struct.pack('<i', offset))
+		f.write(struct.pack('<I', offset))
 		offset += armature.size_bytes
 
 	# write the data
