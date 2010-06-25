@@ -8,6 +8,11 @@ elf.SetBloom(0.35)
 imfx = 0.0
 imfy = 0.0
 
+-- movement with the keyboard
+key_move = 6.0
+
+-- elf.SetDebugDraw( true )
+
 -- create and set a gui
 gui = elf.CreateGui()
 elf.SetGui(gui)
@@ -41,10 +46,15 @@ while elf.Run() == true do
   elf.SetLabelText(fpslab, "FPS: " .. elf.GetFps())
 
   -- move the camera WSAD
-  if elf.GetKeyState(elf.KEY_W) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, 0.0, -12.0) end
-  if elf.GetKeyState(elf.KEY_S) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, 0.0, 12.0) end
-  if elf.GetKeyState(elf.KEY_A) ~= elf.UP then elf.MoveActorLocal(cam, -12.0, 0.0, 0.0) end
-  if elf.GetKeyState(elf.KEY_D) ~= elf.UP then elf.MoveActorLocal(cam, 12.0, 0.0, 0.0) end
+  if elf.GetKeyState(elf.KEY_W) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, 0.0, -key_move) end
+  if elf.GetKeyState(elf.KEY_S) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, 0.0, key_move) end
+  if elf.GetKeyState(elf.KEY_A) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
+  if elf.GetKeyState(elf.KEY_D) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
+  -- move camera across
+  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, key_move, 0.0) end
+  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, -key_move, 0.0) end
+  if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
+  if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
 
   -- rotate the camera when space is pressed
   if elf.GetKeyState(elf.KEY_SPACE) ~= elf.UP then
