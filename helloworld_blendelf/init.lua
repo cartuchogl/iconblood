@@ -1,3 +1,4 @@
+
 -- load level, set window title and hide mouse
 scn = elf.LoadScene("demo.pak")
 elf.SetTitle("BlendELF Hello, World?")
