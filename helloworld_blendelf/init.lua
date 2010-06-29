@@ -1,4 +1,37 @@
 
+function get_object()
+  -- don't allow picking through GUI
+  if elf.IsObject(elf.GetGuiTrace(gui)) == true then return nil end
+
+  local camera = elf.GetSceneActiveCamera(scn)
+  
+  -- get the ray starting position
+  local raystart = elf.GetActorPosition(camera)
+
+  -- next we calculate the end position of the ray
+  local mouse_pos = elf.GetMousePosition()
+  local wwidth = elf.GetWindowWidth()
+  local wheight = elf.GetWindowHeight()
+  local clip = elf.GetCameraClip(camera)
+  local fpsize = elf.GetCameraFarPlaneSize(camera)
+
+  local rayend = elf.CreateVec3f()
+  rayend.x = mouse_pos.x/wwidth*fpsize.x-fpsize.x/2
+  rayend.y = (wheight-mouse_pos.y)/wheight*fpsize.y-fpsize.y/2
+  rayend.z = -clip.y
+
+  -- now we have the end position of the ray, but we still have to positon and orient it according to the camera
+  local orient = elf.GetActorOrientation(camera)
+  rayend = elf.MulQuaVec3f(orient, rayend)
+  rayend = elf.AddVec3fVec3f(raystart, rayend)
+  -- perform raycast
+  local col = elf.GetDebugSceneRayCastResult(scn, raystart.x, raystart.y, raystart.z, rayend.x, rayend.y, rayend.z)
+  if elf.IsObject(col) == true then
+    return elf.GetCollisionActor(col)
+  end
+
+  return nil
+end
 -- load level, set window title and hide mouse
 scn = elf.LoadScene("demo.pak")
 elf.SetTitle("BlendELF Hello, World?")
@@ -39,8 +72,24 @@ elf.SetLabelText(fpslab, "FPS: ")
 elf.SetGuiObjectPosition(fpslab, 10, 10)
 elf.AddGuiObject(gui, fpslab)
 
+over = elf.CreateLabel("Over")
+elf.SetLabelFont(over, font)
+elf.SetLabelText(over, "Object over: ")
+elf.SetGuiObjectPosition(over, 10, 30)
+elf.AddGuiObject(gui, over)
+
 -- get the camera for camera movement
 cam = elf.GetSceneActiveCamera(scn)
+
+-- set camera to detect objects
+if elf.IsObject(cam) == true then
+  local fov = elf.GetCameraFov(cam)
+  local aspect = elf.GetCameraAspect(cam)
+  local clip = elf.GetCameraClip(cam)
+  if clip.x < 0.0001 then clip.x = 0.0001 end
+  if clip.y < 100.0 then clip.y = 100.0 end
+  elf.SetCameraPerspective(cam, fov, aspect, clip.x, clip.y)
+end
 
 while elf.Run() == true do
   -- update the fps display
@@ -69,5 +118,12 @@ while elf.Run() == true do
   if elf.GetKeyState(elf.KEY_X) == elf.PRESSED then elf.SaveScreenShot("screenshot.jpg") end
   -- exit with key ESC
   if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
+  
+  obj = get_object()
+  if obj == nil then
+    elf.SetLabelText(over, "Object over: nil")
+  else
+    elf.SetLabelText(over, "Object over: " .. elf.GetActorName(obj))
+  end
 end
 
