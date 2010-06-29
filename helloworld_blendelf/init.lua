@@ -108,12 +108,17 @@ while elf.Run() == true do
 
   -- rotate the camera when space is pressed
   if elf.GetKeyState(elf.KEY_SPACE) ~= elf.UP then
+    elf.HideMouse(true)
     mf = elf.GetMouseForce()
     imfx = (imfx*3.0+mf.x)/4.0
     imfy = (imfy*3.0+mf.y)/4.0
     elf.RotateActorLocal(cam, -imfy*10.0, 0.0, 0.0)
     elf.RotateActor(cam, 0.0, 0.0, -imfx*10.0)
-  end	
+    -- center the mouse to allow continuous panning
+    elf.SetMousePosition(elf.GetWindowWidth()/2, elf.GetWindowHeight()/2)
+  else
+    elf.HideMouse(false)
+  end
   -- take a screen shot with key X
   if elf.GetKeyState(elf.KEY_X) == elf.PRESSED then elf.SaveScreenShot("screenshot.jpg") end
   -- exit with key ESC
