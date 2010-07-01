@@ -29,6 +29,11 @@
       %li= link_to 'Squadron Units', squadron_units_path
       %li= link_to 'Units', units_path
       %li= link_to 'Unit Options', unit_options_path
+      - if current_user
+        %li= link_to 'Logout', logout_path
+      - else
+        %li= link_to 'Signup', signup_path
+        %li= link_to 'Log In', login_path
     #container
       - flash.each do |name, msg|
         = content_tag :div, msg, :id => "flash_#{name}"

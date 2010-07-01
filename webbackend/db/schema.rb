@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100622133847) do
+ActiveRecord::Schema.define(:version => 20100701151603) do
 
   create_table "backgrounds", :force => true do |t|
     t.string   "name"
@@ -141,6 +141,15 @@ ActiveRecord::Schema.define(:version => 20100622133847) do
     t.integer  "move_type"
     t.integer  "max_equip"
     t.integer  "image_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "username"
+    t.string   "email"
+    t.string   "password_hash"
+    t.string   "password_salt"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
