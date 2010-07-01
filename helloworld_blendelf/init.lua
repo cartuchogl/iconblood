@@ -25,7 +25,7 @@ function get_object()
   rayend = elf.MulQuaVec3f(orient, rayend)
   rayend = elf.AddVec3fVec3f(raystart, rayend)
   -- perform raycast
-  local col = elf.GetDebugSceneRayCastResult(scn, raystart.x, raystart.y, raystart.z, rayend.x, rayend.y, rayend.z)
+  local col = elf.GetSceneRayCastResult(scn, raystart.x, raystart.y, raystart.z, rayend.x, rayend.y, rayend.z)
   if elf.IsObject(col) == true then
     return elf.GetCollisionActor(col)
   end
