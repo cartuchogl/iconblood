@@ -1,0 +1,4 @@
+window_size 1024 720
+fullscreen FALSE
+texture_anisotropy 1.0
+shadow_map_size 512
