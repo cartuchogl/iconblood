@@ -14,6 +14,7 @@ end
 
 function Game:loadEnvironment()
   print("Game:loadEnvirontment")
+  print(self.environment,elf.GetCurrentDirectory())
   return self
 end
 
