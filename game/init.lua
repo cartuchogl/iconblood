@@ -30,7 +30,7 @@ main_nav = GuiObject(elf.CreateScreen("edit_menu"))
 main_nav:set('Texture',elf.CreateTextureFromFile("../resources/background_v.png"))
 main_nav:set_visible(true)
 main_nav:set_color(1.0, 1.0, 1.0, 0.95)
-main_nav:set_position(0, elf.GetWindowHeight()-main_nav:size().y)
+main_nav:set_position((elf.GetWindowWidth()-main_nav:size().x)/2, elf.GetWindowHeight()-main_nav:size().y)
 main_nav:addTo(gui)
 
 font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
@@ -58,6 +58,12 @@ exscr = elf.CreateScript('script1')
 elf.SetScriptText(exscr, "elf.RunString(text_field:get('Text'))") 
 exb:set_script(exscr) 
 exb:addTo(main_nav)
+
+lab1 = GuiObject(elf.CreateLabel("label1"))
+lab1:set('Font', font)
+lab1:set('Text', 'current selection:')
+lab1:set_position(10,10)
+lab1:addTo(main_nav)
 
 imfx = 0.0
 imfy = 0.0

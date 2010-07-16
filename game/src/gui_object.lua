@@ -3,6 +3,11 @@ GuiObject = class('GuiObject')
 function GuiObject:initialize(obj)
   print("initialize GuiObject")
   self._elf_obj = obj
+  self.__m = {}
+  self.__m[elf.SCREEN] = "Screen"
+  self.__m[elf.TEXT_FIELD] = "TextField"
+  self.__m[elf.BUTTON] = "Button"
+  self.__m[elf.LABEL] = "Label"
 end
 
 function GuiObject:addTo(parent)
@@ -13,23 +18,15 @@ function GuiObject:addTo(parent)
 end
 
 function GuiObject:set(prop,...)
-  local map = {}
-  map[elf.SCREEN] = "Screen"
-  map[elf.TEXT_FIELD] = "TextField"
-  map[elf.BUTTON] = "Button"
   if #arg==1 then
-    elf["Set"..map[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj,arg[1])
+    elf["Set"..self.__m[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj,arg[1])
   elseif #arg>1 then
-    elf["Set"..map[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj,arg[1],arg[2])
+    elf["Set"..self.__m[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj,arg[1],arg[2])
   end
 end
 
 function GuiObject:get(prop)
-  local map = {}
-  map[elf.SCREEN] = "Screen"
-  map[elf.TEXT_FIELD] = "TextField"
-  map[elf.BUTTON] = "Button"
-  return elf["Get"..map[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj)
+  return elf["Get"..self.__m[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj)
 end
 
 function GuiObject:name()
