@@ -14,8 +14,8 @@ end
 
 function Game:loadEnvironment()
   print("Game:loadEnvirontment")
-  print(self.environment,elf.GetCurrentDirectory())
-  return self
+  self._scene = elf.LoadScene(findPath("../environments/","0*"..self.environment.."_*.*").."/level.pak")
+  return self._scene
 end
 
 function Game:loadUnits()
@@ -37,5 +37,13 @@ end
 
 function Game:running()
   return self._gaming
+end
+
+function Game:width()
+  return elf.GetWindowWidth()
+end
+
+function Game:height()
+  return elf.GetWindowHeight()
 end
 

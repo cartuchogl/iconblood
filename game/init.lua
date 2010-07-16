@@ -10,6 +10,8 @@ dofile("src/player.lua")
 dofile("src/round.lua")
 dofile("src/turn.lua")
 dofile("src/debug.lua")
+dofile("src/functions.lua")
+dofile("src/gui_object.lua")
 
 elf.SetTitle("iconblood alpha1")
 
@@ -23,50 +25,95 @@ elf.SetFpsLimit(50)
 gui = elf.CreateGui()
 elf.SetGui(gui)
 
-handle = elf.CreateScreen("edit_menu")
+main_nav = GuiObject(elf.CreateScreen("edit_menu"))
 
-elf.SetScreenTexture(handle, elf.CreateTextureFromFile("../resources/background.png"))
-elf.SetGuiObjectVisible(handle, true)
-elf.SetGuiObjectColor(handle, 1.0, 1.0, 1.0, 0.85)
-elf.SetGuiObjectPosition(handle, elf.GetWindowWidth()-elf.GetGuiObjectSize(handle).x, 0)
-
-elf.AddGuiObject(gui, handle)
+main_nav:set('Texture',elf.CreateTextureFromFile("../resources/background_v.png"))
+main_nav:set_visible(true)
+main_nav:set_color(1.0, 1.0, 1.0, 0.95)
+main_nav:set_position(0, elf.GetWindowHeight()-main_nav:size().y)
+main_nav:addTo(gui)
 
 font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
 
-text_field = elf.CreateTextField("Input")
-elf.SetTextFieldTexture(text_field, elf.CreateTextureFromFile("../resources/text_field236.png"))
-elf.SetTextFieldOffset(text_field, 3, 2)
-elf.SetTextFieldFont(text_field, font)
-elf.SetGuiObjectPosition(text_field, 10, 10)
-
-elf.AddGuiObject(handle, text_field)
+text_field = GuiObject(elf.CreateTextField("Input"))
+text_field:set('Texture', elf.CreateTextureFromFile("../resources/text_field400.png"))
+text_field:set('Offset', 3, 2)
+text_field:set('Font', font)
+text_field:set('Text', 'debug:on()')
+text_field:set_position(10, main_nav:size().y-text_field:size().y-20)
+text_field:addTo(main_nav)
 
 -- add execute button 
 exbtexoff = elf.CreateTextureFromFile("../resources/execute.png") 
 exbtexover = elf.CreateTextureFromFile("../resources/execute_over.png") 
 exbtexon = elf.CreateTextureFromFile("../resources/execute_on.png") 
-exb = elf.CreateButton("ExecuteBtn") 
-elf.SetButtonOffTexture(exb, exbtexoff) 
-elf.SetButtonOverTexture(exb, exbtexover) 
-elf.SetButtonOnTexture(exb, exbtexon) 
-elf.SetGuiObjectPosition(exb, 10, 30) 
-exscr = elf.CreateScript('script1') 
-elf.SetScriptText(exscr, "elf.RunString(elf.GetTextFieldText(text_field))") 
-elf.SetGuiObjectScript(exb, exscr) 
-elf.AddGuiObject(handle, exb)
 
-debug = Debug(gui)
+exb = GuiObject(elf.CreateButton("ExecuteBtn"))
+exb:set('OffTexture', exbtexoff)
+exb:set('OverTexture', exbtexover)
+exb:set('OnTexture', exbtexon)
+pos = text_field:position()
+exb:set_position(pos.x+text_field:size().x+4, pos.y) 
+exscr = elf.CreateScript('script1') 
+elf.SetScriptText(exscr, "elf.RunString(text_field:get('Text'))") 
+exb:set_script(exscr) 
+exb:addTo(main_nav)
+
+imfx = 0.0
+imfy = 0.0
+
+-- movement with the keyboard
+key_move = 12.0
 
 game = Game(_local_game)
-game:loadEnvironment():loadUnits()
+scene = game:loadEnvironment()
+game:loadUnits()
+
+elf.SetSceneAmbientColor(scene,0.25,0.25,0.45,1.0)
+
+-- get the camera for camera movement
+cam = elf.GetSceneActiveCamera(scene)
+
+-- set camera to detect objects
+if elf.IsObject(cam) == true then
+  local fov = elf.GetCameraFov(cam)
+  local aspect = elf.GetCameraAspect(cam)
+  local clip = elf.GetCameraClip(cam)
+  if clip.x < 0.0001 then clip.x = 0.0001 end
+  if clip.y < 100.0 then clip.y = 100.0 end
+  elf.SetCameraPerspective(cam, fov, aspect, clip.x, clip.y)
+end
+
+debug = Debug(gui,scene)
 
 game:start()
+
+last_wheel = 0
 
 while elf.Run() == true and game:running() do
   debug:update()
 
   if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
+  
+  local wheel = elf.GetMouseWheel()
+  elf.MoveActorLocal(cam, 0.0, 0.0, (last_wheel-wheel)*key_move*4)
+  last_wheel = wheel
+  -- move camera across
+  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, key_move, 0.0) end
+  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, -key_move, 0.0) end
+  if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
+  if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
+
+  -- rotate the camera
+  if elf.GetMouseButtonState(2) == elf.DOWN then
+    -- elf.HideMouse(true)
+    mf = elf.GetMouseForce()
+    imfx = (imfx*2.0+mf.x)/4.0
+    imfy = (imfy*2.0+mf.y)/4.0
+    elf.RotateActor(cam, 0.0, 0.0, -imfx*10.0)
+  else
+    -- elf.HideMouse(false)
+  end
 
   -- save a screenshot on F5
   if elf.GetKeyState(elf.KEY_F5) == elf.PRESSED then
@@ -76,4 +123,6 @@ while elf.Run() == true and game:running() do
   end
 end
 
-game:stop()
+if game:running() then game:stop() end
+
+-- end of file

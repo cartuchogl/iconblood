@@ -1,6 +1,6 @@
 Debug = class('Debug')
 
-function Debug:initialize(gui)
+function Debug:initialize(gui,scene)
   print("initialize Debug")
   -- tracked info, in lua all are tables
   self._functions = {
@@ -22,8 +22,15 @@ function Debug:initialize(gui)
     function() return("GetMouseButtonState R: " .. elf.GetMouseButtonState(elf.BUTTON_RIGHT)) end,
     function() return("GetKeyState G: " .. elf.GetKeyState(elf.KEY_G)) end,
     function() return("GetKeyState H: " .. elf.GetKeyState(elf.KEY_H)) end,
-    function() return("GetEventCount: " .. elf.GetEventCount()) end
+    function() return("GetEventCount: " .. elf.GetEventCount()) end,
+    function() return("GetSceneCameraCount: " .. elf.GetSceneCameraCount( self._scene )) end,
+    function() return("GetSceneEntityCount: " .. elf.GetSceneEntityCount( self._scene )) end,
+    function() return("GetSceneLightCount: " .. elf.GetSceneLightCount( self._scene )) end,
+    function() return("GetSceneArmatureCount: " .. elf.GetSceneArmatureCount( self._scene )) end,
+    function() return("GetSceneParticlesCount: " .. elf.GetSceneParticlesCount( self._scene )) end,
+    function() return("GetSceneSpriteCount: " .. elf.GetSceneSpriteCount( self._scene )) end
   }
+  self._scene = scene
   
   -- create text list for text
   local txt = elf.CreateTextList("TXTlist")

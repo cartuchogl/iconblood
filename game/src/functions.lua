@@ -1,3 +1,19 @@
+-- if found expreg in directory on path return full path otherside return false
+function findPath(path,expreg)
+  local kk = elf.ReadDirectory(path)
+  local l = elf.GetDirectoryItemCount(kk)
+  for i = 0,l-1,1 do
+    local object = elf.GetDirectoryItem(kk, i)
+    local name = elf.GetDirectoryItemName(object)
+    if string.byte(name) ~= string.byte(".") then
+      if string.match(name,expreg) then
+        return path..name
+      end
+    end
+  end
+  return false
+end
+
 -- return objects over mouse of passed scene
 function get_objects_over_mouse(scn)
 
