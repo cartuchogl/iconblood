@@ -11,6 +11,7 @@ function Debug:initialize(gui,scene)
     function() return("GetMultisamples: " .. elf.GetMultisamples()) end,
     function() return("GetTime: " .. elf.GetTime()) end,
     function() return("IsWindowOpened: " .. (elf.IsWindowOpened() and "true" or "false")) end,
+    function() return("IsOcclusionCulling: " .. (elf.IsOcclusionCulling() and "true" or "false")) end,
     function() 
       return("GetMousePosition: " .. elf.GetMousePosition().x .. 'x' .. elf.GetMousePosition().y) 
     end,

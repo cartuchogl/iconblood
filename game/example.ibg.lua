@@ -15,7 +15,7 @@ _local_game = {
       units = {
         {
           id = 2,
-          position = { 0.5, 0.5 },
+          position = { 0.02, 0.02 },
           exp = 13,
           level = 1,
           name = 'berto',
@@ -40,7 +40,92 @@ _local_game = {
               quantity = 50
             }
           }
+        },
+        {
+          id = 3,
+          position = { -0.02, 0.02 },
+          exp = 13,
+          level = 1,
+          name = 'nano',
+          name_unit = 'Human.002',
+          faction_id = 1,
+          cost = 150,
+          move = 10,
+          force = 3,
+          skill = 3,
+          resistance = 6,
+          options = {
+            {
+              id = 1,
+              name = 'ak47',
+              cost = 50,
+              move = 0,
+              force = 0,
+              skill = 1,
+              resistance = 0,
+              fly = false,
+              use = 4,
+              quantity = 50
+            }
+          }
+        },
+        {
+          id = 4,
+          position = { -0.02, -0.02 },
+          exp = 13,
+          level = 1,
+          name = 'nano',
+          name_unit = 'Human.003',
+          faction_id = 1,
+          cost = 150,
+          move = 10,
+          force = 3,
+          skill = 3,
+          resistance = 6,
+          options = {
+            {
+              id = 1,
+              name = 'ak47',
+              cost = 50,
+              move = 0,
+              force = 0,
+              skill = 1,
+              resistance = 0,
+              fly = false,
+              use = 4,
+              quantity = 50
+            }
+          }
+        },
+        {
+          id = 5,
+          position = { 0.02, -0.02 },
+          exp = 13,
+          level = 1,
+          name = 'nano',
+          name_unit = 'Human.004',
+          faction_id = 1,
+          cost = 150,
+          move = 10,
+          force = 3,
+          skill = 3,
+          resistance = 6,
+          options = {
+            {
+              id = 1,
+              name = 'ak47',
+              cost = 50,
+              move = 0,
+              force = 0,
+              skill = 1,
+              resistance = 0,
+              fly = false,
+              use = 4,
+              quantity = 50
+            }
+          }
         }
+        
       }
     }
   }
