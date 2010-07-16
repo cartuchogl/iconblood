@@ -62,7 +62,11 @@ function get_objects_over_mouse(scn)
   )
   
   if elf.IsObject(col) and elf.GetListLength(col) > 0 then
-    return col
+    ret = {}
+    for i = 0,elf.GetListLength(col)-1,1 do
+      ret[i+1] = elf.GetItemFromList(col,i)
+    end
+    return ret
   else
     return nil
   end

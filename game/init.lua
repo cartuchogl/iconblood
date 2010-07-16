@@ -135,6 +135,14 @@ while elf.Run() == true and game:running() do
       print("screen shot saved to " .. elf.GetCurrentDirectory() .. "/screenshot.png")
     end
   end
+  
+  if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
+    local objs = get_objects_over_mouse(game._scene)
+    if objs ~= nil then
+      print("==collision")
+      _.each(objs,function(i) print(elf.GetActorName(elf.GetCollisionActor(i))) end)
+    end
+  end
 end
 
 if game:running() then game:stop() end
