@@ -90,6 +90,8 @@ game:start()
 
 last_wheel = 0
 
+cam_dir = elf.CreateVec3f()
+cam_dir.z = -1000.0
 while elf.Run() == true and game:running() do
   debug:update()
 
@@ -99,8 +101,14 @@ while elf.Run() == true and game:running() do
   elf.MoveActorLocal(cam, 0.0, 0.0, (last_wheel-wheel)*key_move*4)
   last_wheel = wheel
   -- move camera across
-  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, key_move, 0.0) end
-  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, -key_move, 0.0) end
+  local d = elf.GetActorOrientation(cam)
+  
+  local orient = elf.GetActorOrientation(cam)
+  local dir = elf.MulQuaVec3f(orient, cam_dir)
+  local dir = normalize(dir, key_move)
+  -- print(dir.x,dir.y,dir.z)
+  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then elf.MoveActor(cam, dir.x, dir.y, 0.0) end
+  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then elf.MoveActor(cam, -dir.x, -dir.y, 0.0) end
   if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
   if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
 

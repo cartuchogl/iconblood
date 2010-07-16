@@ -14,6 +14,21 @@ function findPath(path,expreg)
   return false
 end
 
+-- normalize elf_vec3f, if pass a second param then return the vector scaled to that length
+function normalize(v,...)
+  local n = elf.CreateVec3f()
+  local a = math.sqrt(v.x*v.x+v.y*v.y+v.z*v.z)
+  if #arg>=1 then
+    q = arg[1]
+  else
+    q=1
+  end
+  n.x = v.x/a*q
+  n.y = v.y/a*q
+  n.z = v.z/a*q
+  return n
+end
+
 -- return objects over mouse of passed scene
 function get_objects_over_mouse(scn)
 
