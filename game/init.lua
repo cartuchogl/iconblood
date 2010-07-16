@@ -100,27 +100,33 @@ while elf.Run() == true and game:running() do
   local wheel = elf.GetMouseWheel()
   elf.MoveActorLocal(cam, 0.0, 0.0, (last_wheel-wheel)*key_move*4)
   last_wheel = wheel
-  -- move camera across
-  local d = elf.GetActorOrientation(cam)
   
+  -- vars for camera moves
+  -- TODO: move to an object
+  local d = elf.GetActorOrientation(cam)
   local orient = elf.GetActorOrientation(cam)
   local dir = elf.MulQuaVec3f(orient, cam_dir)
   local dir = normalize(dir, key_move)
-  -- print(dir.x,dir.y,dir.z)
+  -- move camera across
   if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then elf.MoveActor(cam, dir.x, dir.y, 0.0) end
   if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then elf.MoveActor(cam, -dir.x, -dir.y, 0.0) end
   if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
   if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
+  -- move with borders on fullscreen
+  if elf.IsFullscreen() then
+    local pos = elf.GetMousePosition()
+    if pos.x == 0 then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
+    if pos.x == elf.GetWindowWidth()-1 then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
+    if pos.y == 0 then elf.MoveActor(cam, dir.x, dir.y, 0.0) end
+    if pos.y == elf.GetWindowHeight()-1 then elf.MoveActor(cam, -dir.x, -dir.y, 0.0) end
+  end
 
   -- rotate the camera
   if elf.GetMouseButtonState(2) == elf.DOWN then
-    -- elf.HideMouse(true)
     mf = elf.GetMouseForce()
     imfx = (imfx*2.0+mf.x)/4.0
     imfy = (imfy*2.0+mf.y)/4.0
     elf.RotateActor(cam, 0.0, 0.0, -imfx*10.0)
-  else
-    -- elf.HideMouse(false)
   end
 
   -- save a screenshot on F5
