@@ -8,6 +8,7 @@ function GuiObject:initialize(obj)
   self.__m[elf.TEXT_FIELD] = "TextField"
   self.__m[elf.BUTTON] = "Button"
   self.__m[elf.LABEL] = "Label"
+  self.__p = {'Name','Position','Size','Color','Visible','Script','Event'}
 end
 
 function GuiObject:addTo(parent)
@@ -18,15 +19,45 @@ function GuiObject:addTo(parent)
 end
 
 function GuiObject:set(prop,...)
+  local func = ''
+  if _.include(self.__p,prop) then
+    func = "SetGuiObject"..prop
+  else
+    func = "Set"..self.__m[elf.GetObjectType(self._elf_obj)]..prop
+  end
   if #arg==1 then
-    elf["Set"..self.__m[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj,arg[1])
-  elseif #arg>1 then
-    elf["Set"..self.__m[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj,arg[1],arg[2])
+    elf[func](self._elf_obj,arg[1])
+  elseif #arg==2 then
+    elf[func](self._elf_obj,arg[1],arg[2])
+  elseif #arg==3 then
+    elf[func](self._elf_obj,arg[1],arg[2],arg[3])
+  elseif #arg==4 then
+    elf[func](self._elf_obj,arg[1],arg[2],arg[3],arg[4])
+  end
+end
+
+function GuiObject:sets(vars)
+  for k,v in pairs(vars) do
+    if #v==1 then
+      self:set(k,v[1])
+    elseif #v==2 then
+      self:set(k,v[1],v[2])
+    elseif #v==3 then
+      self:set(k,v[1],v[2],v[3])
+    elseif #v==4 then
+      self:set(k,v[1],v[2],v[3],v[4])
+    end
   end
 end
 
 function GuiObject:get(prop)
-  return elf["Get"..self.__m[elf.GetObjectType(self._elf_obj)]..prop](self._elf_obj)
+  local func = ''
+  if _.include(self.__p,prop) then
+    func = "GetGuiObject"..prop
+  else
+    func = "Get"..self.__m[elf.GetObjectType(self._elf_obj)]..prop
+  end
+  return elf[func](self._elf_obj)
 end
 
 function GuiObject:name()

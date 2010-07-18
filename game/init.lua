@@ -26,21 +26,27 @@ gui = elf.CreateGui()
 elf.SetGui(gui)
 
 main_nav = GuiObject(elf.CreateScreen("edit_menu"))
-
 main_nav:set('Texture',elf.CreateTextureFromFile("../resources/rect2816.png"))
-main_nav:set_visible(true)
-main_nav:set_color(1.0, 1.0, 1.0, 0.95)
-main_nav:set_position((elf.GetWindowWidth()-main_nav:size().x)/2, elf.GetWindowHeight()-main_nav:size().y)
+main_nav:sets({
+  Visible = {true},
+  Color = {1.0, 1.0, 1.0, 0.95},
+  Position = {
+    (elf.GetWindowWidth()-main_nav:size().x)/2, 
+    elf.GetWindowHeight()-main_nav:size().y
+  }
+})
 main_nav:addTo(gui)
 
 font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
 
 text_field = GuiObject(elf.CreateTextField("Input"))
 text_field:set('Texture', elf.CreateTextureFromFile("../resources/text_field400.png"))
-text_field:set('Offset', 3, 2)
-text_field:set('Font', font)
-text_field:set('Text', 'debug:on()')
-text_field:set_position(254, main_nav:size().y-text_field:size().y-24)
+text_field:sets({
+  Offset = {3, 2},
+  Font = {font},
+  Text = {"debug:on()"},
+  Position = {254, main_nav:size().y-text_field:size().y-24}
+})
 text_field:addTo(main_nav)
 
 -- add execute button 
@@ -48,21 +54,26 @@ exbtexoff = elf.CreateTextureFromFile("../resources/execute.png")
 exbtexover = elf.CreateTextureFromFile("../resources/execute_over.png") 
 exbtexon = elf.CreateTextureFromFile("../resources/execute_on.png") 
 
-exb = GuiObject(elf.CreateButton("ExecuteBtn"))
-exb:set('OffTexture', exbtexoff)
-exb:set('OverTexture', exbtexover)
-exb:set('OnTexture', exbtexon)
 pos = text_field:position()
-exb:set_position(pos.x+text_field:size().x+4, pos.y) 
 exscr = elf.CreateScript('script1') 
-elf.SetScriptText(exscr, "elf.RunString(text_field:get('Text'))") 
-exb:set_script(exscr) 
+elf.SetScriptText(exscr, "elf.RunString(text_field:get('Text'))")
+
+exb = GuiObject(elf.CreateButton("ExecuteBtn"))
+exb:sets({
+  OffTexture = {exbtexoff},
+  OverTexture = {exbtexover},
+  OnTexture = {exbtexon},
+  Position = {pos.x+text_field:size().x+4, pos.y},
+  Script = {exscr}
+})
 exb:addTo(main_nav)
 
 lab1 = GuiObject(elf.CreateLabel("label1"))
-lab1:set('Font', font)
-lab1:set('Text', 'current selection:')
-lab1:set_position(270,10)
+lab1:sets({
+  Font = {font},
+  Text = {'current selection:'},
+  Position = {270,10}
+})
 lab1:addTo(main_nav)
 
 imfx = 0.0
