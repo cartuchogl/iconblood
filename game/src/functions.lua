@@ -29,6 +29,23 @@ function normalize(v,...)
   return n
 end
 
+-- return a copy of entity
+function duplicate_entity(ent,new_name)
+  local model = elf.GetEntityModel(ent)
+  local material = elf.GetEntityMaterial(ent,0)
+  local scale =  elf.GetEntityScale(ent)
+  local ret = elf.CreateEntity(new_name)
+  local shape = elf.GetActorShape(ent)
+  local mass = elf.GetActorMass(ent)
+  
+  elf.SetEntityModel(ret,model)
+  elf.SetEntityMaterial(ret,0,material)
+  elf.SetEntityScale(ret, scale.x, scale.y, scale.z)
+  elf.SetEntityPhysics(ret,shape,mass)
+  
+  return ret
+end
+
 -- return objects over mouse of passed scene
 function get_objects_over_mouse(scn)
 

@@ -33,7 +33,7 @@ function Game:loadUnits()
         j._faction = elf.CreateSceneFromFile(findPath("../factions/","0*"..j.faction_id.."_*.*").."/units.pak")
         self._factions[j.faction_id] = j._faction
       end
-      j._elf_entity = elf.GetEntityByName(j._faction, j.name_unit)
+      j._elf_entity = duplicate_entity(elf.GetEntityByName(j._faction, j.name_unit),"Unit."..j.id)
       elf.AddEntityToScene(self._scene, j._elf_entity)
       elf.SetActorPosition(j._elf_entity,j.position[1]*self:width(),j.position[2]*self:height(),0)
     end)
