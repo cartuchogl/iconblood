@@ -25,41 +25,40 @@ elf.SetFpsLimit(50)
 gui = elf.CreateGui()
 elf.SetGui(gui)
 
-main_nav = GuiObject(elf.CreateScreen("edit_menu"))
-main_nav:set('Texture',elf.CreateTextureFromFile("../resources/rect2816.png"))
-main_nav:sets({
+-- load assets
+font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
+lod_text = elf.CreateTextureFromFile("../resources/rect2816.png")
+text_field400 = elf.CreateTextureFromFile("../resources/text_field400.png")
+exbtexoff = elf.CreateTextureFromFile("../resources/execute.png") 
+exbtexover = elf.CreateTextureFromFile("../resources/execute_over.png") 
+exbtexon = elf.CreateTextureFromFile("../resources/execute_on.png")
+
+main_nav = GuiObject(elf.SCREEN,"edit_menu",{
+  Texture = {lod_text},
   Visible = {true},
   Color = {1.0, 1.0, 1.0, 0.95},
   Position = {
-    (elf.GetWindowWidth()-main_nav:size().x)/2, 
-    elf.GetWindowHeight()-main_nav:size().y
+    (elf.GetWindowWidth()-elf.GetTextureWidth(lod_text))/2, 
+    elf.GetWindowHeight()-elf.GetTextureHeight(lod_text)
   }
 })
 main_nav:addTo(gui)
 
-font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
-
-text_field = GuiObject(elf.CreateTextField("Input"))
-text_field:set('Texture', elf.CreateTextureFromFile("../resources/text_field400.png"))
-text_field:sets({
+text_field = GuiObject(elf.TEXT_FIELD,"Input",{
+  Texture = {text_field400},
   Offset = {3, 2},
   Font = {font},
-  Text = {"debug:on()"},
-  Position = {254, main_nav:size().y-text_field:size().y-24}
+  Position = {254, main_nav:size().y-elf.GetTextureHeight(text_field400)-24}
 })
+text_field:set('Text', "debug:on()")
 text_field:addTo(main_nav)
 
 -- add execute button 
-exbtexoff = elf.CreateTextureFromFile("../resources/execute.png") 
-exbtexover = elf.CreateTextureFromFile("../resources/execute_over.png") 
-exbtexon = elf.CreateTextureFromFile("../resources/execute_on.png") 
-
 pos = text_field:position()
 exscr = elf.CreateScript('script1') 
 elf.SetScriptText(exscr, "elf.RunString(text_field:get('Text'))")
 
-exb = GuiObject(elf.CreateButton("ExecuteBtn"))
-exb:sets({
+exb = GuiObject(elf.BUTTON,"ExecuteBtn",{
   OffTexture = {exbtexoff},
   OverTexture = {exbtexover},
   OnTexture = {exbtexon},
@@ -68,8 +67,7 @@ exb:sets({
 })
 exb:addTo(main_nav)
 
-lab1 = GuiObject(elf.CreateLabel("label1"))
-lab1:sets({
+lab1 = GuiObject(elf.LABEL,"label1",{
   Font = {font},
   Text = {'current selection:'},
   Position = {270,10}
@@ -118,7 +116,6 @@ while elf.Run() == true and game:running() do
   elf.MoveActorLocal(cam, 0.0, 0.0, (last_wheel-wheel)*key_move*4)
   last_wheel = wheel
   
-  -- vars for camera moves
   -- TODO: move to an object
   local d = elf.GetActorOrientation(cam)
   local orient = elf.GetActorOrientation(cam)

@@ -1,14 +1,21 @@
 GuiObject = class('GuiObject')
+GuiObject.__m = {}
+GuiObject.__m[elf.SCREEN] = "Screen"
+GuiObject.__m[elf.TEXT_FIELD] = "TextField"
+GuiObject.__m[elf.BUTTON] = "Button"
+GuiObject.__m[elf.LABEL] = "Label"
+GuiObject.__p = {'Name','Position','Size','Color','Visible','Script','Event'}
 
-function GuiObject:initialize(obj)
+function GuiObject:initialize(obj,...)
   print("initialize GuiObject")
-  self._elf_obj = obj
-  self.__m = {}
-  self.__m[elf.SCREEN] = "Screen"
-  self.__m[elf.TEXT_FIELD] = "TextField"
-  self.__m[elf.BUTTON] = "Button"
-  self.__m[elf.LABEL] = "Label"
-  self.__p = {'Name','Position','Size','Color','Visible','Script','Event'}
+  if #arg == 0 then
+    self._elf_obj = obj
+  else
+    self._elf_obj = elf["Create"..GuiObject.__m[obj]](arg[1])
+    if #arg==2 then
+      self:sets(arg[2])
+    end
+  end
 end
 
 function GuiObject:addTo(parent)
@@ -20,10 +27,10 @@ end
 
 function GuiObject:set(prop,...)
   local func = ''
-  if _.include(self.__p,prop) then
+  if _.include(GuiObject.__p,prop) then
     func = "SetGuiObject"..prop
   else
-    func = "Set"..self.__m[elf.GetObjectType(self._elf_obj)]..prop
+    func = "Set"..GuiObject.__m[elf.GetObjectType(self._elf_obj)]..prop
   end
   if #arg==1 then
     elf[func](self._elf_obj,arg[1])
@@ -52,10 +59,10 @@ end
 
 function GuiObject:get(prop)
   local func = ''
-  if _.include(self.__p,prop) then
+  if _.include(GuiObject.__p,prop) then
     func = "GetGuiObject"..prop
   else
-    func = "Get"..self.__m[elf.GetObjectType(self._elf_obj)]..prop
+    func = "Get"..GuiObject.__m[elf.GetObjectType(self._elf_obj)]..prop
   end
   return elf[func](self._elf_obj)
 end
@@ -87,22 +94,3 @@ end
 function GuiObject:event()
   return elf.GetGuiObjectEvent( self._elf_obj )
 end
-
-function GuiObject:set_position(x,y)
-  elf.SetGuiObjectPosition( self._elf_obj, x, y )
-end
-
-function GuiObject:set_color(r,g,b,a)
-  elf.SetGuiObjectColor( self._elf_obj, r, g, b, a )
-end
-
-function GuiObject:set_visible(visible)
-  elf.SetGuiObjectVisible( self._elf_obj, visible )
-end
-
-function GuiObject:set_script(script)
-  elf.SetGuiObjectScript(self._elf_obj, script)
-end
-
-
-
