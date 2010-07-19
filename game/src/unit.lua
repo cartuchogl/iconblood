@@ -15,6 +15,7 @@ function Unit:initialize(obj)
     print("deselect:"..self.name)
     self:showStand(false)
   end)
+  self._mg = self.move
 end
 
 function Unit:canBe(x,y)
@@ -50,7 +51,17 @@ function Unit:canBe(x,y)
     min2.x,   min2.y,   min2.z
   )
   if elf.IsObject(cols) and elf.GetListLength(cols) > 0 then
-    return false
+    ret = {}
+    for i = 0,elf.GetListLength(cols)-1,1 do
+      ret[i+1] = elf.GetItemFromList(cols,i)
+    end
+    local tmp = _.reject(ret,function(i) 
+      local aa = elf.GetActorName(elf.GetCollisionActor(i))
+      return aa=="Unit."..self.id or aa=="StandMax."..self.id
+    end)
+    if #tmp>0 then
+      return false
+    end
   end
   
   cols = elf.GetSceneRayCastResults(self._scene, 
@@ -58,9 +69,18 @@ function Unit:canBe(x,y)
     max2.x,   max2.y,   max2.z
   )
   if elf.IsObject(cols) and elf.GetListLength(cols) > 0 then
-    return false
+    ret = {}
+    for i = 0,elf.GetListLength(cols)-1,1 do
+      ret[i+1] = elf.GetItemFromList(cols,i)
+    end
+    local tmp = _.reject(ret,function(i) 
+      local aa = elf.GetActorName(elf.GetCollisionActor(i))
+      return aa=="Unit."..self.id or aa=="StandMax."..self.id
+    end)
+    if #tmp>0 then
+      return false
+    end
   end
-  
   return true
 end
 
@@ -75,8 +95,13 @@ function Unit:loadElfObjects(scene)
     elf.GetEntityByName(self._faction, "Stand."..tmp),
     'Stand.'..self.id
   )
+  self._elf_stand_max = duplicate_entity(
+    elf.GetEntityByName(self._faction, "Stand."..tmp),
+    'StandMax.'..self.id
+  )
   elf.AddEntityToScene(self._scene, self._elf_entity)
   elf.AddEntityToScene(self._scene, self._elf_stand)
+  elf.AddEntityToScene(self._scene, self._elf_stand_max)
   self:showStand(false)
 end
 
@@ -84,9 +109,15 @@ function Unit:setPosition(x,y)
   self._real_pos = {x=x,y=y}
   elf.SetActorPosition(self._elf_entity,x,y,0)
   elf.SetActorPosition(self._elf_stand,x,y,0.1)
+  elf.SetActorPosition(self._elf_stand_max,x,y,0.1)
+end
+
+function Unit:setMax(x,y)
+  elf.SetActorPosition(self._elf_stand_max,x,y,0.1)
 end
 
 function Unit:showStand(val)
   elf.SetEntityVisible(self._elf_stand,val)
+  elf.SetEntityVisible(self._elf_stand_max,val)
 end
 

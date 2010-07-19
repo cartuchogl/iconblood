@@ -29,6 +29,19 @@ function normalize(v,...)
   return n
 end
 
+function normalize2d(v,...)
+  local a = math.sqrt(v.x*v.x+v.y*v.y)
+  if #arg>=1 then
+    q = arg[1]
+  else
+    q=1
+  end
+  local n = {}
+  n.x = v.x/a*q
+  n.y = v.y/a*q
+  return n
+end
+
 -- return a copy of entity
 function duplicate_entity(ent,new_name)
   local model = elf.GetEntityModel(ent)
