@@ -11,6 +11,15 @@ function Game:initialize(ibg)
   end
   self._gaming = false
   self._factions = {}
+  self._current_unit = nil
+  self:addEvent('selected:unit',function(args)
+    if self._current_unit then
+      self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
+    end
+    self._current_unit = args[1]
+    self._current_unit:fireEvent("select:unit",self._current_unit,0)
+    print("game:track event"..args[1].name)
+  end)
 end
 
 function Game:loadEnvironment()
@@ -33,9 +42,8 @@ function Game:loadUnits()
         j._faction = elf.CreateSceneFromFile(findPath("../factions/","0*"..j.faction_id.."_*.*").."/units.pak")
         self._factions[j.faction_id] = j._faction
       end
-      j._elf_entity = duplicate_entity(elf.GetEntityByName(j._faction, j.name_unit),"Unit."..j.id)
-      elf.AddEntityToScene(self._scene, j._elf_entity)
-      elf.SetActorPosition(j._elf_entity,j.position[1]*self:width(),j.position[2]*self:height(),0)
+      j:loadElfObjects(self._scene)
+      j:setPosition(j.position[1]*self:width(),j.position[2]*self:height())
     end)
   end)
   return self

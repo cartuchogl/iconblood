@@ -30,7 +30,7 @@ end
 
 function EventDispatcher:fireEvent(type, args, delay)
   if self._events and self._events[type] then
-    self._events[type][1]()
+    _.each(self._events[type],function(i) i(args) end)
   end
   return self
 end

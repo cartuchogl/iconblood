@@ -171,6 +171,7 @@ while elf.Run() == true and game:running() do
       if _.first(units) then
         local unit = game:findUnit(tonumber(string.match(_.first(units),"Unit\.(%d+)")))
         if unit then
+          game:fireEvent('selected:unit',{unit},0)
           lab_exp:set('Text','exp: '..unit.exp)
           lab_level:set('Text','level: '..unit.level)
           lab_name:set('Text','name: '..unit.name)
