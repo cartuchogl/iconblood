@@ -32,6 +32,9 @@ function Debug:initialize(gui,scene)
     function() return("GetSceneSpriteCount: " .. elf.GetSceneSpriteCount( self._scene )) end
   }
   self._scene = scene
+  self._debug_scene = elf.CreateSceneFromFile("../resources/debug/scene.pak")
+  self._track_count = 0
+  self._tracked_points = {}
   
   -- create text list for text
   local txt = elf.CreateTextList("TXTlist")
@@ -58,4 +61,16 @@ end
 
 function Debug:off()
   self._active = false
+end
+
+function Debug:trackPoint(v,...)
+  local name = "Cube"
+  if #arg>0 then
+    name = arg[1]
+  end
+  self._track_count = self._track_count+1
+  local new_point = duplicate_entity(elf.GetEntityByName(self._debug_scene, name),"Cube."..self._track_count)
+  elf.SetActorPosition(new_point,v.x,v.y,v.z)
+  elf.AddEntityToScene(self._scene,new_point)
+  table.insert(self._tracked_points,new_point)
 end

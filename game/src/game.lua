@@ -24,7 +24,9 @@ function Game:initialize(ibg)
     print("onplane")
     if self._current_unit then
       local v = elf.GetCollisionPosition(args[1])
-      self._current_unit:setPosition(v.x,v.y)
+      if self._current_unit:canBe(v.x,v.y) then
+        self._current_unit:setPosition(v.x,v.y)
+      end
     end
   end)
 end
