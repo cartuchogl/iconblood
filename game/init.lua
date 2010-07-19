@@ -164,6 +164,7 @@ while elf.Run() == true and game:running() do
   if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
     local objs = get_objects_over_mouse(game._scene)
     if objs ~= nil then
+      local capture = false
       -- print("==collision")
       local names = _.map(objs,function(i) return(elf.GetActorName(elf.GetCollisionActor(i))) end)
       -- _.each(names,function(i) print(i) end)
@@ -171,6 +172,7 @@ while elf.Run() == true and game:running() do
       if _.first(units) then
         local unit = game:findUnit(tonumber(string.match(_.first(units),"Unit\.(%d+)")))
         if unit then
+          capture = true
           game:fireEvent('selected:unit',{unit},0)
           lab_exp:set('Text','exp: '..unit.exp)
           lab_level:set('Text','level: '..unit.level)
@@ -180,6 +182,16 @@ while elf.Run() == true and game:running() do
           lab_force:set('Text','force: '..unit.force)
           lab_skill:set('Text','skill: '..unit.skill)
           lab_resistance:set('Text','resistance: '..unit.resistance)
+        end
+      end
+      if capture == false then
+        names = _.map(objs,function(i) 
+          local a = elf.GetCollisionActor(i)
+          return({elf.GetActorName(a),a,i}) 
+        end)
+        local plane = _.select(names,function(i) return string.match(i[1],"Plane") end)[1]
+        if plane then
+          game:fireEvent("onplane",{plane[3]},0)
         end
       end
     end

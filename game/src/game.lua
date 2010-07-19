@@ -20,6 +20,13 @@ function Game:initialize(ibg)
     self._current_unit:fireEvent("select:unit",self._current_unit,0)
     print("game:track event"..args[1].name)
   end)
+  self:addEvent("onplane", function(args)
+    print("onplane")
+    if self._current_unit then
+      local v = elf.GetCollisionPosition(args[1])
+      self._current_unit:setPosition(v.x,v.y)
+    end
+  end)
 end
 
 function Game:loadEnvironment()
