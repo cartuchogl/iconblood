@@ -40,6 +40,7 @@ function Debug:initialize(gui,scene)
   elf.SetTextListFont(txt,font)
   elf.SetTextListSize(txt, #self._functions, 300)
   elf.SetGuiObjectPosition(txt, 8, 8)
+  elf.SetGuiObjectVisible(txt, false)
   elf.AddGuiObject(gui, txt)
   self._txt = txt
 end
@@ -56,10 +57,12 @@ end
 
 function Debug:on()
   self._active = true
+  elf.SetGuiObjectVisible(self._txt, true)
 end
 
 function Debug:off()
   self._active = false
+  elf.SetGuiObjectVisible(self._txt, false)
 end
 
 function Debug:trackPoint(v,...)

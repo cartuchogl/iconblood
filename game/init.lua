@@ -29,6 +29,7 @@ elf.SetGui(gui)
 print("loading assets")
 local ctime = elf.GetTime()
 font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
+font18 = elf.CreateFontFromFile("../resources/freemono.ttf", 20)
 lod_text = elf.CreateTextureFromFile("../resources/rect2816.png")
 text_field400 = elf.CreateTextureFromFile("../resources/text_field400.png")
 exbtexoff = elf.CreateTextureFromFile("../resources/execute.png") 
@@ -88,7 +89,7 @@ lab_skill:addTo(main_nav)
 lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = {font},Position = {270,115},Text = {'resistance:'}})
 lab_resistance:addTo(main_nav)
 
-lab_tooltip = GuiObject(elf.LABEL,"lab_tooltip",{Font = {font},Position = {270,10},Text = {'-'}})
+lab_tooltip = GuiObject(elf.LABEL,"lab_tooltip",{Font = {font18},Position = {270,10},Text = {''}})
 lab_tooltip:addTo(gui)
 
 imfx = 0.0
@@ -138,7 +139,7 @@ while elf.Run() == true and game:running() do
   debug:update()
   local pos = elf.GetMousePosition()
   
-  lab_tooltip:set('Position',pos.x-16,pos.y-16)
+  lab_tooltip:set('Position',pos.x-24,pos.y-24)
 
   if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
   

@@ -109,11 +109,11 @@ function Unit:setPosition(x,y)
   self._real_pos = {x=x,y=y}
   elf.SetActorPosition(self._elf_entity,x,y,0)
   elf.SetActorPosition(self._elf_stand,x,y,0.1)
-  elf.SetActorPosition(self._elf_stand_max,x,y,0.1)
+  elf.SetActorPosition(self._elf_stand_max,x,y,0.15)
 end
 
 function Unit:setMax(x,y)
-  elf.SetActorPosition(self._elf_stand_max,x,y,0.1)
+  elf.SetActorPosition(self._elf_stand_max,x,y,0.15)
 end
 
 function Unit:showStand(val)

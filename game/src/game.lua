@@ -39,7 +39,6 @@ function Game:initialize(ibg,gui)
     end
   end)
   self:addEvent("overplane", function(args)
-    -- print("overplane")
     if self._current_unit then
       local v = elf.GetCollisionPosition(args[1])
       if self._current_unit:canBe(v.x,v.y) then
@@ -48,18 +47,16 @@ function Game:initialize(ibg,gui)
         local y = v.y-self._current_unit._real_pos.y
         local cost = math.ceil(math.sqrt(x*x+y*y)*10)/10.0
         lab_tooltip:set('Text',''..cost)
-          
-          if cost > self._current_unit._mg then
-            local kk = normalize2d({x=x,y=y},self._current_unit._mg)
-            kk.x = self._current_unit._real_pos.x+kk.x
-            kk.y = self._current_unit._real_pos.y+kk.y
-            self._current_unit:setMax(kk.x,kk.y)
-            return false
-          end
-          self._current_unit:setMax(v.x,v.y)
-
+        if cost > self._current_unit._mg then
+          local kk = normalize2d({x=x,y=y},self._current_unit._mg)
+          kk.x = self._current_unit._real_pos.x+kk.x
+          kk.y = self._current_unit._real_pos.y+kk.y
+          self._current_unit:setMax(kk.x,kk.y)
+          return false
+        end
+        self._current_unit:setMax(v.x,v.y)
       else
-        lab_tooltip:set('Text','-')
+        lab_tooltip:set('Text','')
       end
     end
   end)
