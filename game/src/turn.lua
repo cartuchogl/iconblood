@@ -1,12 +1,17 @@
 Turn = class('Turn')
 Turn:includes(EventDispatcher)
 
-function Turn:initialize(obj)
-  -- _.extend(self,obj)
+function Turn:initialize(round,player)
+  self._round = round
+  self._player = player
+end
+
+function Turn:pass(player)
+  self._player = player
 end
 
 function Turn:endTurn()
-  return self
+  self:fireEvent("endturn",{self},0)
 end
 
 

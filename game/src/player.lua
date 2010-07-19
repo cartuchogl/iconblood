@@ -1,8 +1,9 @@
 Player = class('Player')
 Player:includes(EventDispatcher)
 
-function Player:initialize(obj)
+function Player:initialize(squadron,obj)
   _.extend(self,obj)
+  self.squadron = squadron
 end
 
 function Player:endTurn()

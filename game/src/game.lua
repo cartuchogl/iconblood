@@ -12,11 +12,13 @@ function Game:initialize(ibg,gui)
   self._factions = {}
   self._current_unit = nil
   self:addEvent('selected:unit',function(args)
-    if self._current_unit then
-      self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
+    if args[1]._squadron.player == self._round._current_turn._player then
+      if self._current_unit then
+        self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
+      end
+      self._current_unit = args[1]
+      self._current_unit:fireEvent("select:unit",self._current_unit,0)
     end
-    self._current_unit = args[1]
-    self._current_unit:fireEvent("select:unit",self._current_unit,0)
     print("game:track event"..args[1].name)
   end)
   self:addEvent("onplane", function(args)
@@ -32,9 +34,11 @@ function Game:initialize(ibg,gui)
           kk.x = self._current_unit._real_pos.x+kk.x
           kk.y = self._current_unit._real_pos.y+kk.y
           self._current_unit:setPosition(kk.x,kk.y)
+          self._current_unit._mg = 0
           return false
         end
         self._current_unit:setPosition(v.x,v.y)
+        self._current_unit._mg = self._current_unit._mg-cost
       end
     end
   end)
@@ -108,6 +112,14 @@ end
 
 function Game:start()
   self._gaming = true
+  self._round = Round(self,20)
+  self._round:addEvent("endturn",function(args)
+    if self._current_unit then
+      self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
+    end
+    self._current_unit = nil
+  end)
+  self._round:start()
 end
 
 function Game:stop()

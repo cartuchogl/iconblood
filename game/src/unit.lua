@@ -1,7 +1,7 @@
 Unit = class('Unit')
 Unit:includes(EventDispatcher)
 
-function Unit:initialize(obj)
+function Unit:initialize(obj,squadron)
   _.extend(self,obj)
   if self.options then
     local tmp = self.options
@@ -16,6 +16,7 @@ function Unit:initialize(obj)
     self:showStand(false)
   end)
   self._mg = self.move
+  self._squadron = squadron
 end
 
 function Unit:canBe(x,y)
@@ -38,13 +39,6 @@ function Unit:canBe(x,y)
   max2.x = max2.x*s.x+x
   max2.y = max2.y*s.y+y
   max2.z = max2.z*s.z
-
-  -- debug:trackPoint(min,'Cube')
-  -- debug:trackPoint(min2,'Cube')
-  -- debug:trackPoint(max,'Cube.002')
-  -- debug:trackPoint(max2,'Cube.001')
-  -- print(min.x,min.y,min.z,'x',max.x,max.y,max.z)
-  -- print(min2.x,min2.y,min2.z,'x',max2.x,max2.y,max2.z)
 
   local cols = elf.GetSceneRayCastResults(self._scene, 
     min.x, min.y, min.z,

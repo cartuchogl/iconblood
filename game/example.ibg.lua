@@ -154,7 +154,161 @@ _local_game = {
             }
           }
         
+      }},
+      
+      {
+        id = 132,
+        name = "troopers asesinos",
+        player = {
+          id = 2,
+          alias = 'cartucho',
+          email = "kk@kk.net"
+        },
+        units = {
+          {
+            id = 12,
+            position = { 0.00, 0.02 },
+            exp = 13,
+            level = 1,
+            name = 'berto',
+            name_unit = 'Human.001',
+            faction_id = 1,
+            cost = 150,
+            move = 10,
+            force = 3,
+            skill = 3,
+            resistance = 6,
+            options = {
+              {
+                id = 1,
+                name = 'ak47',
+                cost = 50,
+                move = 0,
+                force = 0,
+                skill = 1,
+                resistance = 0,
+                fly = false,
+                use = 4,
+                quantity = 50
+              }
+            }
+          },
+          {
+            id = 13,
+            position = { -0.04, 0.02 },
+            exp = 13,
+            level = 1,
+            name = 'nano',
+            name_unit = 'Human.002',
+            faction_id = 1,
+            cost = 150,
+            move = 10,
+            force = 3,
+            skill = 3,
+            resistance = 6,
+            options = {
+              {
+                id = 1,
+                name = 'ak47',
+                cost = 50,
+                move = 0,
+                force = 0,
+                skill = 1,
+                resistance = 0,
+                fly = false,
+                use = 4,
+                quantity = 50
+              }
+            }
+          },
+          {
+            id = 14,
+            position = { -0.04, -0.02 },
+            exp = 13,
+            level = 1,
+            name = 'jimmy',
+            name_unit = 'Human.003',
+            faction_id = 1,
+            cost = 150,
+            move = 10,
+            force = 3,
+            skill = 3,
+            resistance = 6,
+            options = {
+              {
+                id = 1,
+                name = 'ak47',
+                cost = 50,
+                move = 0,
+                force = 0,
+                skill = 1,
+                resistance = 0,
+                fly = false,
+                use = 4,
+                quantity = 50
+              }
+            }
+          },
+          {
+            id = 15,
+            position = { 0.0, -0.02 },
+            exp = 13,
+            level = 1,
+            name = 'crazy',
+            name_unit = 'Human.004',
+            faction_id = 1,
+            cost = 150,
+            move = 10,
+            force = 3,
+            skill = 3,
+            resistance = 6,
+            options = {
+              {
+                id = 1,
+                name = 'ak47',
+                cost = 50,
+                move = 0,
+                force = 0,
+                skill = 1,
+                resistance = 0,
+                fly = false,
+                use = 4,
+                quantity = 50
+              }
+            }
+          },
+          {
+            id = 16,
+            position = { -0.02, 0.0 },
+            exp = 13,
+            level = 1,
+            name = 'john',
+            name_unit = 'Human.005',
+            faction_id = 1,
+            cost = 150,
+            move = 10,
+            force = 3,
+            skill = 3,
+            resistance = 6,
+            options = {
+              {
+                id = 1,
+                name = 'ak47',
+                cost = 50,
+                move = 0,
+                force = 0,
+                skill = 1,
+                resistance = 0,
+                fly = false,
+                use = 4,
+                quantity = 50
+              }
+            }
+          }
+
+        }
       }
+        
+        
     }
   }
-}

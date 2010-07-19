@@ -56,6 +56,7 @@ text_field = GuiObject(elf.TEXT_FIELD,"Input",{
   Position = {254, main_nav:size().y-elf.GetTextureHeight(text_field400)-24}
 })
 text_field:set('Text', "debug:on()")
+text_field:set('Text', "game._round._current_turn:endTurn()")
 text_field:addTo(main_nav)
 
 -- add execute button 
@@ -72,22 +73,28 @@ exb = GuiObject(elf.BUTTON,"ExecuteBtn",{
 })
 exb:addTo(main_nav)
 
-lab_exp = GuiObject(elf.LABEL,"lab_exp",{Font = {font},Position = {270,10},Text = {'exp:'}})
-lab_exp:addTo(main_nav)
-lab_level = GuiObject(elf.LABEL,"lab_level",{Font = {font},Position = {270,25},Text = {'level:'}})
-lab_level:addTo(main_nav)
-lab_name = GuiObject(elf.LABEL,"lab_name",{Font = {font},Position = {270,40},Text = {'name:'}})
-lab_name:addTo(main_nav)
-lab_cost = GuiObject(elf.LABEL,"lab_cost",{Font = {font},Position = {270,55},Text = {'cost:'}})
-lab_cost:addTo(main_nav)
-lab_move = GuiObject(elf.LABEL,"lab_move",{Font = {font},Position = {270,70},Text = {'move:'}})
-lab_move:addTo(main_nav)
-lab_force = GuiObject(elf.LABEL,"lab_force",{Font = {font},Position = {270,85},Text = {'force:'}})
-lab_force:addTo(main_nav)
-lab_skill = GuiObject(elf.LABEL,"lab_skill",{Font = {font},Position = {270,100},Text = {'skill:'}})
-lab_skill:addTo(main_nav)
-lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = {font},Position = {270,115},Text = {'resistance:'}})
-lab_resistance:addTo(main_nav)
+lab_exp = GuiObject(elf.LABEL,"lab_exp",{Font = {font},Text = {'exp:'}})
+lab_level = GuiObject(elf.LABEL,"lab_level",{Font = {font},Text = {'level:'}})
+lab_name = GuiObject(elf.LABEL,"lab_name",{Font = {font},Text = {'name:'}})
+lab_cost = GuiObject(elf.LABEL,"lab_cost",{Font = {font},Text = {'cost:'}})
+lab_move = GuiObject(elf.LABEL,"lab_move",{Font = {font},Text = {'move:'}})
+lab_force = GuiObject(elf.LABEL,"lab_force",{Font = {font},Text = {'force:'}})
+lab_skill = GuiObject(elf.LABEL,"lab_skill",{Font = {font},Text = {'skill:'}})
+lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = {font},Text = {'resistance:'}})
+
+lab_round = GuiObject(elf.LABEL,"lab_round",{Font = {font},Text = {'Round:0/0'}})
+lab_turn = GuiObject(elf.LABEL,"lab_turn",{Font = {font},Text = {'anybody turn'}})
+
+
+local tmp_y = 0
+_.each({
+  lab_round,lab_turn,lab_name,lab_level,lab_exp,lab_cost,lab_move,
+  lab_force,lab_skill,lab_resistance
+},function(i)
+  i:sets({Position={270,10+tmp_y*16}})
+  i:addTo(main_nav)
+  tmp_y = tmp_y + 1
+end)
 
 lab_tooltip = GuiObject(elf.LABEL,"lab_tooltip",{Font = {font18},Position = {270,10},Text = {''}})
 lab_tooltip:addTo(gui)
@@ -140,6 +147,21 @@ while elf.Run() == true and game:running() do
   local pos = elf.GetMousePosition()
   
   lab_tooltip:set('Position',pos.x-24,pos.y-24)
+  
+  lab_round:set('Text',"Round: "..game._round._current.."/"..game._round.number)
+  lab_turn:set('Text',game._round._current_turn._player.alias.."'s turn")
+  local unit = {name='nothing',exp='',level='',cost='',move='',force='',skill='',resistance='',_mg=''}
+  if game._current_unit then
+    unit = game._current_unit
+  end
+  lab_exp:set('Text','exp: '..unit.exp)
+  lab_level:set('Text','level: '..unit.level)
+  lab_name:set('Text','name: '..unit.name)
+  lab_cost:set('Text','cost: '..unit.cost)
+  lab_move:set('Text','move: '..unit._mg..'/'..unit.move)
+  lab_force:set('Text','force: '..unit.force)
+  lab_skill:set('Text','skill: '..unit.skill)
+  lab_resistance:set('Text','resistance: '..unit.resistance)
 
   if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
   
@@ -193,14 +215,6 @@ while elf.Run() == true and game:running() do
           if unit then
             capture = true
             game:fireEvent('selected:unit',{unit},0)
-            lab_exp:set('Text','exp: '..unit.exp)
-            lab_level:set('Text','level: '..unit.level)
-            lab_name:set('Text','name: '..unit.name)
-            lab_cost:set('Text','cost: '..unit.cost)
-            lab_move:set('Text','move: '..unit.move)
-            lab_force:set('Text','force: '..unit.force)
-            lab_skill:set('Text','skill: '..unit.skill)
-            lab_resistance:set('Text','resistance: '..unit.resistance)
           end
         end
         if capture == false then
