@@ -41,6 +41,19 @@ function Game:loadUnits()
   return self
 end
 
+function Game:findUnit(id)
+  for i=1,#self.squadrons,1 do
+    local squadron = self.squadrons[i]
+    for j=1,#squadron.units,1 do
+      local unit = squadron.units[j]
+      if unit.id == id then
+        return unit
+      end
+    end
+  end
+  return nil
+end
+
 function Game:players()
   return _.map(self.squadrons,function(i) return i.player end)
 end

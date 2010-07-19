@@ -1,9 +1,10 @@
 GuiObject = class('GuiObject')
+-- mapping the world!
 GuiObject.__m = {}
-GuiObject.__m[elf.SCREEN] = "Screen"
-GuiObject.__m[elf.TEXT_FIELD] = "TextField"
-GuiObject.__m[elf.BUTTON] = "Button"
-GuiObject.__m[elf.LABEL] = "Label"
+GuiObject.__m[elf.SCREEN] = {"Screen",{'Texture'}}
+GuiObject.__m[elf.TEXT_FIELD] = {"TextField",{'Texture','Font','TextColor','Offset','CursorPosition','Text'}}
+GuiObject.__m[elf.BUTTON] = {"Button",{'OffTexture','OverTexture','OnTexture'}}
+GuiObject.__m[elf.LABEL] = {"Label",{'Font','Text'}}
 GuiObject.__p = {'Name','Position','Size','Color','Visible','Script','Event'}
 
 function GuiObject:initialize(obj,...)
@@ -11,7 +12,7 @@ function GuiObject:initialize(obj,...)
   if #arg == 0 then
     self._elf_obj = obj
   else
-    self._elf_obj = elf["Create"..GuiObject.__m[obj]](arg[1])
+    self._elf_obj = elf["Create"..GuiObject.__m[obj][1]](arg[1])
     if #arg==2 then
       self:sets(arg[2])
     end
@@ -30,7 +31,7 @@ function GuiObject:set(prop,...)
   if _.include(GuiObject.__p,prop) then
     func = "SetGuiObject"..prop
   else
-    func = "Set"..GuiObject.__m[elf.GetObjectType(self._elf_obj)]..prop
+    func = "Set"..GuiObject.__m[elf.GetObjectType(self._elf_obj)][1]..prop
   end
   if #arg==1 then
     elf[func](self._elf_obj,arg[1])
@@ -62,7 +63,7 @@ function GuiObject:get(prop)
   if _.include(GuiObject.__p,prop) then
     func = "GetGuiObject"..prop
   else
-    func = "Get"..GuiObject.__m[elf.GetObjectType(self._elf_obj)]..prop
+    func = "Get"..GuiObject.__m[elf.GetObjectType(self._elf_obj)][1]..prop
   end
   return elf[func](self._elf_obj)
 end
@@ -94,3 +95,4 @@ end
 function GuiObject:event()
   return elf.GetGuiObjectEvent( self._elf_obj )
 end
+

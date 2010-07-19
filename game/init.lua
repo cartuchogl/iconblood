@@ -67,12 +67,23 @@ exb = GuiObject(elf.BUTTON,"ExecuteBtn",{
 })
 exb:addTo(main_nav)
 
-lab1 = GuiObject(elf.LABEL,"label1",{
-  Font = {font},
-  Text = {'current selection:'},
-  Position = {270,10}
-})
-lab1:addTo(main_nav)
+lab_exp = GuiObject(elf.LABEL,"lab_exp",{Font = {font},Position = {270,10},Text = {'exp:'}})
+lab_exp:addTo(main_nav)
+lab_level = GuiObject(elf.LABEL,"lab_level",{Font = {font},Position = {270,25},Text = {'level:'}})
+lab_level:addTo(main_nav)
+lab_name = GuiObject(elf.LABEL,"lab_name",{Font = {font},Position = {270,40},Text = {'name:'}})
+lab_name:addTo(main_nav)
+lab_cost = GuiObject(elf.LABEL,"lab_cost",{Font = {font},Position = {270,55},Text = {'cost:'}})
+lab_cost:addTo(main_nav)
+lab_move = GuiObject(elf.LABEL,"lab_move",{Font = {font},Position = {270,70},Text = {'move:'}})
+lab_move:addTo(main_nav)
+lab_force = GuiObject(elf.LABEL,"lab_force",{Font = {font},Position = {270,85},Text = {'force:'}})
+lab_force:addTo(main_nav)
+lab_skill = GuiObject(elf.LABEL,"lab_skill",{Font = {font},Position = {270,100},Text = {'skill:'}})
+lab_skill:addTo(main_nav)
+lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = {font},Position = {270,115},Text = {'resistance:'}})
+lab_resistance:addTo(main_nav)
+
 
 imfx = 0.0
 imfy = 0.0
@@ -153,8 +164,23 @@ while elf.Run() == true and game:running() do
   if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
     local objs = get_objects_over_mouse(game._scene)
     if objs ~= nil then
-      print("==collision")
-      _.each(objs,function(i) print(elf.GetActorName(elf.GetCollisionActor(i))) end)
+      -- print("==collision")
+      local names = _.map(objs,function(i) return(elf.GetActorName(elf.GetCollisionActor(i))) end)
+      -- _.each(names,function(i) print(i) end)
+      local units = _.select(names,function(i) return string.match(i,"Unit\.(%d+)") end)
+      if _.first(units) then
+        local unit = game:findUnit(tonumber(string.match(_.first(units),"Unit\.(%d+)")))
+        if unit then
+          lab_exp:set('Text','exp: '..unit.exp)
+          lab_level:set('Text','level: '..unit.level)
+          lab_name:set('Text','name: '..unit.name)
+          lab_cost:set('Text','cost: '..unit.cost)
+          lab_move:set('Text','move: '..unit.move)
+          lab_force:set('Text','force: '..unit.force)
+          lab_skill:set('Text','skill: '..unit.skill)
+          lab_resistance:set('Text','resistance: '..unit.resistance)
+        end
+      end
     end
   end
 end
