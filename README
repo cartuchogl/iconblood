@@ -1,3 +1,13 @@
 Prototyping ...
 Modeling db ...
 Scaffolding web backend ...
+
+For run test game you need export with blender to .pak in the same folder:
+- environment/001/level.blend
+- factions/001_humans/units.blend
+- resources/debug/scene.blend
+
+Remember before change to absolute path.
+
+Copy yours executable of blendelf to game and at that folder execute it.
+
