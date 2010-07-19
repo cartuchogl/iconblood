@@ -2,7 +2,6 @@ Player = class('Player')
 Player:includes(EventDispatcher)
 
 function Player:initialize(obj)
-  print("initialize Player")
   _.extend(self,obj)
 end
 

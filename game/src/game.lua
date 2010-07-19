@@ -1,10 +1,9 @@
 Game = class('Game')
 Game:includes(EventDispatcher)
 
-function Game:initialize(ibg)
-  print("initialize Game")
+function Game:initialize(ibg,gui)
   if ibg then _.extend(self,ibg) end
-  _.each(_.keys(self),function(i) print(i,self[i]) end)
+  self._gui = gui
   if self.squadrons then
     local tmp = self.squadrons
     self.squadrons = _.map(tmp,function(i) return Squadron(i) end)
@@ -26,6 +25,20 @@ function Game:initialize(ibg)
       local v = elf.GetCollisionPosition(args[1])
       if self._current_unit:canBe(v.x,v.y) then
         self._current_unit:setPosition(v.x,v.y)
+      end
+    end
+  end)
+  self:addEvent("overplane", function(args)
+    -- print("overplane")
+    if self._current_unit then
+      local v = elf.GetCollisionPosition(args[1])
+      if self._current_unit:canBe(v.x,v.y) then
+        -- self._current_unit:setPosition(v.x,v.y)
+        local x = v.x-self._current_unit._real_pos.x
+        local y = v.y-self._current_unit._real_pos.y
+        lab_tooltip:set('Text',''..(math.ceil(math.sqrt(x*x+y*y)*10)/10.0))
+      else
+        lab_tooltip:set('Text','-')
       end
     end
   end)

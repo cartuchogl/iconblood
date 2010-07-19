@@ -2,7 +2,6 @@ Squadron = class('Squadron')
 Squadron:includes(EventDispatcher)
 
 function Squadron:initialize(obj)
-  print("initialize Squadron")
   _.extend(self,obj)
   if self.units then
     local tmp = self.units

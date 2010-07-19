@@ -8,7 +8,6 @@ GuiObject.__m[elf.LABEL] = {"Label",{'Font','Text'}}
 GuiObject.__p = {'Name','Position','Size','Color','Visible','Script','Event'}
 
 function GuiObject:initialize(obj,...)
-  print("initialize GuiObject")
   if #arg == 0 then
     self._elf_obj = obj
   else

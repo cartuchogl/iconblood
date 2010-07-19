@@ -2,9 +2,7 @@ Unit = class('Unit')
 Unit:includes(EventDispatcher)
 
 function Unit:initialize(obj)
-  print("initialize Unit")
   _.extend(self,obj)
-  _.each(_.keys(self),function(i) print(i,self[i]) end)
   if self.options then
     local tmp = self.options
     self.options = _.map(tmp,function(i) return Option(i) end)
@@ -72,9 +70,7 @@ function Unit:loadElfObjects(scene)
     elf.GetEntityByName(self._faction, self.name_unit),
     "Unit."..self.id
   )
-  local tmp = ""
-  tmp = string.match(self.name_unit,'%a+\.(%d+)')
-  print("Stand."..tmp)
+  local tmp = string.match(self.name_unit,'%a+\.(%d+)')
   self._elf_stand = duplicate_entity(
     elf.GetEntityByName(self._faction, "Stand."..tmp),
     'Stand.'..self.id

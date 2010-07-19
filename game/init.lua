@@ -26,13 +26,17 @@ gui = elf.CreateGui()
 elf.SetGui(gui)
 
 -- load assets
+print("loading assets")
+local ctime = elf.GetTime()
 font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
 lod_text = elf.CreateTextureFromFile("../resources/rect2816.png")
 text_field400 = elf.CreateTextureFromFile("../resources/text_field400.png")
 exbtexoff = elf.CreateTextureFromFile("../resources/execute.png") 
 exbtexover = elf.CreateTextureFromFile("../resources/execute_over.png") 
 exbtexon = elf.CreateTextureFromFile("../resources/execute_on.png")
-
+print((elf.GetTime()-ctime).."sg")
+ctime = elf.GetTime()
+print('building gui')
 main_nav = GuiObject(elf.SCREEN,"edit_menu",{
   Texture = {lod_text},
   Visible = {true},
@@ -84,17 +88,24 @@ lab_skill:addTo(main_nav)
 lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = {font},Position = {270,115},Text = {'resistance:'}})
 lab_resistance:addTo(main_nav)
 
+lab_tooltip = GuiObject(elf.LABEL,"lab_tooltip",{Font = {font},Position = {270,10},Text = {'-'}})
+lab_tooltip:addTo(gui)
 
 imfx = 0.0
 imfy = 0.0
 
 -- movement with the keyboard
 key_move = 12.0
-
+print((elf.GetTime()-ctime).."sg")
+ctime = elf.GetTime()
 game = Game(_local_game)
 scene = game:loadEnvironment()
+print((elf.GetTime()-ctime).."sg")
+ctime = elf.GetTime()
 game:loadUnits()
-
+print((elf.GetTime()-ctime).."sg")
+ctime = elf.GetTime()
+print('going to scene...')
 elf.SetSceneAmbientColor(scene,0.25,0.25,0.45,1.0)
 
 -- get the camera for camera movement
@@ -121,8 +132,13 @@ last_wheel = 0
 
 cam_dir = elf.CreateVec3f()
 cam_dir.z = -1000.0
+print((elf.GetTime()-ctime).."sg")
+print("Total time to first render "..elf.GetTime().."sg")
 while elf.Run() == true and game:running() do
   debug:update()
+  local pos = elf.GetMousePosition()
+  
+  lab_tooltip:set('Position',pos.x-16,pos.y-16)
 
   if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
   
@@ -142,7 +158,6 @@ while elf.Run() == true and game:running() do
   if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
   -- move with borders on fullscreen
   if elf.IsFullscreen() then
-    local pos = elf.GetMousePosition()
     if pos.x == 0 then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
     if pos.x == elf.GetWindowWidth()-1 then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
     if pos.y == 0 then elf.MoveActor(cam, dir.x, dir.y, 0.0) end
@@ -170,9 +185,7 @@ while elf.Run() == true and game:running() do
     if objs ~= nil then
       if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
         local capture = false
-        -- print("==collision")
         local names = _.map(objs,function(i) return(elf.GetActorName(elf.GetCollisionActor(i))) end)
-        -- _.each(names,function(i) print(i) end)
         local units = _.select(names,function(i) return string.match(i,"Unit\.(%d+)") end)
         if _.first(units) then
           local unit = game:findUnit(tonumber(string.match(_.first(units),"Unit\.(%d+)")))
@@ -200,7 +213,14 @@ while elf.Run() == true and game:running() do
           end
         end
       else
-        
+        names = _.map(objs,function(i) 
+          local a = elf.GetCollisionActor(i)
+          return({elf.GetActorName(a),a,i}) 
+        end)
+        local plane = _.select(names,function(i) return string.match(i[1],"Plane") end)[1]
+        if plane then
+          game:fireEvent("overplane",{plane[3]},0)
+        end
       end
     end
   end

@@ -1,7 +1,6 @@
 Debug = class('Debug')
 
 function Debug:initialize(gui,scene)
-  print("initialize Debug")
   -- tracked info, in lua all are tables
   self._functions = {
     function() return("FPS: " .. elf.GetFps()) end,

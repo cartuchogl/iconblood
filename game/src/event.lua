@@ -1,6 +1,5 @@
 EventDispatcher = {
   included = function(class)
-    print("Included EventDispatcher",class)
   end
 }
 
