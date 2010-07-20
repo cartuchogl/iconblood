@@ -10,16 +10,26 @@ function Unit:initialize(obj,squadron)
   self:addEvent('select:unit',function(args)
     print("select:"..self.name)
     self:showStand(true)
+    self:showMove(true)
   end)
   self:addEvent('deselect:unit',function(args)
     print("deselect:"..self.name)
     self:showStand(false)
+    self:showMove(false)
   end)
   self:addEvent('enter',function(args)
     print("enter:"..self.name)
+    if game:currentPlayer():hasUnit(self) then
+      self:showOver(true)
+    else
+     self:showEnemy(true)
+    end 
+    
   end)
   self:addEvent('leave',function(args)
     print("leave:"..self.name)
+    self:showOver(false)
+    self:showEnemy(false)
   end)
   self._mg = self.move
   self._squadron = squadron
@@ -96,28 +106,55 @@ function Unit:loadElfObjects(scene)
     'Stand.'..self.id
   )
   self._elf_stand_max = duplicate_entity(
-    elf.GetEntityByName(self._faction, "Stand."..tmp),
+    elf.GetEntityByName(self._faction, "Move."..tmp),
     'StandMax.'..self.id
+  )
+  self._elf_over = duplicate_entity(
+    elf.GetEntityByName(self._faction, "Over."..tmp),
+    'Over.'..self.id
+  )
+  self._elf_enemy = duplicate_entity(
+    elf.GetEntityByName(self._faction, "Enemy."..tmp),
+    'Enemy.'..self.id
   )
   elf.AddEntityToScene(self._scene, self._elf_entity)
   elf.AddEntityToScene(self._scene, self._elf_stand)
   elf.AddEntityToScene(self._scene, self._elf_stand_max)
+  elf.AddEntityToScene(self._scene, self._elf_over)
+  elf.AddEntityToScene(self._scene, self._elf_enemy)
   self:showStand(false)
+  self:showMove(false)
+  self:showOver(false)
+  self:showEnemy(false)
 end
 
 function Unit:setPosition(x,y)
   self._real_pos = {x=x,y=y}
   elf.SetActorPosition(self._elf_entity,x,y,0)
   elf.SetActorPosition(self._elf_stand,x,y,0.1)
-  elf.SetActorPosition(self._elf_stand_max,x,y,0.15)
+  elf.SetActorPosition(self._elf_stand_max,x,y,0.11)
+  elf.SetActorPosition(self._elf_over,x,y,0.12)
+  elf.SetActorPosition(self._elf_enemy,x,y,0.13)
 end
 
 function Unit:setMax(x,y)
-  elf.SetActorPosition(self._elf_stand_max,x,y,0.15)
+  elf.SetActorPosition(self._elf_stand_max,x,y,0.11)
 end
 
 function Unit:showStand(val)
   elf.SetEntityVisible(self._elf_stand,val)
+end
+
+function Unit:showMove(val)
   elf.SetEntityVisible(self._elf_stand_max,val)
 end
+
+function Unit:showOver(val)
+  elf.SetEntityVisible(self._elf_over,val)
+end
+
+function Unit:showEnemy(val)
+  elf.SetEntityVisible(self._elf_enemy,val)
+end
+
 

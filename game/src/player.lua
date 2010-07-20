@@ -11,4 +11,8 @@ function Player:endTurn()
   return self
 end
 
+function Player:hasUnit(unit)
+  return _.first(_.select(self.squadron.units,function(i) return i == unit end))
+end
+
 

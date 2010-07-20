@@ -145,6 +145,10 @@ function Game:players()
   return _.map(self.squadrons,function(i) return i.player end)
 end
 
+function Game:currentPlayer()
+  return self._round._current_turn._player
+end
+
 function Game:start()
   self._gaming = true
   self._round = Round(self,20)
