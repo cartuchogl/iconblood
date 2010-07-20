@@ -23,6 +23,7 @@ function GuiObject:addTo(parent)
     parent = parent._elf_obj
   end
   elf.AddGuiObject(parent,self._elf_obj)
+  self._parent = parent
 end
 
 function GuiObject:set(prop,...)

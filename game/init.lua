@@ -1,17 +1,4 @@
-dofile("src/underscore.lua")
-_ = Underscore.funcs
-dofile("src/MiddleClass.lua")
-dofile("src/event.lua")
-dofile("src/game.lua")
-dofile("src/unit.lua")
-dofile("src/squadron.lua")
-dofile("src/option.lua")
-dofile("src/player.lua")
-dofile("src/round.lua")
-dofile("src/turn.lua")
-dofile("src/debug.lua")
-dofile("src/functions.lua")
-dofile("src/gui_object.lua")
+dofile("includes.lua")
 
 elf.SetTitle("iconblood alpha1")
 
@@ -28,13 +15,19 @@ elf.SetGui(gui)
 -- load assets
 print("loading assets")
 local ctime = elf.GetTime()
+
 font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
 font18 = elf.CreateFontFromFile("../resources/freemono.ttf", 20)
 lod_text = elf.CreateTextureFromFile("../resources/rect2816.png")
+turn_bg = elf.CreateTextureFromFile("../resources/rect2817.png")
 text_field400 = elf.CreateTextureFromFile("../resources/text_field400.png")
 exbtexoff = elf.CreateTextureFromFile("../resources/execute.png") 
 exbtexover = elf.CreateTextureFromFile("../resources/execute_over.png") 
 exbtexon = elf.CreateTextureFromFile("../resources/execute_on.png")
+endturnoff = elf.CreateTextureFromFile("../resources/end_turn.png")
+endturnover = elf.CreateTextureFromFile("../resources/end_turn_over.png")
+endturnon = elf.CreateTextureFromFile("../resources/end_turn_on.png")
+
 print((elf.GetTime()-ctime).."sg")
 ctime = elf.GetTime()
 print('building gui')
@@ -82,13 +75,10 @@ lab_force = GuiObject(elf.LABEL,"lab_force",{Font = {font},Text = {'force:'}})
 lab_skill = GuiObject(elf.LABEL,"lab_skill",{Font = {font},Text = {'skill:'}})
 lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = {font},Text = {'resistance:'}})
 
-lab_round = GuiObject(elf.LABEL,"lab_round",{Font = {font},Text = {'Round:0/0'}})
-lab_turn = GuiObject(elf.LABEL,"lab_turn",{Font = {font},Text = {'anybody turn'}})
-
 
 local tmp_y = 0
 _.each({
-  lab_round,lab_turn,lab_name,lab_level,lab_exp,lab_cost,lab_move,
+  lab_name,lab_level,lab_exp,lab_cost,lab_move,
   lab_force,lab_skill,lab_resistance
 },function(i)
   i:sets({Position={270,10+tmp_y*16}})
@@ -130,11 +120,10 @@ if elf.IsObject(cam) == true then
 end
 
 debug = Debug(gui,scene)
-debug:trackPoint({x=1,y=0,z=0})
-debug:trackPoint({x=0,y=1,z=0},'Cube.001')
-debug:trackPoint({x=0,y=0,z=1},'Cube.002')
 
 game:start()
+
+turn_panel = TurnPanel(gui,turn_bg,font,endturnoff,endturnover,endturnon,game._round)
 
 last_wheel = 0
 
@@ -147,9 +136,8 @@ while elf.Run() == true and game:running() do
   local pos = elf.GetMousePosition()
   
   lab_tooltip:set('Position',pos.x-24,pos.y-24)
+  turn_panel:update()
   
-  lab_round:set('Text',"Round: "..game._round._current.."/"..game._round.number)
-  lab_turn:set('Text',game._round._current_turn._player.alias.."'s turn")
   local unit = {name='nothing',exp='',level='',cost='',move='',force='',skill='',resistance='',_mg=''}
   if game._current_unit then
     unit = game._current_unit
