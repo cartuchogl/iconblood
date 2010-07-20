@@ -11,42 +11,50 @@ function Game:initialize(ibg,gui)
   self._gaming = false
   self._factions = {}
   self._current_unit = nil
-  self:addEvent('selected:unit',function(args)
-    if args[1]._squadron.player == self._round._current_turn._player then
-      if self._current_unit then
-        self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
-      end
-      self._current_unit = args[1]
-      self._current_unit:fireEvent("select:unit",self._current_unit,0)
-    end
-    print("game:track event"..args[1].name)
-  end)
-  self:addEvent("onplane", function(args)
-    print("onplane")
+  self:addEvent('selected:unit', _.curry(self.on_selected_unit,self))
+  self:addEvent("onplane", _.curry(self.on_plane,self))
+  self:addEvent("over", _.curry(self.on_over,self))
+  self:addEvent("overobject", _.curry(self.on_over_object,self))
+end
+
+function Game:on_selected_unit(args)
+  if args[1]._squadron.player == self._round._current_turn._player then
     if self._current_unit then
-      local v = elf.GetCollisionPosition(args[1])
-      if self._current_unit:canBe(v.x,v.y) then
-        local x = v.x-self._current_unit._real_pos.x
-        local y = v.y-self._current_unit._real_pos.y
-        local cost = math.ceil(math.sqrt(x*x+y*y)*10)/10.0
-        if cost > self._current_unit._mg then
-          local kk = normalize2d({x=x,y=y},self._current_unit._mg)
-          kk.x = self._current_unit._real_pos.x+kk.x
-          kk.y = self._current_unit._real_pos.y+kk.y
-          self._current_unit:setPosition(kk.x,kk.y)
-          self._current_unit._mg = 0
-          return false
-        end
-        self._current_unit:setPosition(v.x,v.y)
-        self._current_unit._mg = self._current_unit._mg-cost
-      end
+      self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
     end
-  end)
-  self:addEvent("overplane", function(args)
+    self._current_unit = args[1]
+    self._current_unit:fireEvent("select:unit",self._current_unit,0)
+  end
+  print("game:track event"..args[1].name)
+end
+
+function Game:on_plane(args)
+  print("onplane")
+  if self._current_unit then
+    local v = elf.GetCollisionPosition(args[1])
+    if self._current_unit:canBe(v.x,v.y) then
+      local x = v.x-self._current_unit._real_pos.x
+      local y = v.y-self._current_unit._real_pos.y
+      local cost = math.ceil(math.sqrt(x*x+y*y)*10)/10.0
+      if cost > self._current_unit._mg then
+        local kk = normalize2d({x=x,y=y},self._current_unit._mg)
+        kk.x = self._current_unit._real_pos.x+kk.x
+        kk.y = self._current_unit._real_pos.y+kk.y
+        self._current_unit:setPosition(kk.x,kk.y)
+        self._current_unit._mg = 0
+        return false
+      end
+      self._current_unit:setPosition(v.x,v.y)
+      self._current_unit._mg = self._current_unit._mg-cost
+    end
+  end
+end
+
+function Game:on_over_object(args)
+  if instanceOf(Game,args[1]) then
     if self._current_unit then
-      local v = elf.GetCollisionPosition(args[1])
+      local v = elf.GetCollisionPosition(args[2])
       if self._current_unit:canBe(v.x,v.y) then
-        -- self._current_unit:setPosition(v.x,v.y)
         local x = v.x-self._current_unit._real_pos.x
         local y = v.y-self._current_unit._real_pos.y
         local cost = math.ceil(math.sqrt(x*x+y*y)*10)/10.0
@@ -63,7 +71,34 @@ function Game:initialize(ibg,gui)
         lab_tooltip:set('Text','')
       end
     end
-  end)
+  elseif instanceOf(Unit,args[1]) then
+    if self._current_unit then
+      self._current_unit:setMax(self._current_unit._real_pos.x,self._current_unit._real_pos.y)
+      lab_tooltip:set('Text','')
+    end
+  end
+end
+
+function Game:on_over(args)
+  local col = args[1]
+  local actor = elf.GetCollisionActor(col)
+  local name = elf.GetActorName(actor)
+  local new_current = nil
+  if string.match(name,"Plane") then
+    new_current = self
+  elseif string.match(name,"Unit") then
+    new_current = self:findUnit(tonumber(string.match(name,"Unit\.(%d+)")))
+  end
+  if self._current_over then
+    if self._current_over == new_current then
+      self:fireEvent("overobject",{self._current_over,col},0)
+      return false
+    else
+      self._current_over:fireEvent("leave",{self._current_over},0)
+    end
+  end
+  self._current_over = new_current
+  self._current_over:fireEvent("enter",self._current_over)
 end
 
 function Game:loadEnvironment()

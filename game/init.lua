@@ -191,7 +191,6 @@ while elf.Run() == true and game:running() do
   if elf.GetMouseButtonState(2) == elf.DOWN then
     mf = elf.GetMouseForce()
     imfx = (imfx*2.0+mf.x)/4.0
-    imfy = (imfy*2.0+mf.y)/4.0
     elf.RotateActor(cam, 0.0, 0.0, -imfx*10.0)
   end
 
@@ -232,9 +231,9 @@ while elf.Run() == true and game:running() do
           local a = elf.GetCollisionActor(i)
           return({elf.GetActorName(a),a,i}) 
         end)
-        local plane = _.select(names,function(i) return string.match(i[1],"Plane") end)[1]
-        if plane then
-          game:fireEvent("overplane",{plane[3]},0)
+        local obj = _.select(names,function(i) return string.match(i[1],"Plane") or string.match(i[1],"Unit") end)[1]
+        if obj then
+          game:fireEvent("over",{obj[3]},0)
         end
       end
     end

@@ -15,6 +15,12 @@ function Unit:initialize(obj,squadron)
     print("deselect:"..self.name)
     self:showStand(false)
   end)
+  self:addEvent('enter',function(args)
+    print("enter:"..self.name)
+  end)
+  self:addEvent('leave',function(args)
+    print("leave:"..self.name)
+  end)
   self._mg = self.move
   self._squadron = squadron
 end
