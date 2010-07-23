@@ -1,3 +1,30 @@
+settimeout_table = {}
+
+-- this function must be call on render loop for setTimeout
+function setTimeoutLaunch()
+  local now = getTime()
+  local tmp = {}
+  for i=1,#settimeout_table,1 do
+    local item = settimeout_table[i]
+    local diff = now-item[1]
+    if diff >= item[2] then
+      table.insert(tmp,i)
+      item[3]()
+    end
+  end
+  _.each(_.reverse(_.sort(tmp)),function(i) table.remove(settimeout_table,i) end)
+end
+
+-- javascript setTimeout like function
+function setTimeout(func,delay)
+  table.insert(settimeout_table,{getTime(),delay,func})
+end
+
+-- return current game time in ms
+function getTime()
+  return math.ceil(elf.GetTime()*1000)
+end
+
 -- if found expreg in directory on path return full path otherside return false
 function findPath(path,expreg)
   local kk = elf.ReadDirectory(path)
@@ -102,3 +129,4 @@ function get_objects_over_mouse(scn)
   end
   
 end
+

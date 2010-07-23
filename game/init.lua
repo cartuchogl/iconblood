@@ -1,4 +1,8 @@
+print("compile dependencies...")
 dofile("includes.lua")
+
+local ctime = elf.GetTime()
+print(ctime.."sg")
 
 elf.SetTitle("iconblood alpha1")
 
@@ -14,7 +18,7 @@ elf.SetGui(gui)
 
 -- load assets
 print("loading assets")
-local ctime = elf.GetTime()
+ctime = elf.GetTime()
 
 font = elf.CreateFontFromFile("../resources/freemono.ttf", 14)
 font18 = elf.CreateFontFromFile("../resources/freemono.ttf", 20)
@@ -226,6 +230,8 @@ while elf.Run() == true and game:running() do
       end
     end
   end
+  -- for setTimeout
+  setTimeoutLaunch()
 end
 
 if game:running() then game:stop() end
