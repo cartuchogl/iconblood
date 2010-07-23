@@ -114,14 +114,7 @@ elf.SetSceneAmbientColor(scene,0.25,0.25,0.45,1.0)
 cam = elf.GetSceneActiveCamera(scene)
 
 -- set camera to detect objects
-if elf.IsObject(cam) == true then
-  local fov = elf.GetCameraFov(cam)
-  local aspect = elf.GetCameraAspect(cam)
-  local clip = elf.GetCameraClip(cam)
-  if clip.x < 0.0001 then clip.x = 0.0001 end
-  if clip.y < 100.0 then clip.y = 100.0 end
-  elf.SetCameraPerspective(cam, fov, aspect, clip.x, clip.y)
-end
+set_camera(cam)
 
 debug = Debug(gui,scene)
 

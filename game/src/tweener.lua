@@ -112,7 +112,6 @@ function Tweener:eventLoop()
   local tmp = {}
   for i = 1,#self.objects,1 do
     local o = self.objects[i]
-    -- print(self)
     local t = now - o.startTime
     local d = o.endTime - o.startTime
 
@@ -123,8 +122,8 @@ function Tweener:eventLoop()
           o.target[property] = o.prefix[property] .. (tP.b + tP.c) .. o.suffix[property];
         end)
       end
+      -- mark to eliminate
       table.insert(tmp,i)
-
 
       if (type(o.onUpdate) == 'function') then
         if (o.onUpdateParams) then
@@ -145,7 +144,9 @@ function Tweener:eventLoop()
       for property,v in pairs(o.targetPropeties) do
         local tP = o.targetPropeties[property]
         local val = o.easing(t, tP.b, tP.c, d)
-        o.target[property] = o.prefix[property] .. val .. o.suffix[property]
+        pcall(function()
+          o.target[property] = o.prefix[property] .. val .. o.suffix[property]
+        end)
       end
 
       if (type(o.onUpdate) == 'function') then
@@ -157,7 +158,9 @@ function Tweener:eventLoop()
       end
     end
   end
+  -- eliminate marked
   _.each(_.reverse(tmp),function(i) table.remove(self.objects,i) end)
+  
   if (#self.objects > 0) then
     local this = self
     setTimeout(function() this:eventLoop() end, 1000/this.frameRate)
@@ -187,26 +190,11 @@ Tweener.Utils = {
   end,
   bezier3= function(t, p0, p1, p2, p3)
     return math.pow(1-t, 3) * p0 + 3 * t * math.pow(1-t, 2) * p1 + 3 * t * t * (1-t) * p2 + t * t * t * p3;
-  end,
-  allSetStyleProperties= function(element)
-     -- var css;
-     -- if (document.defaultView && document.defaultView.getComputedStyle) {
-     --     css = document.defaultView.getComputedStyle(element, null);
-     -- } else {
-     --     css = element.currentStyle
-     -- }
-     -- for (var key in css) {
-     --     if (!key.match(/^\d+$/)) {
-     --         try {
-     --         element.style[key] = css[key];
-     --         } catch(e) {};
-     --     }
-     -- }
   end
 }
 
 -- 
--- JSTweener.easingFunctions is
+-- Tweener.easingFunctions is
 -- Tweener's easing functions (Penner's Easing Equations) porting to JavaScript.
 -- http://code.google.com/p/tweener/
 -- 
