@@ -1,7 +1,7 @@
 Game = class('Game')
 Game:includes(EventDispatcher)
 
-function Game:initialize(ibg,gui)
+function Game:initialize(ibg,gui,cbg,font)
   if ibg then _.extend(self,ibg) end
   self._gui = gui
   if self.squadrons then
@@ -15,6 +15,11 @@ function Game:initialize(ibg,gui)
   self:addEvent("onplane", _.curry(self.on_plane,self))
   self:addEvent("over", _.curry(self.on_over,self))
   self:addEvent("overobject", _.curry(self.on_over_object,self))
+  self._current_unit_panel = CurrentPanel(gui,cbg,font,nil)
+end
+
+function Game:update()
+  self._current_unit_panel:update()
 end
 
 function Game:on_selected_unit(args)
@@ -23,6 +28,7 @@ function Game:on_selected_unit(args)
       self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
     end
     self._current_unit = args[1]
+    self._current_unit_panel._unit = self._current_unit
     self._current_unit:fireEvent("select:unit",self._current_unit,0)
   end
   print("game:track event"..args[1].name)

@@ -1,9 +1,13 @@
 TurnPanel = class('TurnPanel', GuiObject)
 
 function TurnPanel:initialize(parent,bg,font,off,over,on,round)
-  super.initialize(self,elf.SCREEN,'turn_panel',{Position={0,0},Texture={bg}})
+  local x = (elf.GetWindowWidth()-elf.GetTextureWidth(bg))/2
+  super.initialize(self,elf.SCREEN,'turn_panel',{Position={x,0},Texture={bg}})
   self:addTo(parent)
   self._round = round
+  
+  local exscr = elf.CreateScript('script1') 
+  elf.SetScriptText(exscr, "game._round._current_turn:endTurn()")
   
   self._button_end_turn = GuiObject(elf.BUTTON,"btn_end_turn",{
     OffTexture = {off},
