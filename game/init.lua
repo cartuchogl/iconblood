@@ -9,7 +9,6 @@ elf.SetTitle("iconblood alpha1")
 dofile("example.ibg.lua")
 
 print("Init...")
-
 elf.SetFpsLimit(50)
 
 -- create and set a gui
@@ -126,8 +125,13 @@ last_wheel = 0
 
 cam_dir = elf.CreateVec3f()
 cam_dir.z = -1000.0
+
+-- for cool anims ;)
+tweener = Tweener()
+
 print((elf.GetTime()-ctime).."sg")
 print("Total time to first render "..elf.GetTime().."sg")
+
 while elf.Run() == true and game:running() do
   debug:update()
   local pos = elf.GetMousePosition()

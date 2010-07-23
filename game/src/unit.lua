@@ -128,13 +128,38 @@ function Unit:loadElfObjects(scene)
   self:showEnemy(false)
 end
 
+function Unit:updatePosition()
+  local v = self._real_pos
+  elf.SetActorPosition(self._elf_entity,v.x,v.y,0)
+  elf.SetActorPosition(self._elf_stand,v.x,v.y,0.1)
+  elf.SetActorPosition(self._elf_stand_max,v.x,v.y,0.11)
+  elf.SetActorPosition(self._elf_over,v.x,v.y,0.12)
+  elf.SetActorPosition(self._elf_enemy,v.x,v.y,0.13)
+end
+
 function Unit:setPosition(x,y)
   self._real_pos = {x=x,y=y}
-  elf.SetActorPosition(self._elf_entity,x,y,0)
-  elf.SetActorPosition(self._elf_stand,x,y,0.1)
-  elf.SetActorPosition(self._elf_stand_max,x,y,0.11)
-  elf.SetActorPosition(self._elf_over,x,y,0.12)
-  elf.SetActorPosition(self._elf_enemy,x,y,0.13)
+  self:updatePosition()
+end
+
+function Unit:get(k)
+  if k=='x' then
+    return self._real_pos.x
+  elseif k=='y' then
+    return self._real_pos.y
+  else
+    return nil
+  end
+end
+
+function Unit:set(k,v)
+  if k=='x' then
+    self._real_pos.x = v
+    self:updatePosition()
+  elseif k=='y' then
+    self:updatePosition()
+    self._real_pos.y = v
+  end
 end
 
 function Unit:setMax(x,y)

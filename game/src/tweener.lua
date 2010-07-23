@@ -77,7 +77,13 @@ function Tweener:addTween(obj, options)
     if(type(v)~='function') then
       if (not o.prefix[key]) then o.prefix[key] = '' end
       if (not o.suffix[key]) then o.suffix[key] = '' end
-      local sB = Tweener.toNumber(obj[key], o.prefix[key],  o.suffix[key])
+      local ov = 0
+      if type(obj['get'])=='function' then
+        ov = obj:get(key)
+      else
+        ov = obj[key]
+      end
+      local sB = Tweener.toNumber(ov, o.prefix[key],  o.suffix[key])
       o.targetPropeties[key] = {
         b= sB,
         c= options[key] - sB
@@ -119,7 +125,12 @@ function Tweener:eventLoop()
       for property,v in pairs(o.targetPropeties) do
         local tP = o.targetPropeties[property]
         pcall(function()
-          o.target[property] = o.prefix[property] .. (tP.b + tP.c) .. o.suffix[property];
+          local val = o.prefix[property] .. (tP.b + tP.c) .. o.suffix[property]
+          if type(o.target['set'])=='function' then
+            o.target:set(property,val)
+          else
+            o.target[property] = val
+          end
         end)
       end
       -- mark to eliminate
@@ -145,7 +156,12 @@ function Tweener:eventLoop()
         local tP = o.targetPropeties[property]
         local val = o.easing(t, tP.b, tP.c, d)
         pcall(function()
-          o.target[property] = o.prefix[property] .. val .. o.suffix[property]
+          local tmp = o.prefix[property] .. val .. o.suffix[property]
+          if type(o.target['set'])=='function' then
+            o.target:set(property,tmp)
+          else
+            o.target[property] = tmp
+          end
         end)
       end
 

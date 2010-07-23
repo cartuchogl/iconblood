@@ -40,11 +40,17 @@ function Game:on_plane(args)
         local kk = normalize2d({x=x,y=y},self._current_unit._mg)
         kk.x = self._current_unit._real_pos.x+kk.x
         kk.y = self._current_unit._real_pos.y+kk.y
-        self._current_unit:setPosition(kk.x,kk.y)
+        tweener:addTween(self._current_unit,{x=kk.x,y=kk.y,
+          onComplete=function()print("end")end,
+          onStart=function()print("ini")end
+        },cost)
         self._current_unit._mg = 0
         return false
       end
-      self._current_unit:setPosition(v.x,v.y)
+      tweener:addTween(self._current_unit,{x=v.x,y=v.y,
+        onComplete=function()print("end")end,
+        onStart=function()print("ini")end
+      },cost)
       self._current_unit._mg = self._current_unit._mg-cost
     end
   end
