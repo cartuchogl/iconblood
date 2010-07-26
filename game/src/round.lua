@@ -27,7 +27,6 @@ function Round:start(...)
   self._current_turn = Turn(self,self.players[self._current_player_indx])
   self._current_turn:addEvent("endturn",function(args)
     print("endturn")
-    self:fireEvent("endturn",args,0)
     args[1]._player.squadron:resetMove()
     if self._current_player_indx+1>#self.players then
       self:fireEvent("endround",{self},0)
@@ -35,6 +34,7 @@ function Round:start(...)
       self._current_player_indx = self._current_player_indx+1
       self._current_turn:pass(self.players[self._current_player_indx])
     end
+    self:fireEvent("endturn",args,0)
   end)
 end
   

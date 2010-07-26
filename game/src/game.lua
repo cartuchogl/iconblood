@@ -43,6 +43,8 @@ function Game:on_frame(args)
   end
   self:update()
   self._turn_panel:update()
+  self._current_squadron_panel._units = self._round._current_turn._player.squadron.units
+  self._current_squadron_panel:update()
 end
 
 function Game:interaction()
@@ -134,7 +136,7 @@ function Game:on_loader_end(args)
 
   self._turn_panel = TurnPanel(self._gui,
     self._loader:get('img','rect2817.png').target,
-    self._loader:get('font','fonts/default.ttf').target,
+    self._loader:get('font','fonts/big.ttf').target,
     self._loader:get('img','end_turn.png').target,
     self._loader:get('img','end_turn_over.png').target,
     self._loader:get('img','end_turn_on.png').target,
@@ -143,11 +145,19 @@ function Game:on_loader_end(args)
   
   self._current_unit_panel = CurrentPanel(self._gui,
     self._loader:get('img',"current_bg.png").target,
-    self._loader:get('font','fonts/default.ttf').target,
+    self._loader:get('font','fonts/medium.ttf').target,
   nil)
   
+  self._current_squadron_panel = UnitsPanel(self._gui,self._current_unit_panel:size().x+10,
+    self._loader:get('img',"mini_panel.png").target,
+    self._loader:get('img',"move_mini_progress_bg.png").target,
+    self._loader:get('img',"move_mini_progress.png").target,
+    self._loader:get('img',"life_mini_progress_bg.png").target,
+    self._loader:get('img',"life_mini_progress.png").target
+  )
+  
   self._lab_tooltip = GuiObject(elf.LABEL,"lab_tooltip",{Font = {
-    self._loader:get('font','fonts/default.ttf').target
+    self._loader:get('font','fonts/big.ttf').target
   },Position = {270,10},Text = {''}})
   self._lab_tooltip:addTo(self._gui)
 
@@ -306,6 +316,7 @@ function Game:start()
       self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
     end
     self._current_unit = nil
+    self._current_squadron_panel._units = self._round._current_turn._player.squadron.units
   end)
   self._round:start()
 end

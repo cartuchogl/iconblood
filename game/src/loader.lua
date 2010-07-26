@@ -96,6 +96,8 @@ function Loader:loadAny()
     self._next_type = 'env'
   elseif #self._loading.fac>0 then
     self._next_type = 'fac'
+  elseif #self._loading.font>0 then
+    self._next_type = 'font'
   else
     self:fireEvent('endbatch',{self},0)
   end
@@ -104,7 +106,12 @@ function Loader:loadAny()
       if self._loaded == 0 then
         self:fireEvent('inibatch',{self},0)
       end
-      self:load(self._next_type,self._loading[self._next_type][1])
+      local ele = self._loading[self._next_type][1]
+      if type(ele) == 'table' then
+        self:load(self._next_type,ele[1],ele[2])
+      else
+        self:load(self._next_type,ele)
+      end
       table.remove(self._loading[self._next_type],1)
       self._loaded = self._loaded+1
       self.loadAny(self)

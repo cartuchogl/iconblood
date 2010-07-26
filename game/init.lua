@@ -17,7 +17,17 @@ loader:batch({
     "end_turn.png",
     "end_turn_over.png",
     "end_turn_on.png",
-    "current_bg.png"
+    "current_bg.png",
+    "mini_panel.png",
+    "move_mini_progress.png",
+    "move_mini_progress_bg.png",
+    "life_mini_progress.png",
+    "life_mini_progress_bg.png"
+  },
+  font = {
+    {"fonts/small.ttf",12},
+    {"fonts/medium.ttf",14},
+    {"fonts/big.ttf",15}
   }
 })
 
