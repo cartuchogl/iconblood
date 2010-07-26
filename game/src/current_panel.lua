@@ -13,7 +13,8 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   self.lab_force = GuiObject(elf.LABEL,"lab_force",{Font = {font},Text = {'force'}})
   self.lab_skill = GuiObject(elf.LABEL,"lab_skill",{Font = {font},Text = {'skill'}})
   self.lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = {font},Text = {'resistance'}})
-
+  self._picture = GuiObject(elf.PICTURE,'large_pic',{Position={10,6}})
+  self._picture:addTo(self)
 
   local tmp_y = 0
   _.each({
@@ -30,6 +31,7 @@ function CurrentPanel:update()
   local unit = {name='nothing',exp='0',level='0',cost='0',move='0',force='0',skill='0',resistance='0',_mg='0'}
   if self._unit then
     unit = self._unit
+    self._picture:set('Texture',self._unit._large_image)
   end
   self.lab_level:set('Text','LEVEL '..unit.level.."/"..unit.exp..'PX')
   self.lab_name:set('Text',unit.name)

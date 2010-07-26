@@ -117,6 +117,11 @@ function Unit:loadElfObjects(scene)
     elf.GetEntityByName(self._faction, "Enemy."..tmp),
     'Enemy.'..self.id
   )
+  local path = findPath("../factions/","0*"..self.faction_id.."_*.*").."/unit."..tmp..'.png'
+  local path2 = findPath("../factions/","0*"..self.faction_id.."_*.*").."/unit."..tmp..'.big.png'
+  print(path,path2)
+  self._mini_image = elf.CreateTextureFromFile(path)
+  self._large_image = elf.CreateTextureFromFile(path2)
   elf.AddEntityToScene(self._scene, self._elf_entity)
   elf.AddEntityToScene(self._scene, self._elf_stand)
   elf.AddEntityToScene(self._scene, self._elf_stand_max)

@@ -4,7 +4,7 @@ Loader:includes(EventDispatcher)
 function Loader:initialize(path,img,font,gui,pbg,pfg)
   self._path = path
   self._gui = gui
-  self._assets = {img={},font={},env={},fac={}}
+  self._assets = {img={},font={},env={},fac={},unit_img={}}
   self._status = "Initialized"
   self._progress = 0
   self:load('img',img)
@@ -34,6 +34,10 @@ end
 
 function Loader:load(type,name,...)
   self._assets[type][name] = self["_load_"..type](self,name,arg)
+end
+
+function Loader:_load_unit_img(name,args)
+  print("[Loader][font] "..self._path..'/'..name)
 end
 
 function Loader:_load_img(name,args)
