@@ -428,3 +428,4 @@ Tweener.easingFunctions = {
 
 Tweener.easingFunctions.linear = Tweener.easingFunctions.easeNone
 
+tweener = Tweener()

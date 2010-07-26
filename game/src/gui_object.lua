@@ -2,6 +2,7 @@ GuiObject = class('GuiObject')
 -- mapping the world!
 GuiObject.__m = {}
 GuiObject.__m[elf.SCREEN] = {"Screen",{'Texture'}}
+GuiObject.__m[elf.PICTURE] = {"Picture",{'Texture','Scale'}}
 GuiObject.__m[elf.TEXT_FIELD] = {"TextField",{'Texture','Font','TextColor','Offset','CursorPosition','Text'}}
 GuiObject.__m[elf.BUTTON] = {"Button",{'OffTexture','OverTexture','OnTexture'}}
 GuiObject.__m[elf.LABEL] = {"Label",{'Font','Text'}}

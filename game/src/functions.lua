@@ -41,6 +41,20 @@ function findPath(path,expreg)
   return false
 end
 
+-- return uniques elements on array, for number
+function uniques(array)
+  local uniq = {}
+  local kk_list = _.select(array, function(i)
+    if uniq[i] then
+      return false
+    else
+      uniq[i] = 1
+      return true
+    end
+  end)
+  return kk_list
+end
+
 -- normalize elf_vec3f, if pass a second param then return the vector scaled to that length
 function normalize(v,...)
   local n = elf.CreateVec3f()
