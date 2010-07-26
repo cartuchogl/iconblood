@@ -49,7 +49,7 @@ end
 
 function Game:interaction()
   local pos = elf.GetMousePosition()
-  self._lab_tooltip:set('Position',pos.x-24,pos.y-24)
+  self._lab_tooltip:set('Position',pos.x-14,pos.y-24)
   if elf.IsObject(elf.GetGuiTrace(self._gui)) == false then
     local objs = get_objects_over_mouse(self._scene)
     if objs ~= nil then

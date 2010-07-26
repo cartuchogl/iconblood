@@ -7,7 +7,7 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   self._unit = unit
   
   self.lab_level = GuiObject(elf.LABEL,"lab_level",{Font = {font},Text = {'level'}})
-  self.lab_name = GuiObject(elf.LABEL,"lab_name",{Font = {font},Text = {'name'}})
+  self.lab_name = GuiObject(elf.LABEL,"lab_name",{Font = {font},Text = {'name'},Color={0.22,1,0.53,1}})
   self.lab_cost = GuiObject(elf.LABEL,"lab_cost",{Font = {font},Text = {'cost'}})
   self.lab_move = GuiObject(elf.LABEL,"lab_move",{Font = {font},Text = {'move'}})
   self.lab_force = GuiObject(elf.LABEL,"lab_force",{Font = {font},Text = {'force'}})
@@ -23,14 +23,14 @@ function CurrentPanel:initialize(parent,bg,font,unit)
     self.lab_name,self.lab_level,self.lab_move,
     self.lab_force,self.lab_skill,self.lab_resistance,self.lab_cost
   },function(i)
-    i:sets({Position={12,140+tmp_y*14}})
+    i:sets({Position={12,150+tmp_y*14}})
     i:addTo(self)
     tmp_y = tmp_y + 1
   end)
 end
 
 function CurrentPanel:update()
-  local unit = {name='nothing',exp='0',level='0',cost='0',move='0',force='0',skill='0',resistance='0',_mg='0'}
+  local unit = {name='nobody',exp='0',level='0',cost='0',move='0',force='0',skill='0',resistance='0',_mg='0'}
   if self._unit then
     unit = self._unit
     self._picture:set('Texture',self._unit._large_image)
@@ -38,10 +38,10 @@ function CurrentPanel:update()
     self._picture:set('Texture',self._null_tex)
   end
   self.lab_level:set('Text','LEVEL '..unit.level.."/"..unit.exp..'PX')
-  self.lab_name:set('Text',unit.name)
+  self.lab_name:set('Text',string.upper(unit.name))
   self.lab_cost:set('Text','$'..unit.cost)
-  self.lab_move:set('Text','M: '..unit._mg..'/'..unit.move)
-  self.lab_force:set('Text','F: '..unit.force)
-  self.lab_skill:set('Text','S: '..unit.skill)
-  self.lab_resistance:set('Text','R: '..unit.resistance)
+  self.lab_move:set('Text','M '..unit._mg..'/'..unit.move)
+  self.lab_force:set('Text','F'..unit.force)
+  self.lab_skill:set('Text','S'..unit.skill)
+  self.lab_resistance:set('Text','R'..unit.resistance)
 end
