@@ -316,6 +316,7 @@ function Game:start()
       self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
     end
     self._current_unit = nil
+    self._current_unit_panel._unit = nil
     self._current_squadron_panel._units = self._round._current_turn._player.squadron.units
   end)
   self._round:start()

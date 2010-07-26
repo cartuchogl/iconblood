@@ -51,6 +51,12 @@ while elf.Run() == true do
   -- for setTimeout
   setTimeoutLaunch()
   if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
+  -- save a screenshot on F5
+  if elf.GetKeyState(elf.KEY_F5) == elf.PRESSED then
+    if elf.SaveScreenShot("screenshot.png") == true then
+      print("screen shot saved to " .. elf.GetCurrentDirectory() .. "/screenshot.png")
+    end
+  end
 end
 
 -- end of file

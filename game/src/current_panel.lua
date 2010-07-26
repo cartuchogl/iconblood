@@ -15,6 +15,8 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   self.lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = {font},Text = {'resistance'}})
   self._picture = GuiObject(elf.PICTURE,'large_pic',{Position={10,6}})
   self._picture:addTo(self)
+  
+  self._null_tex = elf.CreateTextureFromImage(elf.CreateEmptyImage(128,128,8))
 
   local tmp_y = 0
   _.each({
@@ -32,6 +34,8 @@ function CurrentPanel:update()
   if self._unit then
     unit = self._unit
     self._picture:set('Texture',self._unit._large_image)
+  else
+    self._picture:set('Texture',self._null_tex)
   end
   self.lab_level:set('Text','LEVEL '..unit.level.."/"..unit.exp..'PX')
   self.lab_name:set('Text',unit.name)
