@@ -1,6 +1,6 @@
 UnitsPanel = class('UnitsPanel', GuiObject)
 
-function UnitsPanel:initialize(parent,x,ubg,mbg,mfg,lbg,lfg)
+function UnitsPanel:initialize(parent,x,ubg,select,mbg,mfg,lbg,lfg)
   self._width = elf.GetWindowWidth()-x-10
   self._height = elf.GetTextureHeight(ubg)
   self._bg_pic = elf.CreateEmptyImage(self._width,self._height,24)
@@ -11,6 +11,7 @@ function UnitsPanel:initialize(parent,x,ubg,mbg,mfg,lbg,lfg)
   self._units = nil
   self._panels = {}
   self._ubg = ubg
+  self._select = select
   self._mbg = mbg
   self._mfg = mfg
   self._lbg = lbg
@@ -25,7 +26,7 @@ function UnitsPanel:update()
         self._panels[cont]._unit = i
         self._panels[cont]:set('Visible',true)
       else
-        self._panels[cont] = MiniPanel(self,self._ubg,self._mbg,self._mfg,self._lbg,self._lfg)
+        self._panels[cont] = MiniPanel(self,self._ubg,self._select,self._mbg,self._mfg,self._lbg,self._lfg)
         self._panels[cont]:set('Position',elf.GetTextureWidth(self._ubg)*(cont-1),0)
       end
       cont = cont + 1

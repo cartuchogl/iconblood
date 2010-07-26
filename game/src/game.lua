@@ -150,6 +150,7 @@ function Game:on_loader_end(args)
   
   self._current_squadron_panel = UnitsPanel(self._gui,self._current_unit_panel:size().x+10,
     self._loader:get('img',"mini_panel.png").target,
+    self._loader:get('img',"select_mini_panel.png").target,
     self._loader:get('img',"move_mini_progress_bg.png").target,
     self._loader:get('img',"move_mini_progress.png").target,
     self._loader:get('img',"life_mini_progress_bg.png").target,

@@ -22,7 +22,8 @@ loader:batch({
     "move_mini_progress.png",
     "move_mini_progress_bg.png",
     "life_mini_progress.png",
-    "life_mini_progress_bg.png"
+    "life_mini_progress_bg.png",
+    "select_mini_panel.png"
   },
   font = {
     {"fonts/small.ttf",12},

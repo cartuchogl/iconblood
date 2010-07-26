@@ -1,7 +1,7 @@
 MiniPanel = class('MiniPanel', GuiObject)
 MiniPanel._instance_count = 0
 
-function MiniPanel:initialize(parent,bg,mbg,mfg,lbg,lfg)
+function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
   MiniPanel._instance_count = MiniPanel._instance_count + 1
   super.initialize(self,elf.SCREEN,'mini_panel'..MiniPanel._instance_count,{Texture={bg}})
   self:addTo(parent)
@@ -13,6 +13,8 @@ function MiniPanel:initialize(parent,bg,mbg,mfg,lbg,lfg)
   self._life_bar:set('Position',7,88)
   self._picture = GuiObject(elf.PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={6,6}})
   self._picture:addTo(self)
+  self._select_pic = GuiObject(elf.PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,6},Texture={select}})
+  self._select_pic:addTo(self)
 end
 
 function MiniPanel:update()
@@ -22,10 +24,12 @@ function MiniPanel:update()
     self._life_bar:max(1)
     self._life_bar:current(1)
     self._picture:set('Texture',self._unit._mini_image)
+    self._select_pic:set('Visible',self._unit == game._current_unit)
   else
     self._move_bar:max(1)
     self._move_bar:current(0)
     self._life_bar:max(1)
     self._life_bar:current(0)
+    self._select_pic:set('Visible',false)
   end
 end
