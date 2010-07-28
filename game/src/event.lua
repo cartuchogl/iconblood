@@ -27,9 +27,13 @@ function EventDispatcher:removeEvents(events)
   return self
 end
 
-function EventDispatcher:fireEvent(type, args, delay)
-  if self._events and self._events[type] then
-    _.each(self._events[type],function(i) i(args) end)
+function EventDispatcher:fireEvent(etype, args, delay)
+  if self._events and self._events[etype] then
+    if type(delay)=='number' and delay>0 then
+      _.each(self._events[etype],function(i) setTimeout(function() i(args) end,delay) end)
+    else
+      _.each(self._events[etype],function(i) i(args) end)
+    end
   end
   return self
 end
