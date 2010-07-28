@@ -17,7 +17,7 @@ function Loader:initialize(path,img,font,gui,pbg,pfg)
   local fg = self:get('img',pfg).target
   local font = self:get('font',font).target
   
-  self._loader_gui = GuiObject(elf.SCREEN,"loader",{
+  self._loader_gui = ElfObject(elf.SCREEN,"loader",{
     Texture = image,
     Visible = true,
     Color = {1.0, 1.0, 1.0, 0.95},

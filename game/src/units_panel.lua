@@ -1,4 +1,4 @@
-UnitsPanel = class('UnitsPanel', GuiObject)
+UnitsPanel = class('UnitsPanel', ElfObject)
 
 function UnitsPanel:initialize(parent,x,ubg,select,mbg,mfg,lbg,lfg)
   self._width = elf.GetWindowWidth()-x-10

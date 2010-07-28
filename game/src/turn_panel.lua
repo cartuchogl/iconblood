@@ -1,4 +1,4 @@
-TurnPanel = class('TurnPanel', GuiObject)
+TurnPanel = class('TurnPanel', ElfObject)
 
 function TurnPanel:initialize(parent,bg,font,off,over,on,round)
   local x = (elf.GetWindowWidth()-elf.GetTextureWidth(bg))
@@ -9,16 +9,16 @@ function TurnPanel:initialize(parent,bg,font,off,over,on,round)
   local exscr = elf.CreateScript('script1') 
   elf.SetScriptText(exscr, "game._round._current_turn:endTurn()")
   
-  self._button_end_turn = GuiObject(elf.BUTTON,"btn_end_turn",{
+  self._button_end_turn = ElfObject(elf.BUTTON,"btn_end_turn",{
     OffTexture = off,
     OverTexture = over,
     OnTexture = on,
-    Position = {0,self:size().y-elf.GetTextureHeight(off)},
+    Position = {0,self:get('Size').y-elf.GetTextureHeight(off)},
     Script = exscr
   })
   self._button_end_turn:addTo(self)
   
-  self._label_round = GuiObject(elf.LABEL,"lab_round",{
+  self._label_round = ElfObject(elf.LABEL,"lab_round",{
     Font = font,
     Text = 'Round:0/0',
     Position = {8,7},
@@ -26,7 +26,7 @@ function TurnPanel:initialize(parent,bg,font,off,over,on,round)
   })
   self._label_round:addTo(self)
   
-  self._label_turn = GuiObject(elf.LABEL,"lab_turn",{
+  self._label_turn = ElfObject(elf.LABEL,"lab_turn",{
     Font = font,
     Text = 'anybody turn',
     Position = {8,40}

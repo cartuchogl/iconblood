@@ -1,4 +1,4 @@
-ProgressBar = class('ProgressBar', GuiObject)
+ProgressBar = class('ProgressBar', ElfObject)
 
 function ProgressBar:initialize(parent,name,bg,fg)
   super.initialize(self,elf.SCREEN,name,{Position={0,0},Texture=bg})
@@ -6,7 +6,7 @@ function ProgressBar:initialize(parent,name,bg,fg)
   self._parent = parent
   self._max = 1
   self._current = 0.5
-  self._bar = GuiObject(elf.PICTURE,name..'_bar',{Texture=fg})
+  self._bar = ElfObject(elf.PICTURE,name..'_bar',{Texture=fg})
   self._bar:addTo(self)
   self:update()
 end

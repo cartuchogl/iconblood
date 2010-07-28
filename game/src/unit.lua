@@ -1,5 +1,4 @@
-Unit = class('Unit')
-Unit:includes(EventDispatcher)
+Unit = class('Unit',ElfObject)
 
 function Unit:initialize(obj,squadron)
   _.extend(self,obj)
@@ -31,6 +30,7 @@ function Unit:initialize(obj,squadron)
     self:showOver(false)
     self:showEnemy(false)
   end)
+  self:addEvent('update:attributte',_.curry(self.updatedPosition,self))
   self._mg = self.move
   self._squadron = squadron
 end
@@ -41,12 +41,12 @@ function Unit:canBe(x,y)
   local max = elf.GetModelBoundingBoxMax(model)
   local min2 = elf.GetModelBoundingBoxMin(model)
   local max2 = elf.GetModelBoundingBoxMax(model)
-  local s = elf.GetEntityScale(self._elf_entity)
-  min.x = min.x*s.x+self._real_pos.x
-  min.y = min.y*s.y+self._real_pos.y
+  local s = self:get('Scale')
+  min.x = min.x*s.x+self:get('x')
+  min.y = min.y*s.y+self:get('y')
   min.z = 0.1
-  max.x = max.x*s.x+self._real_pos.x
-  max.y = max.y*s.y+self._real_pos.y
+  max.x = max.x*s.x+self:get('x')
+  max.y = max.y*s.y+self:get('y')
   max.z = max.z*s.z
   
   min2.x = min2.x*s.x+x
@@ -100,91 +100,72 @@ function Unit:loadElfObjects(scene)
     elf.GetEntityByName(self._faction, self.name_unit),
     "Unit."..self.id
   )
+  self._elf_obj = self._elf_entity
   local tmp = string.match(self.name_unit,'%a+\.(%d+)')
-  self._elf_stand = duplicate_entity(
+  self._elf_stand = ElfObject(duplicate_entity(
     elf.GetEntityByName(self._faction, "Stand."..tmp),
     'Stand.'..self.id
-  )
-  self._elf_stand_max = duplicate_entity(
+  ))
+  self._elf_stand_max = ElfObject(duplicate_entity(
     elf.GetEntityByName(self._faction, "Move."..tmp),
     'StandMax.'..self.id
-  )
-  self._elf_over = duplicate_entity(
+  ))
+  self._elf_over = ElfObject(duplicate_entity(
     elf.GetEntityByName(self._faction, "Over."..tmp),
     'Over.'..self.id
-  )
-  self._elf_enemy = duplicate_entity(
+  ))
+  self._elf_enemy = ElfObject(duplicate_entity(
     elf.GetEntityByName(self._faction, "Enemy."..tmp),
     'Enemy.'..self.id
-  )
+  ))
   local path = findPath("../factions/","0*"..self.faction_id.."_*.*").."/unit."..tmp..'.png'
   local path2 = findPath("../factions/","0*"..self.faction_id.."_*.*").."/unit."..tmp..'.big.png'
   print(path,path2)
   self._mini_image = elf.CreateTextureFromFile(path)
   self._large_image = elf.CreateTextureFromFile(path2)
-  elf.AddEntityToScene(self._scene, self._elf_entity)
-  elf.AddEntityToScene(self._scene, self._elf_stand)
-  elf.AddEntityToScene(self._scene, self._elf_stand_max)
-  elf.AddEntityToScene(self._scene, self._elf_over)
-  elf.AddEntityToScene(self._scene, self._elf_enemy)
+  self:addTo(self._scene)
+  self._elf_stand:addTo(self._scene)
+  self._elf_stand_max:addTo(self._scene)
+  self._elf_over:addTo(self._scene)
+  self._elf_enemy:addTo(self._scene)
+  
   self:showStand(false)
   self:showMove(false)
   self:showOver(false)
   self:showEnemy(false)
 end
 
-function Unit:updatePosition()
-  local v = self._real_pos
-  elf.SetActorPosition(self._elf_entity,v.x,v.y,0)
-  elf.SetActorPosition(self._elf_stand,v.x,v.y,0.1)
-  elf.SetActorPosition(self._elf_stand_max,v.x,v.y,0.11)
-  elf.SetActorPosition(self._elf_over,v.x,v.y,0.12)
-  elf.SetActorPosition(self._elf_enemy,v.x,v.y,0.13)
+function Unit:updatedPosition()
+  local v = self:get('Position')
+  self._elf_stand:set('Position',v.x,v.y,0.1)
+  self._elf_stand_max:set('Position',v.x,v.y,0.11)
+  self._elf_over:set('Position',v.x,v.y,0.12)
+  self._elf_enemy:set('Position',v.x,v.y,0.13)
 end
 
-function Unit:setPosition(x,y)
-  self._real_pos = {x=x,y=y}
-  self:updatePosition()
-end
-
-function Unit:get(k)
-  if k=='x' then
-    return self._real_pos.x
-  elseif k=='y' then
-    return self._real_pos.y
-  else
-    return nil
-  end
-end
-
-function Unit:set(k,v)
-  if k=='x' then
-    self._real_pos.x = v
-    self:updatePosition()
-  elseif k=='y' then
-    self:updatePosition()
-    self._real_pos.y = v
-  end
-end
+-- function Unit:setPosition(x,y)
+--   self.:get('x') = {x=x,y=y}
+--   self:updatePosition()
+-- end
 
 function Unit:setMax(x,y)
-  elf.SetActorPosition(self._elf_stand_max,x,y,0.11)
+  self._elf_stand_max:set('Position',x,y,0.11)
 end
 
 function Unit:showStand(val)
-  elf.SetEntityVisible(self._elf_stand,val)
+  self._elf_stand:set('Visible',val)
 end
 
 function Unit:showMove(val)
-  elf.SetEntityVisible(self._elf_stand_max,val)
+  self._elf_stand_max:set('Visible',val)
 end
 
 function Unit:showOver(val)
-  elf.SetEntityVisible(self._elf_over,val)
+  self._elf_over:set('Visible',val)
 end
 
 function Unit:showEnemy(val)
-  elf.SetEntityVisible(self._elf_enemy,val)
+  self._elf_enemy:set('Visible',val)
 end
 
 

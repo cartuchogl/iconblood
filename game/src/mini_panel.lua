@@ -1,4 +1,4 @@
-MiniPanel = class('MiniPanel', GuiObject)
+MiniPanel = class('MiniPanel', ElfObject)
 MiniPanel._instance_count = 0
 
 function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
@@ -11,9 +11,9 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
   self._life_bar = ProgressBar(self,'mini_bar_life'..MiniPanel._instance_count,lbg,lfg)
   self._move_bar:set('Position',7,83)
   self._life_bar:set('Position',7,88)
-  self._picture = GuiObject(elf.PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={6,6}})
+  self._picture = ElfObject(elf.PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={6,6}})
   self._picture:addTo(self)
-  self._select_pic = GuiObject(elf.PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,6},Texture=select})
+  self._select_pic = ElfObject(elf.PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,6},Texture=select})
   self._select_pic:addTo(self)
 end
 

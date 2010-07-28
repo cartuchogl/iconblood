@@ -1,4 +1,4 @@
-CurrentPanel = class('CurrentPanel', GuiObject)
+CurrentPanel = class('CurrentPanel', ElfObject)
 
 function CurrentPanel:initialize(parent,bg,font,unit)
   local y = elf.GetWindowHeight()-elf.GetTextureHeight(bg)
@@ -6,14 +6,14 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   self:addTo(parent)
   self._unit = unit
   
-  self.lab_level = GuiObject(elf.LABEL,"lab_level",{Font = font,Text = 'level'})
-  self.lab_name = GuiObject(elf.LABEL,"lab_name",{Font = font,Text = 'name',Color={0.22,1,0.53,1}})
-  self.lab_cost = GuiObject(elf.LABEL,"lab_cost",{Font = font,Text = 'cost'})
-  self.lab_move = GuiObject(elf.LABEL,"lab_move",{Font = font,Text = 'move'})
-  self.lab_force = GuiObject(elf.LABEL,"lab_force",{Font = font,Text = 'force'})
-  self.lab_skill = GuiObject(elf.LABEL,"lab_skill",{Font = font,Text = 'skill'})
-  self.lab_resistance = GuiObject(elf.LABEL,"lab_resistance",{Font = font,Text = 'resistance'})
-  self._picture = GuiObject(elf.PICTURE,'large_pic',{Position={10,6}})
+  self.lab_level = ElfObject(elf.LABEL,"lab_level",{Font = font,Text = 'level'})
+  self.lab_name = ElfObject(elf.LABEL,"lab_name",{Font = font,Text = 'name',Color={0.22,1,0.53,1}})
+  self.lab_cost = ElfObject(elf.LABEL,"lab_cost",{Font = font,Text = 'cost'})
+  self.lab_move = ElfObject(elf.LABEL,"lab_move",{Font = font,Text = 'move'})
+  self.lab_force = ElfObject(elf.LABEL,"lab_force",{Font = font,Text = 'force'})
+  self.lab_skill = ElfObject(elf.LABEL,"lab_skill",{Font = font,Text = 'skill'})
+  self.lab_resistance = ElfObject(elf.LABEL,"lab_resistance",{Font = font,Text = 'resistance'})
+  self._picture = ElfObject(elf.PICTURE,'large_pic',{Position={10,6}})
   self._picture:addTo(self)
   
   self._null_tex = elf.CreateTextureFromImage(elf.CreateEmptyImage(128,128,8))

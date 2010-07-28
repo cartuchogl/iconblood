@@ -49,7 +49,7 @@ end
 
 function Game:interaction()
   local pos = elf.GetMousePosition()
-  self._lab_tooltip:set('Position',pos.x-14,pos.y-24)
+  self._lab_tooltip:sets({x=pos.x-14,y=pos.y-24})
   if elf.IsObject(elf.GetGuiTrace(self._gui)) == false then
     local objs = get_objects_over_mouse(self._scene)
     if objs ~= nil then
@@ -148,7 +148,7 @@ function Game:on_loader_end(args)
     self._loader:get('font','fonts/medium.ttf').target,
   nil)
   
-  self._current_squadron_panel = UnitsPanel(self._gui,self._current_unit_panel:size().x+10,
+  self._current_squadron_panel = UnitsPanel(self._gui,self._current_unit_panel:get('Size').x+10,
     self._loader:get('img',"mini_panel.png").target,
     self._loader:get('img',"select_mini_panel.png").target,
     self._loader:get('img',"move_mini_progress_bg.png").target,
@@ -157,8 +157,11 @@ function Game:on_loader_end(args)
     self._loader:get('img',"life_mini_progress.png").target
   )
   
-  self._lab_tooltip = GuiObject(elf.LABEL,"lab_tooltip",{
-    Font = self._loader:get('font','fonts/big.ttf').target,Position = {270,10},Text = ''
+  self._lab_tooltip = ElfObject(elf.LABEL,"lab_tooltip",{
+    Font = self._loader:get('font','fonts/big.ttf').target,
+    x = 270,
+    y = 10,
+    Text = ''
   })
   self._lab_tooltip:addTo(self._gui)
 
@@ -187,13 +190,13 @@ function Game:on_plane(args)
   if self._current_unit then
     local v = elf.GetCollisionPosition(args[1])
     if self._current_unit:canBe(v.x,v.y) then
-      local x = v.x-self._current_unit._real_pos.x
-      local y = v.y-self._current_unit._real_pos.y
+      local x = v.x-self._current_unit:get('x')
+      local y = v.y-self._current_unit:get('y')
       local cost = math.ceil(math.sqrt(x*x+y*y)*10)/10.0
       if cost > self._current_unit._mg then
         local kk = normalize2d({x=x,y=y},self._current_unit._mg)
-        kk.x = self._current_unit._real_pos.x+kk.x
-        kk.y = self._current_unit._real_pos.y+kk.y
+        kk.x = self._current_unit:get('x')+kk.x
+        kk.y = self._current_unit:get('y')+kk.y
         tweener:addTween(self._current_unit,{x=kk.x,y=kk.y,
           onComplete=function()print("end")end,
           onStart=function()print("ini")end
@@ -215,14 +218,14 @@ function Game:on_over_object(args)
     if self._current_unit then
       local v = elf.GetCollisionPosition(args[2])
       if self._current_unit:canBe(v.x,v.y) then
-        local x = v.x-self._current_unit._real_pos.x
-        local y = v.y-self._current_unit._real_pos.y
+        local x = v.x-self._current_unit:get('x')
+        local y = v.y-self._current_unit:get('y')
         local cost = math.ceil(math.sqrt(x*x+y*y)*10)/10.0
         self._lab_tooltip:set('Text',''..cost)
         if cost > self._current_unit._mg then
           local kk = normalize2d({x=x,y=y},self._current_unit._mg)
-          kk.x = self._current_unit._real_pos.x+kk.x
-          kk.y = self._current_unit._real_pos.y+kk.y
+          kk.x = self._current_unit:get('x')+kk.x
+          kk.y = self._current_unit:get('y')+kk.y
           self._current_unit:setMax(kk.x,kk.y)
           return false
         end
@@ -233,7 +236,7 @@ function Game:on_over_object(args)
     end
   elseif instanceOf(Unit,args[1]) then
     if self._current_unit then
-      self._current_unit:setMax(self._current_unit._real_pos.x,self._current_unit._real_pos.y)
+      self._current_unit:setMax(self._current_unit:get('x'),self._current_unit:get('y'))
       self._lab_tooltip:set('Text','')
     end
   end
@@ -282,7 +285,7 @@ function Game:loadUnits()
         self._factions[j.faction_id] = j._faction
       end
       j:loadElfObjects(self._scene)
-      j:setPosition(j.position[1]*self:width(),j.position[2]*self:height())
+      j:set('Position',j.position[1]*self:width(),j.position[2]*self:height(),0)
     end)
   end)
   return self
