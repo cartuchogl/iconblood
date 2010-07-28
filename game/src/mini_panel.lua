@@ -3,7 +3,7 @@ MiniPanel._instance_count = 0
 
 function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
   MiniPanel._instance_count = MiniPanel._instance_count + 1
-  super.initialize(self,elf.SCREEN,'mini_panel'..MiniPanel._instance_count,{Texture={bg}})
+  super.initialize(self,elf.SCREEN,'mini_panel'..MiniPanel._instance_count,{Texture=bg})
   self:addTo(parent)
   self._unit = nil
   
@@ -13,7 +13,7 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
   self._life_bar:set('Position',7,88)
   self._picture = GuiObject(elf.PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={6,6}})
   self._picture:addTo(self)
-  self._select_pic = GuiObject(elf.PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,6},Texture={select}})
+  self._select_pic = GuiObject(elf.PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,6},Texture=select})
   self._select_pic:addTo(self)
 end
 

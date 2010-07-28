@@ -5,7 +5,7 @@ function UnitsPanel:initialize(parent,x,ubg,select,mbg,mfg,lbg,lfg)
   self._height = elf.GetTextureHeight(ubg)
   self._bg_pic = elf.CreateEmptyImage(self._width,self._height,24)
   self._bg_tex = elf.CreateTextureFromImage(self._bg_pic)
-  super.initialize(self,elf.SCREEN,'units_panel',{Texture={self._bg_tex},Color={1,1,1,0.3}})
+  super.initialize(self,elf.SCREEN,'units_panel',{Texture=self._bg_tex,Color={1,1,1,0.3}})
   self:set('Position',x,elf.GetWindowHeight()-self._height)
   self:addTo(parent)
   self._units = nil

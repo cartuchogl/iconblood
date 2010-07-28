@@ -34,27 +34,19 @@ function GuiObject:set(prop,...)
   else
     func = "Set"..GuiObject.__m[elf.GetObjectType(self._elf_obj)][1]..prop
   end
-  if #arg==1 then
-    elf[func](self._elf_obj,arg[1])
-  elseif #arg==2 then
-    elf[func](self._elf_obj,arg[1],arg[2])
-  elseif #arg==3 then
-    elf[func](self._elf_obj,arg[1],arg[2],arg[3])
-  elseif #arg==4 then
-    elf[func](self._elf_obj,arg[1],arg[2],arg[3],arg[4])
+  if type(...)=='table' then
+    elf[func](self._elf_obj,unpack(...))
+  else
+    elf[func](self._elf_obj,...)
   end
 end
 
 function GuiObject:sets(vars)
   for k,v in pairs(vars) do
-    if #v==1 then
-      self:set(k,v[1])
-    elseif #v==2 then
-      self:set(k,v[1],v[2])
-    elseif #v==3 then
-      self:set(k,v[1],v[2],v[3])
-    elseif #v==4 then
-      self:set(k,v[1],v[2],v[3],v[4])
+    if type(v)=='table' then
+      self:set(k,unpack(v))
+    else
+      self:set(k,v)
     end
   end
 end

@@ -18,8 +18,8 @@ function Loader:initialize(path,img,font,gui,pbg,pfg)
   local font = self:get('font',font).target
   
   self._loader_gui = GuiObject(elf.SCREEN,"loader",{
-    Texture = {image},
-    Visible = {true},
+    Texture = image,
+    Visible = true,
     Color = {1.0, 1.0, 1.0, 0.95},
     Position = {
       (elf.GetWindowWidth()-elf.GetTextureWidth(image))/2, 

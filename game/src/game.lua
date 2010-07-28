@@ -157,9 +157,9 @@ function Game:on_loader_end(args)
     self._loader:get('img',"life_mini_progress.png").target
   )
   
-  self._lab_tooltip = GuiObject(elf.LABEL,"lab_tooltip",{Font = {
-    self._loader:get('font','fonts/big.ttf').target
-  },Position = {270,10},Text = {''}})
+  self._lab_tooltip = GuiObject(elf.LABEL,"lab_tooltip",{
+    Font = self._loader:get('font','fonts/big.ttf').target,Position = {270,10},Text = ''
+  })
   self._lab_tooltip:addTo(self._gui)
 
   self._last_wheel = 0
