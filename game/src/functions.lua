@@ -56,11 +56,11 @@ function uniques(array)
 end
 
 -- normalize elf_vec3f, if pass a second param then return the vector scaled to that length
-function normalize(v,...)
+function normalize(v,size)
   local n = elf.CreateVec3f()
   local a = math.sqrt(v.x*v.x+v.y*v.y+v.z*v.z)
-  if #arg>=1 then
-    q = arg[1]
+  if size then
+    q = size
   else
     q=1
   end
@@ -70,10 +70,10 @@ function normalize(v,...)
   return n
 end
 
-function normalize2d(v,...)
+function normalize2d(v,size)
   local a = math.sqrt(v.x*v.x+v.y*v.y)
-  if #arg>=1 then
-    q = arg[1]
+  if size then
+    q = size
   else
     q=1
   end
@@ -100,7 +100,7 @@ function duplicate_entity(ent,new_name)
   return ret
 end
 
--- set camera perspective for detec objects
+-- set camera perspective for detect objects
 function set_camera(cam)
   if elf.IsObject(cam) == true then
     local fov = elf.GetCameraFov(cam)
