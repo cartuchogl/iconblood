@@ -9,11 +9,11 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
   
   self._move_bar = ProgressBar(self,'mini_bar_move'..MiniPanel._instance_count,mbg,mfg)
   self._life_bar = ProgressBar(self,'mini_bar_life'..MiniPanel._instance_count,lbg,lfg)
-  self._move_bar:set('Position',7,83)
-  self._life_bar:set('Position',7,88)
-  self._picture = ElfObject(elf.PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={6,6}})
+  self._move_bar:set('Position',7,93)
+  self._life_bar:set('Position',7,82)
+  self._picture = ElfObject(elf.PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={6,4}})
   self._picture:addTo(self)
-  self._select_pic = ElfObject(elf.PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,6},Texture=select})
+  self._select_pic = ElfObject(elf.PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,4},Texture=select})
   self._select_pic:addTo(self)
 end
 
