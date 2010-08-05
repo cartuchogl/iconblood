@@ -32,18 +32,55 @@ function get_object()
 
   return nil
 end
+
+function user_interaction()
+
+  if imfx then
+    -- move the camera WSAD
+    if elf.GetKeyState(elf.KEY_W) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, 0.0, -key_move) end
+    if elf.GetKeyState(elf.KEY_S) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, 0.0, key_move) end
+    if elf.GetKeyState(elf.KEY_A) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
+    if elf.GetKeyState(elf.KEY_D) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
+    -- move camera across
+    if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, key_move, 0.0) end
+    if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, -key_move, 0.0) end
+    if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
+    if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
+
+    -- rotate the camera when space is pressed
+    if elf.GetKeyState(elf.KEY_SPACE) ~= elf.UP then
+      elf.HideMouse(true)
+      mf = elf.GetMouseForce()
+      imfx = (imfx*3.0+mf.x)/4.0
+      imfy = (imfy*3.0+mf.y)/4.0
+      elf.RotateActorLocal(cam, -imfy*10.0, 0.0, 0.0)
+      elf.RotateActor(cam, 0.0, 0.0, -imfx*10.0)
+      -- center the mouse to allow continuous panning
+      elf.SetMousePosition(elf.GetWindowWidth()/2, elf.GetWindowHeight()/2)
+    else
+      elf.HideMouse(false)
+    end
+    -- take a screen shot with key X
+    if elf.GetKeyState(elf.KEY_X) == elf.PRESSED then elf.SaveScreenShot("screenshot.jpg") end
+    -- exit with key ESC
+    if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
+  else
+    -- declare mouse rotation interpolation values
+    imfx = 0.0
+    imfy = 0.0
+
+    -- movement with the keyboard
+    key_move = 5.0
+  end
+end
+
 -- load level, set window title and hide mouse
 scn = elf.LoadScene("demo.pak")
 elf.SetTitle("BlendELF Hello, World?")
 elf.HideMouse(false)
 
--- set some bloom and declare mouse rotation interpolation values
+-- set some bloom
 elf.SetBloom(0.35)
-imfx = 0.0
-imfy = 0.0
-
--- movement with the keyboard
-key_move = 6.0
 
 -- elf.SetDebugDraw( true )
 
@@ -59,7 +96,6 @@ elf.AddGuiObject(gui, pic)
 size = elf.GetGuiObjectSize(pic)
 elf.SetGuiObjectPosition(pic, elf.GetWindowWidth()-size.x, 0)
 
-
 -- add fps display
 font = elf.CreateFontFromFile("resources/freesans.ttf", 14)
 fpslab = elf.CreateLabel("FPSLabel")
@@ -68,6 +104,7 @@ elf.SetLabelText(fpslab, "FPS: ")
 elf.SetGuiObjectPosition(fpslab, 10, 10)
 elf.AddGuiObject(gui, fpslab)
 
+-- add over label
 over = elf.CreateLabel("Over")
 elf.SetLabelFont(over, font)
 elf.SetLabelText(over, "Object over: ")
@@ -91,35 +128,10 @@ while elf.Run() == true do
   -- update the fps display
   elf.SetLabelText(fpslab, "FPS: " .. elf.GetFps())
 
-  -- move the camera WSAD
-  if elf.GetKeyState(elf.KEY_W) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, 0.0, -key_move) end
-  if elf.GetKeyState(elf.KEY_S) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, 0.0, key_move) end
-  if elf.GetKeyState(elf.KEY_A) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
-  if elf.GetKeyState(elf.KEY_D) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
-  -- move camera across
-  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, key_move, 0.0) end
-  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then elf.MoveActorLocal(cam, 0.0, -key_move, 0.0) end
-  if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then elf.MoveActorLocal(cam, -key_move, 0.0, 0.0) end
-  if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then elf.MoveActorLocal(cam, key_move, 0.0, 0.0) end
-
-  -- rotate the camera when space is pressed
-  if elf.GetKeyState(elf.KEY_SPACE) ~= elf.UP then
-    elf.HideMouse(true)
-    mf = elf.GetMouseForce()
-    imfx = (imfx*3.0+mf.x)/4.0
-    imfy = (imfy*3.0+mf.y)/4.0
-    elf.RotateActorLocal(cam, -imfy*10.0, 0.0, 0.0)
-    elf.RotateActor(cam, 0.0, 0.0, -imfx*10.0)
-    -- center the mouse to allow continuous panning
-    elf.SetMousePosition(elf.GetWindowWidth()/2, elf.GetWindowHeight()/2)
-  else
-    elf.HideMouse(false)
-  end
-  -- take a screen shot with key X
-  if elf.GetKeyState(elf.KEY_X) == elf.PRESSED then elf.SaveScreenShot("screenshot.jpg") end
-  -- exit with key ESC
-  if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
+  -- make move with keyboard or mouse
+  user_interaction()
   
+  -- detect objects over mouse
   obj = get_object()
   if obj == nil then
     elf.SetLabelText(over, "Object over: nil")

@@ -18,11 +18,13 @@ from Blender.Mathutils import *
 import struct
 import math
 
+ELF_NAME_LENGTH = 128
+
 def write_name_to_file(name, f):
-	if len(name) > 63: name = name[0:63]
+	if len(name) > ELF_NAME_LENGTH-1: name = name[0:ELF_NAME_LENGTH-1]
 	if len(name) > 0: f.write(struct.pack('<'+str(len(name))+'s', name))
 	i = len(name)
-	while i < 64:
+	while i < ELF_NAME_LENGTH:
 		f.write(struct.pack('<B', 0))
 		i += 1
 
@@ -74,7 +76,7 @@ class Texture:
 		# magic
 		self.size_bytes += struct.calcsize('<i')
 		# name
-		self.size_bytes += struct.calcsize('<64s')
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')
 		# image format
 		self.size_bytes += struct.calcsize('<B')
 		# length
@@ -151,10 +153,11 @@ class Material:
 		self.size_bytes = 0
 
 		self.size_bytes += struct.calcsize('<i')	# magic
-		self.size_bytes += struct.calcsize('<64s')	# name
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')	# name
 		self.size_bytes += struct.calcsize('<ffff')*3	# colors
 		self.size_bytes += struct.calcsize('<f')	# specular power
-		self.size_bytes += struct.calcsize('<64s')*5	# textures
+		self.size_bytes += struct.calcsize('<B')	# lighting
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')*5	# textures
 		self.size_bytes += struct.calcsize('<f')	# parallax scale
 		self.size_bytes += struct.calcsize('<Bf')	# alpha test, alpha threshold
 
@@ -167,7 +170,8 @@ class Material:
 		f.write(struct.pack('<ffff', self.diffuse[0], self.diffuse[1], self.diffuse[2], self.diffuse[3]))	# write diffuse color
 		f.write(struct.pack('<ffff', self.ambient[0], self.ambient[1], self.ambient[2], self.ambient[3]))	# write ambient color
 		f.write(struct.pack('<ffff', self.specular[0], self.specular[1], self.specular[2], self.specular[3]))	# write specular color
-		f.write(struct.pack('<f', self.shininess))	# write other specs
+		f.write(struct.pack('<f', self.shininess))	# write shininess
+		f.write(struct.pack('<B', 1))	# write lighting flag
 		write_name_to_file(self.diffuse_map, f)	# write diffuse map
 		write_name_to_file(self.normal_map, f)	# write normal map
 		write_name_to_file(self.height_map, f)	# write height map
@@ -275,7 +279,7 @@ class Model:
 		# magic
 		self.size_bytes += struct.calcsize('<i')
 		# name
-		self.size_bytes += struct.calcsize('<64s')
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')
 		# header
 		self.size_bytes += struct.calcsize('<iiiiBBBB')
 		# frames
@@ -456,7 +460,12 @@ def get_actor_header_from_object(obj, eobj):
 	try:
 		prop = obj.getProperty('shape')
 		if prop.getType() == 'STRING':
-			if prop.getData() == 'CAPSULE': eobj.shape = 4
+			if prop.getData() == 'CONE_Z': eobj.shape = 9
+			if prop.getData() == 'CONE_Y': eobj.shape = 8
+			if prop.getData() == 'CONE_X': eobj.shape = 7
+			if prop.getData() == 'CAPSULE_Z': eobj.shape = 6
+			if prop.getData() == 'CAPSULE_Y': eobj.shape = 5
+			if prop.getData() == 'CAPSULE_X': eobj.shape = 4
 			if prop.getData() == 'MESH': eobj.shape = 3
 			if prop.getData() == 'SPHERE': eobj.shape = 2
 			if prop.getData() == 'BOX': eobj.shape = 1
@@ -509,11 +518,12 @@ def write_actor_header(eobj, f):
 	f.write(struct.pack('<fff', eobj.anis_fric[0], eobj.anis_fric[1], eobj.anis_fric[2]))
 	f.write(struct.pack('<fff', eobj.lin_factor[0], eobj.lin_factor[1], eobj.lin_factor[2]))
 	f.write(struct.pack('<fff', eobj.ang_factor[0], eobj.ang_factor[1], eobj.ang_factor[2]))
+	f.write(struct.pack('<i', 0))
 
 def get_actor_header_size(eobj):
 	size_bytes = 0
 	# name, parent, script
-	size_bytes += struct.calcsize('<64s')*3
+	size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')*3
 	# transformations
 	size_bytes += struct.calcsize('<fff')*2
 	# ipo
@@ -535,6 +545,7 @@ def get_actor_header_size(eobj):
 	size_bytes += struct.calcsize('<fff')	# anisotropic friction
 	size_bytes += struct.calcsize('<fff')	# linear factor
 	size_bytes += struct.calcsize('<fff')	# angular factor
+	size_bytes += struct.calcsize('<i')	# property count
 
 	return size_bytes
 
@@ -611,11 +622,11 @@ class Entity(Actor):
 		self.size_bytes += struct.calcsize('<i')	# magic
 		self.size_bytes += get_actor_header_size(self)	# actor header
 		self.size_bytes += struct.calcsize('<fff')	# scale
-		self.size_bytes += struct.calcsize('<64s')	# model
-		self.size_bytes += struct.calcsize('<64s')	# armature
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')	# model
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')	# armature
 		
 		self.size_bytes += struct.calcsize('<i')	# material count
-		self.size_bytes += struct.calcsize('<64s')*len(self.materials)	# material names
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')*len(self.materials)	# material names
 
 		print 'Entity \"'+self.name+"\" converted"
 		print '  model: '+self.model
@@ -791,7 +802,7 @@ class Armature:
 			nbone.qua = [qua[1], qua[2], qua[3], qua[0]]
 			
 			# name and parent
-			nbone.size_bytes += struct.calcsize('<64s')*2
+			nbone.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')*2
 			# id
 			nbone.size_bytes += struct.calcsize('<i')
 			# transformations
@@ -817,7 +828,7 @@ class Armature:
 		# magic
 		self.size_bytes += struct.calcsize('<i')
 		# name
-		self.size_bytes += struct.calcsize('<64s')
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')
 		# frame_count
 		self.size_bytes += struct.calcsize('<i')
 		# bone count
@@ -873,7 +884,7 @@ class Script:
 		
 		# magic, name
 		self.size_bytes = struct.calcsize('<i')
-		self.size_bytes += struct.calcsize('<64s')
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')
 		# text length, text
 		self.size_bytes += struct.calcsize('<i')
 		self.size_bytes += len(self.text)
@@ -908,7 +919,7 @@ class Scene:
 		# magic
 		self.size_bytes += struct.calcsize('<i', )
 		#name
-		self.size_bytes += struct.calcsize('<64s')
+		self.size_bytes += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')
 		# ambience
 		self.size_bytes += struct.calcsize('<ffff')
 
@@ -997,7 +1008,7 @@ def export(path):
 
 	# calculate the index offset
 	offset += struct.calcsize('<B')
-	offset += struct.calcsize('<64s')
+	offset += struct.calcsize('<'+str(ELF_NAME_LENGTH)+'s')
 	offset += struct.calcsize('<i')
 	offset *= len(scenes)+len(scripts)+len(textures)+len(materials)+len(models)+len(cameras)+len(entities)+len(lights)+len(armatures)
 	# magic and number of indexes
