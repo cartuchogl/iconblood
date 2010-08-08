@@ -28,6 +28,16 @@ ElfObject.__esp = {
         self:set('Position',unpack(a))
       end
     end
+  },
+  {
+    properties={'parent'},
+    func=function(self,t,prop,val)
+      if t=='Get' then
+        return nil -- TODO: return parent
+      else
+        self:addTo(val)
+      end
+    end
   }
 }
 

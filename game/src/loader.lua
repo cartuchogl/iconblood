@@ -30,10 +30,12 @@ function Loader:initialize(path,img,font,gui,pbg,pfg)
   
   self._loader_bar = ProgressBar(self._loader_gui,'loader_bar',bg,fg)
   self._loader_bar:sets({Position={39,180}})
+  
+  self._default_font = font
 end
 
 function Loader:load(type,name,...)
-  self._assets[type][name] = self["_load_"..type](self,name,arg)
+  self._assets[type][name] = self["_load_"..type](self,name,...)
 end
 
 function Loader:_load_unit_img(name,args)

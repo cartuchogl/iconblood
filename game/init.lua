@@ -43,6 +43,8 @@ end)
 dofile("example.ibg.lua")
 game = Game(_local_game,gui,loader)
 
+fps_counter = ElfObject(elf.LABEL,'fps_counter',{Font = loader._default_font,parent=gui})
+
 local ctime = elf.GetTime()
 print(ctime.."sg")
 while elf.Run() == true do
@@ -58,6 +60,7 @@ while elf.Run() == true do
       print("screen shot saved to " .. elf.GetCurrentDirectory() .. "/screenshot.png")
     end
   end
+  fps_counter:set('Text','FPS: '..elf.GetFps())
 end
 
 -- end of file
