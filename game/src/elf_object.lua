@@ -49,7 +49,6 @@ for k,v in pairs(elf) do
   if type(v)=='function' then
     for k2,v2 in pairs(ElfObject.__m) do
       if string.find(k,v2.r) then
-        print(k,type(v))
         table.insert(ElfObject.__m[k2].f,k)
       end
     end
