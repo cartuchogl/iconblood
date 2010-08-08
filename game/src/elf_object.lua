@@ -113,14 +113,18 @@ function ElfObject:sets(vars)
   end
 end
 
-function ElfObject:get(prop)
+function ElfObject:get(prop,...)
   local esp = _.detect(ElfObject.__esp,function(i) return _.include(i.properties,prop) end)
   if esp then
     return esp.func(self,'Get',prop)
   end
   local func = self:method('Get',prop)
   if func then
-    return elf[func](self._elf_obj)
+    if ... and type(...)=='table' then
+      return elf[func](self._elf_obj,unpack(...))
+    else
+      return elf[func](self._elf_obj,...)
+    end
   end
 end
 
