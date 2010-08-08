@@ -8,26 +8,27 @@ function Unit:initialize(obj,squadron)
   end
   self:addEvent('select:unit',function(args)
     print("select:"..self.name)
-    self:showStand(true)
-    self:showMove(true)
+    self:setStand('select')
   end)
   self:addEvent('deselect:unit',function(args)
     print("deselect:"..self.name)
-    self:showStand(false)
-    self:showMove(false)
+    self:setStand('normal')
   end)
   self:addEvent('enter',function(args)
     print("enter:"..self.name)
-    if game:currentPlayer():hasUnit(self) then
-      self:showOver(true)
-    else
-     self:showEnemy(true)
-    end
+    self:setStand('over')
   end)
   self:addEvent('leave',function(args)
     print("leave:"..self.name)
-    self:showOver(false)
-    self:showEnemy(false)
+    if game:currentPlayer():hasUnit(self) then
+      if game._current_unit==self then
+        self:setStand('select')
+      else
+        self:setStand('normal')
+      end
+    else
+      self:setStand('enemy')
+    end
   end)
   self:addEvent('update:attributte',_.curry(self.updatedPosition,self))
   self._mg = self.move
@@ -111,17 +112,12 @@ function Unit:loadElfObjects(pak,scene)
     elf.GetEntityByName(self._unit_pak, "stand"),
     'Stand.'..self.id
   ))
+  self._elf_stand:set('Material',0,
+    duplicate_material(self._elf_stand:get('Material',0),'Stand.'..self.id..'.Material')
+  )
   self._elf_stand_max = ElfObject(duplicate_entity(
     elf.GetEntityByName(self._unit_pak, "stand"),
     'StandMax.'..self.id
-  ))
-  self._elf_over = ElfObject(duplicate_entity(
-    elf.GetEntityByName(self._unit_pak, "stand"),
-    'Over.'..self.id
-  ))
-  self._elf_enemy = ElfObject(duplicate_entity(
-    elf.GetEntityByName(self._unit_pak, "stand"),
-    'Enemy.'..self.id
   ))
   local path1 = 'factions/'..self.faction_name..'/'..self.name_unit..'.png'
   local path2 = 'factions/'..self.faction_name..'/'..self.name_unit..'.big.png'
@@ -130,41 +126,39 @@ function Unit:loadElfObjects(pak,scene)
   self:addTo(self._scene)
   self._elf_stand:addTo(self._scene)
   self._elf_stand_max:addTo(self._scene)
-  self._elf_over:addTo(self._scene)
-  self._elf_enemy:addTo(self._scene)
   
-  self:showStand(false)
-  self:showMove(false)
-  self:showOver(false)
-  self:showEnemy(false)
+  self:setStand('normal')
+end
+
+function Unit:setStand(typ)
+  local ary = {1,1,1,1}
+  if typ=='normal' then
+    ary = {0,1,0,0.9}
+    self._elf_stand_max:set('Visible',false)
+  elseif typ=='move' then
+    ary = {0,0,1,0.9}
+    self._elf_stand_max:set('Visible',false)
+  elseif typ=='over' then
+    ary = {0,0.75,0.75,0.9}
+    self._elf_stand_max:set('Visible',false)
+  elseif typ=='enemy' then
+    ary = {1,0,0,0.9}
+    self._elf_stand_max:set('Visible',false)
+  elseif typ=='select' then
+    ary = {0.75,0.75,0,0.9}
+    self._elf_stand_max:set('Visible',true)
+  end
+  elf.SetMaterialDiffuseColor(elf.GetEntityMaterial(self._elf_stand._elf_obj,0), unpack(ary)) 
 end
 
 function Unit:updatedPosition()
   local v = self:get('Position')
-  self._elf_stand:set('Position',v.x,v.y,0.1)
-  self._elf_stand_max:set('Position',v.x,v.y,0.11)
-  self._elf_over:set('Position',v.x,v.y,0.12)
-  self._elf_enemy:set('Position',v.x,v.y,0.13)
+  self._elf_stand:set('Position',v.x,v.y,0.01)
+  self._elf_stand_max:set('Position',v.x,v.y,0.02)
 end
 
 function Unit:setMax(x,y)
-  self._elf_stand_max:set('Position',x,y,0.11)
-end
-
-function Unit:showStand(val)
-  self._elf_stand:set('Visible',val)
-end
-
-function Unit:showMove(val)
-  self._elf_stand_max:set('Visible',val)
-end
-
-function Unit:showOver(val)
-  self._elf_over:set('Visible',val)
-end
-
-function Unit:showEnemy(val)
-  self._elf_enemy:set('Visible',val)
+  self._elf_stand_max:set('Position',x,y,0.02)
 end
 
 

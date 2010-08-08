@@ -98,6 +98,27 @@ function duplicate_entity(ent,new_name)
   return ret
 end
 
+function duplicate_material(mat,new_name)
+  local ret = elf.CreateMaterial(new_name)
+  local d = elf.GetMaterialDiffuseColor( ret )
+  local s = elf.GetMaterialSpecularColor( ret )
+  local a = elf.GetMaterialAmbientColor( ret )
+  local power = elf.GetMaterialSpecularPower( ret )
+  local lighting = elf.GetMaterialLighting( ret )
+  
+  elf.SetMaterialDiffuseColor( ret, d.r, d.g, d.b, d.a )
+  elf.SetMaterialSpecularColor( ret, s.r, s.g, s.b, s.a )
+  elf.SetMaterialAmbientColor( ret, a.r, a.g, a.b, a.a )
+  elf.SetMaterialSpecularPower( ret, power )
+  elf.SetMaterialLighting( ret, lighting )
+  
+  local difusse = elf.GetMaterialDiffuseMap(mat)
+  if elf.IsObject(difusse) then
+    elf.SetMaterialDiffuseMap(ret,difusse)
+  end
+  return ret
+end
+
 -- set camera perspective for detect objects
 function set_camera(cam)
   if elf.IsObject(cam) == true then

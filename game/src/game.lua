@@ -324,6 +324,20 @@ function Game:currentPlayer()
   return self._round._current_turn._player
 end
 
+function Game:updateStands()
+  local current_units = self._round._current_turn._player.squadron.units
+  local tmp = _.map(self.squadrons,function(i) return i.units end)
+  local all_units = {}
+  for i=1, #self.squadrons do
+    local squadron = self.squadrons[i]
+    for j=1, #squadron.units do
+      table.insert(all_units,squadron.units[j])
+    end
+  end
+  _.each(all_units,function(i) i:setStand('enemy') end)
+  _.each(current_units,function(i) i:setStand('normal') end)
+end
+
 function Game:start()
   self._gaming = true
   self._round = Round(self,20)
@@ -334,8 +348,10 @@ function Game:start()
     self._current_unit = nil
     self._current_unit_panel._unit = nil
     self._current_squadron_panel._units = self._round._current_turn._player.squadron.units
+    self:updateStands()
   end)
   self._round:start()
+  self:updateStands()
 end
 
 function Game:stop()
