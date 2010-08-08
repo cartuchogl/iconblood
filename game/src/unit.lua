@@ -153,12 +153,12 @@ end
 
 function Unit:updatedPosition()
   local v = self:get('Position')
-  self._elf_stand:set('Position',v.x,v.y,0.01)
-  self._elf_stand_max:set('Position',v.x,v.y,0.02)
+  self._elf_stand:set('Position',v.x,v.y,0.02)
+  self:setMax(v.x,v.y)
 end
 
 function Unit:setMax(x,y)
-  self._elf_stand_max:set('Position',x,y,0.02)
+  self._elf_stand_max:set('Position',x,y,0.01)
 end
 
 
