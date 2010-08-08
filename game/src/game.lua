@@ -13,10 +13,10 @@ function Game:initialize(ibg,gui,loader)
   self._current_unit = nil
   self._loader = loader
   loader:addEnvBatch(self.environment)
-  loader:addFactionsBatch(uniques(_.flatten(
+  loader:addUnitsBatch(uniques(_.flatten(
     _.map(self.squadrons,function(i)
       return _.map(i.units,function(j)
-        return(j.faction_id)
+        return(j.faction_name..'/'..j.name_unit)
       end)
     end)
   )))
@@ -198,16 +198,31 @@ function Game:on_plane(args)
         kk.x = self._current_unit:get('x')+kk.x
         kk.y = self._current_unit:get('y')+kk.y
         tweener:addTween(self._current_unit,{x=kk.x,y=kk.y,
-          onComplete=function()print("end")end,
-          onStart=function()print("ini")end
-        },cost)
+          time = cost/8,
+          transition = 'linear',
+          onComplete=function()
+            elf.StopEntityArmature(self._current_unit._elf_entity)
+            elf.SetEntityArmatureFrame(self._current_unit._elf_entity,1)
+          end,
+          onStart=function()
+            elf.LoopEntityArmature(self._current_unit._elf_entity,580,595,25)
+          end
+        })
         self._current_unit._mg = 0
         return false
       end
+      elf.LoopEntityArmature(self._current_unit._elf_entity,580,595,25)
       tweener:addTween(self._current_unit,{x=v.x,y=v.y,
-        onComplete=function()print("end")end,
-        onStart=function()print("ini")end
-      },cost)
+        time = cost/8,
+        transition = 'linear',
+        onComplete=function()
+          elf.StopEntityArmature(self._current_unit._elf_entity)
+          elf.SetEntityArmatureFrame(self._current_unit._elf_entity,1)
+        end,
+        onStart=function()
+          elf.LoopEntityArmature(self._current_unit._elf_entity,580,595,25)
+        end
+      })
       self._current_unit._mg = self._current_unit._mg-cost
     end
   end
@@ -278,14 +293,11 @@ end
 function Game:loadUnits()
   _.each(self.squadrons,function(i)
     _.each(i.units,function(j)
-      if self._factions[j.faction_id] then
-        j._faction = self._factions[j.faction_id]
-      else
-        j._faction = self._loader:get('fac',j.faction_id).target
-        self._factions[j.faction_id] = j._faction
-      end
-      j:loadElfObjects(self._scene)
-      j:set('Position',j.position[1]*self:width(),j.position[2]*self:height(),0)
+      j:loadElfObjects(
+        self._loader:get('unit',j.faction_name..'/'..j.name_unit).target,
+        self._scene
+      )
+      j:sets({x=j.position[1]*self:width(),y=j.position[2]*self:height()})
     end)
   end)
   return self

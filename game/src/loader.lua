@@ -4,7 +4,7 @@ Loader:includes(EventDispatcher)
 function Loader:initialize(path,img,font,gui,pbg,pfg)
   self._path = path
   self._gui = gui
-  self._assets = {img={},font={},env={},fac={},unit_img={}}
+  self._assets = {img={},font={},env={},fac={},unit_img={},unit={}}
   self._status = "Initialized"
   self._progress = 0
   self:load('img',img)
@@ -49,7 +49,7 @@ end
 
 function Loader:_load_font(name,args)
   print("[Loader][font] "..self._path..'/'..name)
-  return elf.CreateFontFromFile(self._path..'/'..name,args[1])
+  return elf.CreateFontFromFile(self._path..'/'..name,args)
 end
 
 function Loader:_load_env(id,args)
@@ -60,6 +60,16 @@ end
 
 function Loader:_load_fac(id,args)
   local path = findPath("../factions/","0*"..id.."_*.*").."/units.pak"
+  print("[Loader][fac] "..path)
+  return elf.CreateSceneFromFile(path)
+end
+
+function Loader:_load_unit(name,args)
+  local path = self._path..'/factions/'..name..".pak"
+  local path_img1 = "factions/"..name..'.png'
+  local path_img2 = "factions/"..name..'.big.png'
+  table.insert(self._loading.img,path_img1)
+  table.insert(self._loading.img,path_img2)
   print("[Loader][fac] "..path)
   return elf.CreateSceneFromFile(path)
 end
@@ -75,12 +85,12 @@ function Loader:status()
 end
 
 function Loader:restLoad()
-  return #self._loading.img+#self._loading.env+#self._loading.fac+#self._loading.font
+  return #self._loading.img+#self._loading.env+#self._loading.fac+#self._loading.font+#self._loading.unit
 end
 
 function Loader:batch(options)
   self._loaded = 0
-  self._loading = _.extend({img={},font={},env={},fac={}},options)
+  self._loading = _.extend({img={},font={},env={},fac={},unit={}},options)
   self:loadAny()
 end
 
@@ -88,8 +98,8 @@ function Loader:addEnvBatch(env)
   self._loading.env = {env}
 end
 
-function Loader:addFactionsBatch(factions)
-  self._loading.fac = factions
+function Loader:addUnitsBatch(units)
+  self._loading.unit = units
 end
 
 function Loader:loadAny()
@@ -104,6 +114,8 @@ function Loader:loadAny()
     self._next_type = 'fac'
   elseif #self._loading.font>0 then
     self._next_type = 'font'
+  elseif #self._loading.unit>0 then
+    self._next_type = 'unit'
   else
     self:fireEvent('endbatch',{self},0)
   end

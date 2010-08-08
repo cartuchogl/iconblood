@@ -22,8 +22,7 @@ function Unit:initialize(obj,squadron)
       self:showOver(true)
     else
      self:showEnemy(true)
-    end 
-    
+    end
   end)
   self:addEvent('leave',function(args)
     print("leave:"..self.name)
@@ -94,35 +93,40 @@ function Unit:canBe(x,y)
   return true
 end
 
-function Unit:loadElfObjects(scene)
+function Unit:loadElfObjects(pak,scene)
+  self._unit_pak = pak
   self._scene = scene
   self._elf_entity = duplicate_entity(
-    elf.GetEntityByName(self._faction, self.name_unit),
+    elf.GetEntityByName(self._unit_pak, 'unit'),
     "Unit."..self.id
   )
+  -- FIXME: temporal hack for model
+  -- ElfObject(self._elf_entity):sets({
+  --   Scale={0.025,0.025,0.0258},
+  --   Rotation={90,0,0},
+  --   Position={0,0,1}
+  -- })
   self._elf_obj = self._elf_entity
-  local tmp = string.match(self.name_unit,'%a+\.(%d+)')
   self._elf_stand = ElfObject(duplicate_entity(
-    elf.GetEntityByName(self._faction, "Stand."..tmp),
+    elf.GetEntityByName(self._unit_pak, "stand"),
     'Stand.'..self.id
   ))
   self._elf_stand_max = ElfObject(duplicate_entity(
-    elf.GetEntityByName(self._faction, "Move."..tmp),
+    elf.GetEntityByName(self._unit_pak, "stand"),
     'StandMax.'..self.id
   ))
   self._elf_over = ElfObject(duplicate_entity(
-    elf.GetEntityByName(self._faction, "Over."..tmp),
+    elf.GetEntityByName(self._unit_pak, "stand"),
     'Over.'..self.id
   ))
   self._elf_enemy = ElfObject(duplicate_entity(
-    elf.GetEntityByName(self._faction, "Enemy."..tmp),
+    elf.GetEntityByName(self._unit_pak, "stand"),
     'Enemy.'..self.id
   ))
-  local path = findPath("../factions/","0*"..self.faction_id.."_*.*").."/unit."..tmp..'.png'
-  local path2 = findPath("../factions/","0*"..self.faction_id.."_*.*").."/unit."..tmp..'.big.png'
-  print(path,path2)
-  self._mini_image = elf.CreateTextureFromFile(path)
-  self._large_image = elf.CreateTextureFromFile(path2)
+  local path1 = 'factions/'..self.faction_name..'/'..self.name_unit..'.png'
+  local path2 = 'factions/'..self.faction_name..'/'..self.name_unit..'.big.png'
+  self._mini_image = loader:get('img',path1).target
+  self._large_image = loader:get('img',path2).target
   self:addTo(self._scene)
   self._elf_stand:addTo(self._scene)
   self._elf_stand_max:addTo(self._scene)
@@ -142,11 +146,6 @@ function Unit:updatedPosition()
   self._elf_over:set('Position',v.x,v.y,0.12)
   self._elf_enemy:set('Position',v.x,v.y,0.13)
 end
-
--- function Unit:setPosition(x,y)
---   self.:get('x') = {x=x,y=y}
---   self:updatePosition()
--- end
 
 function Unit:setMax(x,y)
   self._elf_stand_max:set('Position',x,y,0.11)
