@@ -198,15 +198,16 @@ function Game:on_plane(args)
         kk.x = self._current_unit:get('x')+kk.x
         kk.y = self._current_unit:get('y')+kk.y
         self._current_unit:seeTo(v.x,v.y)
+        local unit = self._current_unit
         tweener:addTween(self._current_unit,{x=kk.x,y=kk.y,
           time = cost/8,
           transition = 'linear',
           onComplete=function()
-            elf.StopEntityArmature(self._current_unit._elf_entity)
-            elf.SetEntityArmatureFrame(self._current_unit._elf_entity,1)
+            elf.StopEntityArmature(unit._elf_entity)
+            elf.SetEntityArmatureFrame(unit._elf_entity,1)
           end,
           onStart=function()
-            elf.LoopEntityArmature(self._current_unit._elf_entity,580,595,25)
+            elf.LoopEntityArmature(unit._elf_entity,580,595,25)
           end
         })
         self._current_unit._mg = 0
@@ -214,15 +215,16 @@ function Game:on_plane(args)
       end
       elf.LoopEntityArmature(self._current_unit._elf_entity,580,595,25)
       self._current_unit:seeTo(v.x,v.y)
+      local unit = self._current_unit
       tweener:addTween(self._current_unit,{x=v.x,y=v.y,
         time = cost/8,
         transition = 'linear',
         onComplete=function()
-          elf.StopEntityArmature(self._current_unit._elf_entity)
-          elf.SetEntityArmatureFrame(self._current_unit._elf_entity,1)
+          elf.StopEntityArmature(unit._elf_entity)
+          elf.SetEntityArmatureFrame(unit._elf_entity,1)
         end,
         onStart=function()
-          elf.LoopEntityArmature(self._current_unit._elf_entity,580,595,25)
+          elf.LoopEntityArmature(unit._elf_entity,580,595,25)
         end
       })
       self._current_unit._mg = self._current_unit._mg-cost
