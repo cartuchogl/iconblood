@@ -30,6 +30,22 @@ ElfObject.__esp = {
     end
   },
   {
+    properties={'rotx','roty','rotz'},
+    func=function(self,t,prop,val)
+      if t=='Get' then
+        return self:get('Rotation')[string.gsub(prop,'rot','')]
+      else
+        local get = self:get('Rotation')
+        get[string.gsub(prop,'rot','')] = val
+        local a = {}
+        if get.x then a[#a+1] =  get.x end
+        if get.y then a[#a+1] =  get.y end
+        if get.z then a[#a+1] =  get.z end
+        self:set('Rotation',unpack(a))
+      end
+    end
+  },
+  {
     properties={'parent'},
     func=function(self,t,prop,val)
       if t=='Get' then

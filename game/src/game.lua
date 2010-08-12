@@ -197,6 +197,7 @@ function Game:on_plane(args)
         local kk = normalize2d({x=x,y=y},self._current_unit._mg)
         kk.x = self._current_unit:get('x')+kk.x
         kk.y = self._current_unit:get('y')+kk.y
+        self._current_unit:seeTo(v.x,v.y)
         tweener:addTween(self._current_unit,{x=kk.x,y=kk.y,
           time = cost/8,
           transition = 'linear',
@@ -212,6 +213,7 @@ function Game:on_plane(args)
         return false
       end
       elf.LoopEntityArmature(self._current_unit._elf_entity,580,595,25)
+      self._current_unit:seeTo(v.x,v.y)
       tweener:addTween(self._current_unit,{x=v.x,y=v.y,
         time = cost/8,
         transition = 'linear',

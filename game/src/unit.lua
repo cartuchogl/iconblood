@@ -94,6 +94,19 @@ function Unit:canBe(x,y)
   return true
 end
 
+function Unit:seeTo(x,y)
+  local center = self:get('Position')
+  local c = x-center.x
+  local a = y-center.y
+  if a~=0 and c~=0 then
+    local bpow = a*a+c*c
+    local b = math.sqrt(bpow)
+    local alpha = math.deg(math.asin(((bpow+c*c)-a*a)/(2*b*c)))
+    if a>0 then alpha = 180-alpha end
+    self:set('rotz',alpha)
+  end
+end
+
 function Unit:loadElfObjects(pak,scene)
   self._unit_pak = pak
   self._scene = scene
