@@ -81,6 +81,7 @@ function normalize(v,size)
   return n
 end
 
+-- normalize elf_vec2f, if pass a second param then return the vector scaled to that length
 function normalize2d(v,size)
   local a = math.sqrt(v.x*v.x+v.y*v.y)
   if size then
@@ -175,15 +176,6 @@ function get_objects_over_mouse(scn)
     rayend.x,   rayend.y,   rayend.z
   )
   
-  if elf.IsObject(col) and elf.GetListLength(col) > 0 then
-    ret = {}
-    for i = 0,elf.GetListLength(col)-1,1 do
-      ret[i+1] = elf.GetItemFromList(col,i)
-    end
-    return ret
-  else
-    return nil
-  end
-  
+  return array_from_list(col)
 end
 

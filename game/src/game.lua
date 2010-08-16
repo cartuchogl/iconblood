@@ -56,7 +56,7 @@ function Game:interaction()
   self._lab_tooltip:sets({x=pos.x-14,y=pos.y-24})
   if elf.IsObject(elf.GetGuiTrace(self._gui)) == false then
     local objs = get_objects_over_mouse(self._scene)
-    if objs ~= nil then
+    if #objs > 0 then
       if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
         local capture = false
         local names = _.map(objs,function(i) 
@@ -86,10 +86,17 @@ function Game:interaction()
           return({elf.GetActorName(a),a,i}) 
         end)
         local obj = _.select(names,function(i) 
-          return string.match(i[1],"Plane") or string.match(i[1],"Unit") 
+          return string.match(i[1],"Unit") 
         end)[1]
         if obj then
           self:fireEvent("over",{obj[3]},0)
+        else
+          obj = _.select(names,function(i) 
+            return string.match(i[1],"Plane")
+          end)[1] 
+          if obj then
+            self:fireEvent("over",{obj[3]},0)
+          end
         end
       end
     end
