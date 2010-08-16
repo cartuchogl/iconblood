@@ -5,6 +5,7 @@ ElfObject.__m = {}
 ElfObject.__m[elf.SCREEN] = {n="Screen",t={'GuiObject'},f={}}
 ElfObject.__m[elf.PICTURE] = {n="Picture",t={'GuiObject'},f={}}
 ElfObject.__m[elf.TEXT_FIELD] = {n="TextField",t={'GuiObject'},f={}}
+ElfObject.__m[elf.TEXT_LIST] = {n="TextList",t={'GuiObject'},f={}}
 ElfObject.__m[elf.BUTTON] = {n="Button",t={'GuiObject'},f={}}
 ElfObject.__m[elf.LABEL] = {n="Label",t={'GuiObject'},f={}}
 ElfObject.__m[elf.ENTITY] = {n="Entity",t={'Actor'},f={}}

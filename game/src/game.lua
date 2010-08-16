@@ -26,6 +26,8 @@ function Game:initialize(ibg,gui,loader)
   self:addEvent("onplane", _.curry(self.on_plane,self))
   self:addEvent("over", _.curry(self.on_over,self))
   self:addEvent("overobject", _.curry(self.on_over_object,self))
+  
+  self._debug = Debug(gui)
 end
 
 function Game:update()
@@ -46,6 +48,7 @@ function Game:on_frame(args)
   self._turn_panel:update()
   self._current_squadron_panel._units = self._round._current_turn._player.squadron.units
   self._current_squadron_panel:update()
+  self._debug:update()
 end
 
 function Game:interaction()
@@ -305,6 +308,7 @@ function Game:loadEnvironment()
   local kk = elf.GetActorBoundingLengths(self._plane)
   local ss = elf.GetEntityScale(self._plane)
   self._resolution = { x = ss.x*kk.x, y = ss.y*kk.y }
+  -- self._debug:on(self._scene)
   return self._scene
 end
 
