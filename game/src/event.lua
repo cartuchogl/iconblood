@@ -16,14 +16,28 @@ function EventDispatcher:addEvent(type,fn)
 end
 
 function EventDispatcher:removeEvent(type,fn)
-  return self
+  if self._events then
+    if self._events[type] then
+      local indx = table.find(self._events[type],fn)
+      if indx then
+        return fn == table.remove(self._events[type],indx)
+      end
+    end
+  end
+  return false
 end
 
 function EventDispatcher:addEvents(events)
+  for k,v in pairs(events) do
+    self:addEvent(k,v)
+  end
   return self
 end
 
 function EventDispatcher:removeEvents(events)
+  for k,v in pairs(events) do
+    self:removeEvent(k,v)
+  end
   return self
 end
 

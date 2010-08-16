@@ -179,3 +179,21 @@ function get_objects_over_mouse(scn)
   return array_from_list(col)
 end
 
+-- from http://otfans.net/showthread.php?112204-table.find-%28matching-isInArray%29
+FIND_NOCASE = 0
+FIND_PATTERN = 1
+FIND_PATTERN_NOCASE = 2
+-- Function by Colandus 
+function table.find(t, v, c)
+  if type(t) == "table" and v then
+    v = (c==0 or c==2) and v:lower() or v
+    for k, val in pairs(t) do
+      val = (c==0 or c==2) and val:lower() or val
+      if (c==1 or c==2) and val:find(v) or v == val then 
+        return k
+      end 
+    end 
+  end 
+  return false 
+end
+
