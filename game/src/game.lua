@@ -63,12 +63,7 @@ function Game:interaction()
     _.each(new_pull,function(i) if not table.find(self._gui_pull,i) then i:fireEvent('enter',{i}) end end)
     self._gui_pull = new_pull
     if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
-      if self._last_click == self._gui_pull[1] then
-        print('prevent repeat')
-      else
-        self._last_click = self._gui_pull[1]
-        self._last_click:fireEvent('click',{self._last_click})
-      end
+      self._gui_pull[1]:fireEvent('click',{self._last_click})
     end
   else
     if #self._gui_pull>0 then
