@@ -37,8 +37,9 @@ function Game:on_frame(args)
   self:interaction()
   -- save a screenshot on F5
   if elf.GetKeyState(elf.KEY_F5) == elf.PRESSED then
-    if elf.SaveScreenShot("screenshot.png") == true then
-      print("screen shot saved to " .. elf.GetCurrentDirectory() .. "/screenshot.png")
+    local name = "screenshot-"..os.time()..".png"
+    if elf.SaveScreenShot(name) == true then
+      print("screen shot saved to " .. elf.GetCurrentDirectory() .. "/"..name)
     end
   end
   self:update()
@@ -55,7 +56,9 @@ function Game:interaction()
     if objs ~= nil then
       if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
         local capture = false
-        local names = _.map(objs,function(i) return(elf.GetActorName(elf.GetCollisionActor(i))) end)
+        local names = _.map(objs,function(i) 
+          return(elf.GetActorName(elf.GetCollisionActor(i)))
+        end)
         local units = _.select(names,function(i) return string.match(i,"Unit\.(%d+)") end)
         if _.first(units) then
           local unit = game:findUnit(tonumber(string.match(_.first(units),"Unit\.(%d+)")))
@@ -79,7 +82,9 @@ function Game:interaction()
           local a = elf.GetCollisionActor(i)
           return({elf.GetActorName(a),a,i}) 
         end)
-        local obj = _.select(names,function(i) return string.match(i[1],"Plane") or string.match(i[1],"Unit") end)[1]
+        local obj = _.select(names,function(i) 
+          return string.match(i[1],"Plane") or string.match(i[1],"Unit") 
+        end)[1]
         if obj then
           self:fireEvent("over",{obj[3]},0)
         end
@@ -93,21 +98,30 @@ function Game:cameraCheck()
   elf.MoveActorLocal(self._cam, 0.0, 0.0, (self._last_wheel-wheel)*self._key_move*4)
   self._last_wheel = wheel
   
-  -- TODO: move to an object
   local d = elf.GetActorOrientation(self._cam)
   local orient = elf.GetActorOrientation(self._cam)
   local dir = elf.MulQuaVec3f(orient, self._cam_dir)
   local dir = normalize(dir, self._key_move)
   -- move camera across
-  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then elf.MoveActor(self._cam, dir.x, dir.y, 0.0) end
-  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then elf.MoveActor(self._cam, -dir.x, -dir.y, 0.0) end
-  if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then elf.MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0) end
-  if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then elf.MoveActorLocal(self._cam, self._key_move, 0.0, 0.0) end
+  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then
+    elf.MoveActor(self._cam, dir.x, dir.y, 0.0)
+  end
+  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then
+    elf.MoveActor(self._cam, -dir.x, -dir.y, 0.0)
+  end
+  if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then
+    elf.MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0)
+  end
+  if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then
+    elf.MoveActorLocal(self._cam, self._key_move, 0.0, 0.0)
+  end
   -- move with borders on fullscreen
   if elf.IsFullscreen() then
     local pos = elf.GetMousePosition()
     if pos.x == 0 then elf.MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0) end
-    if pos.x == elf.GetWindowWidth()-1 then elf.MoveActorLocal(self._cam, self._key_move, 0.0, 0.0) end
+    if pos.x == elf.GetWindowWidth()-1 then 
+      elf.MoveActorLocal(self._cam, self._key_move, 0.0, 0.0) 
+    end
     if pos.y == 0 then elf.MoveActor(self._cam, dir.x, dir.y, 0.0) end
     if pos.y == elf.GetWindowHeight()-1 then elf.MoveActor(self._cam, -dir.x, -dir.y, 0.0) end
   end
@@ -298,8 +312,7 @@ function Game:loadUnits()
   _.each(self.squadrons,function(i)
     _.each(i.units,function(j)
       j:loadElfObjects(
-        self._loader:get('unit',j.faction_name..'/'..j.name_unit).target,
-        self._scene
+        self._loader:get('unit', j.faction_name..'/'..j.name_unit).target, self._scene
       )
       j:sets({x=j.position[1]*self:width(),y=j.position[2]*self:height()})
     end)

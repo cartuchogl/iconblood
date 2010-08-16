@@ -32,12 +32,13 @@ loader:batch({
   }
 })
 
+local initime
 loader:addEvent('inibatch',function(args)
   initime = elf.GetTime()
 end)
 
 loader:addEvent('endbatch',function(args)
-  print(elf.GetTime()-initime)
+  print((elf.GetTime()-initime).."sg [Assets loading]")
 end)
 
 dofile("example.ibg.lua")
@@ -45,21 +46,14 @@ game = Game(_local_game,gui,loader)
 
 fps_counter = ElfObject(elf.LABEL,'fps_counter',{Font = loader._default_font,parent=gui})
 
-local ctime = elf.GetTime()
-print(ctime.."sg")
+print(elf.GetTime().."sg [To main loop]")
 while elf.Run() == true do
   if game:running() then
-    game:fireEvent('onframe',{game},0)
+    game:fireEvent('onframe',{game})
   end
   -- for setTimeout
   setTimeoutLaunch()
   if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
-  -- save a screenshot on F5
-  if elf.GetKeyState(elf.KEY_F5) == elf.PRESSED then
-    if elf.SaveScreenShot("screenshot.png") == true then
-      print("screen shot saved to " .. elf.GetCurrentDirectory() .. "/screenshot.png")
-    end
-  end
   fps_counter:set('Text','FPS: '..elf.GetFps())
 end
 

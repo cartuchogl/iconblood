@@ -36,7 +36,7 @@ function Unit:initialize(obj,squadron)
 end
 
 function Unit:canBe(x,y)
-  local model = elf.GetEntityModel(self._elf_entity)
+  local model = elf.GetEntityModel(self._elf_stand._elf_obj)
   local min = elf.GetModelBoundingBoxMin(model)
   local max = elf.GetModelBoundingBoxMax(model)
   local min2 = elf.GetModelBoundingBoxMin(model)
@@ -55,42 +55,30 @@ function Unit:canBe(x,y)
   max2.x = max2.x*s.x+x
   max2.y = max2.y*s.y+y
   max2.z = max2.z*s.z
-
-  local cols = elf.GetSceneRayCastResults(self._scene, 
+  
+  local cols = elf.GetSceneRayCastResults(self._scene,
     min.x, min.y, min.z,
-    min2.x,   min2.y,   min2.z
+    min2.x, min2.y, min2.z
   )
-  if elf.IsObject(cols) and elf.GetListLength(cols) > 0 then
-    ret = {}
-    for i = 0,elf.GetListLength(cols)-1,1 do
-      ret[i+1] = elf.GetItemFromList(cols,i)
-    end
-    local tmp = _.reject(ret,function(i) 
-      local aa = elf.GetActorName(elf.GetCollisionActor(i))
-      return aa=="Unit."..self.id or aa=="StandMax."..self.id
-    end)
-    if #tmp>0 then
-      return false
-    end
+  
+  local func = function(i) 
+    local aa = elf.GetActorName(elf.GetCollisionActor(i))
+    return aa=="Unit."..self.id or aa=="StandMax."..self.id
   end
   
-  cols = elf.GetSceneRayCastResults(self._scene, 
+  local ret = array_from_list(cols)
+  local tmp = _.reject(ret,func)
+  if #tmp>0 then return false end
+  
+  cols = elf.GetSceneRayCastResults(self._scene,
     max.x, max.y, max.z,
-    max2.x,   max2.y,   max2.z
+    max2.x, max2.y, max2.z
   )
-  if elf.IsObject(cols) and elf.GetListLength(cols) > 0 then
-    ret = {}
-    for i = 0,elf.GetListLength(cols)-1,1 do
-      ret[i+1] = elf.GetItemFromList(cols,i)
-    end
-    local tmp = _.reject(ret,function(i) 
-      local aa = elf.GetActorName(elf.GetCollisionActor(i))
-      return aa=="Unit."..self.id or aa=="StandMax."..self.id
-    end)
-    if #tmp>0 then
-      return false
-    end
-  end
+  
+  ret = array_from_list(cols)
+  local tmp = _.reject(ret,func)
+  if #tmp>0 then return false end
+  
   return true
 end
 

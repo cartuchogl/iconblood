@@ -55,6 +55,17 @@ function uniques(array)
   return kk_list
 end
 
+-- return a ElfList as lua array
+function array_from_list(list)
+  ret = {}
+  if elf.IsObject(list) and elf.GetListLength(list) > 0 then
+    for i = 0,elf.GetListLength(list)-1,1 do
+      ret[i+1] = elf.GetItemFromList(list,i)
+    end
+  end
+  return ret
+end
+
 -- normalize elf_vec3f, if pass a second param then return the vector scaled to that length
 function normalize(v,size)
   local n = elf.CreateVec3f()
@@ -98,13 +109,14 @@ function duplicate_entity(ent,new_name)
   return ret
 end
 
+-- return a copy of material
 function duplicate_material(mat,new_name)
   local ret = elf.CreateMaterial(new_name)
-  local d = elf.GetMaterialDiffuseColor( ret )
-  local s = elf.GetMaterialSpecularColor( ret )
-  local a = elf.GetMaterialAmbientColor( ret )
-  local power = elf.GetMaterialSpecularPower( ret )
-  local lighting = elf.GetMaterialLighting( ret )
+  local d = elf.GetMaterialDiffuseColor( mat )
+  local s = elf.GetMaterialSpecularColor( mat )
+  local a = elf.GetMaterialAmbientColor( mat )
+  local power = elf.GetMaterialSpecularPower( mat )
+  local lighting = elf.GetMaterialLighting( mat )
   
   elf.SetMaterialDiffuseColor( ret, d.r, d.g, d.b, d.a )
   elf.SetMaterialSpecularColor( ret, s.r, s.g, s.b, s.a )

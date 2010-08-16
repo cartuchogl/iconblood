@@ -70,7 +70,7 @@ function Loader:_load_unit(name,args)
   local path_img2 = "factions/"..name..'.big.png'
   table.insert(self._loading.img,path_img1)
   table.insert(self._loading.img,path_img2)
-  print("[Loader][fac] "..path)
+  print("[Loader][unit] "..path)
   return elf.CreateSceneFromFile(path)
 end
 
