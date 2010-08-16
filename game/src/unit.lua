@@ -39,46 +39,26 @@ function Unit:canBe(x,y)
   local model = elf.GetEntityModel(self._elf_stand._elf_obj)
   local min = elf.GetModelBoundingBoxMin(model)
   local max = elf.GetModelBoundingBoxMax(model)
-  local min2 = elf.GetModelBoundingBoxMin(model)
-  local max2 = elf.GetModelBoundingBoxMax(model)
-  local s = self:get('Scale')
-  min.x = min.x*s.x+self:get('x')
-  min.y = min.y*s.y+self:get('y')
-  min.z = 0.1
-  max.x = max.x*s.x+self:get('x')
-  max.y = max.y*s.y+self:get('y')
-  max.z = max.z*s.z
-  
-  min2.x = min2.x*s.x+x
-  min2.y = min2.y*s.y+y
-  min2.z = 0.1
-  max2.x = max2.x*s.x+x
-  max2.y = max2.y*s.y+y
-  max2.z = max2.z*s.z
-  
-  local cols = elf.GetSceneRayCastResults(self._scene,
-    min.x, min.y, min.z,
-    min2.x, min2.y, min2.z
-  )
-  
-  local func = function(i) 
-    local aa = elf.GetActorName(elf.GetCollisionActor(i))
-    return aa=="Unit."..self.id or aa=="StandMax."..self.id
+  local s = self._elf_stand:get('Scale')
+  local funcall = function(v,s,x,y)
+    ini = {x=v.x*s.x+self:get('x'),y=v.y*s.y+self:get('y'),z=v.z*s.z}
+    fin = {x=v.x*s.x+x,y=v.y*s.y+y,z=v.z*s.z}
+    local cols = elf.GetSceneRayCastResults(self._scene,
+      ini.x, ini.y, ini.z,
+      fin.x, fin.y, fin.z
+    )
+    local ret = array_from_list(cols)
+    local tmp = _.reject(ret,function(i) 
+      local aa = elf.GetActorName(elf.GetCollisionActor(i))
+      return aa=="Unit."..self.id or aa=="StandMax."..self.id
+    end)
+    return #tmp>0
   end
   
-  local ret = array_from_list(cols)
-  local tmp = _.reject(ret,func)
-  if #tmp>0 then return false end
-  
-  cols = elf.GetSceneRayCastResults(self._scene,
-    max.x, max.y, max.z,
-    max2.x, max2.y, max2.z
-  )
-  
-  ret = array_from_list(cols)
-  local tmp = _.reject(ret,func)
-  if #tmp>0 then return false end
-  
+  min.z = 0.2
+  max.z = 0.2
+  if funcall(min,s,x,y) then return false end
+  if funcall(max,s,x,y) then return false end
   return true
 end
 
