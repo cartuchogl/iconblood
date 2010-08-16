@@ -11,6 +11,7 @@ function Game:initialize(ibg,gui,loader)
   self._gaming = false
   self._factions = {}
   self._current_unit = nil
+  self._gui_pull = {}
   self._loader = loader
   loader:addEnvBatch(self.environment)
   loader:addUnitsBatch(uniques(_.flatten(
@@ -54,7 +55,26 @@ end
 function Game:interaction()
   local pos = elf.GetMousePosition()
   self._lab_tooltip:sets({x=pos.x-14,y=pos.y-24})
-  if elf.IsObject(elf.GetGuiTrace(self._gui)) == false then
+  local gui_trace = elf.GetGuiTrace(self._gui)
+  if elf.IsObject(gui_trace) then
+    local guiobj = ElfObject.find(elf.GetGuiObjectName(gui_trace))
+    local new_pull = guiobj:selfAndParents()
+    _.each(self._gui_pull,function(i) if not table.find(new_pull,i) then i:fireEvent('leave',{i}) end end)
+    _.each(new_pull,function(i) if not table.find(self._gui_pull,i) then i:fireEvent('enter',{i}) end end)
+    self._gui_pull = new_pull
+    if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
+      if self._last_click == self._gui_pull[1] then
+        print('prevent repeat')
+      else
+        self._last_click = self._gui_pull[1]
+        self._last_click:fireEvent('click',{self._last_click})
+      end
+    end
+  else
+    if #self._gui_pull>0 then
+      _.each(self._gui_pull,function(i) i:fireEvent('leave',{i}) end)
+      self._gui_pull = {}
+    end
     local objs = get_objects_over_mouse(self._scene)
     if #objs > 0 then
       if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
@@ -67,7 +87,7 @@ function Game:interaction()
           local unit = game:findUnit(tonumber(string.match(_.first(units),"Unit\.(%d+)")))
           if unit then
             capture = true
-            self:fireEvent('selected:unit',{unit},0)
+            self:fireEvent('selected:unit',{unit})
           end
         end
         if capture == false then
@@ -77,7 +97,7 @@ function Game:interaction()
           end)
           local plane = _.select(names,function(i) return string.match(i[1],"Plane") end)[1]
           if plane then
-            self:fireEvent("onplane",{plane[3]},0)
+            self:fireEvent("onplane",{plane[3]})
           end
         end
       else
@@ -89,13 +109,13 @@ function Game:interaction()
           return string.match(i[1],"Unit") 
         end)[1]
         if obj then
-          self:fireEvent("over",{obj[3]},0)
+          self:fireEvent("over",{obj[3]})
         else
           obj = _.select(names,function(i) 
             return string.match(i[1],"Plane")
           end)[1] 
           if obj then
-            self:fireEvent("over",{obj[3]},0)
+            self:fireEvent("over",{obj[3]})
           end
         end
       end
@@ -145,7 +165,6 @@ function Game:cameraCheck()
 end
 
 function Game:on_loader_end(args)
-  print("on_loader_end")
   self:loadEnvironment()
   self:loadUnits()
   setTimeout(function() self._loader._loader_gui:set('Visible',false) end,800)
@@ -200,11 +219,11 @@ end
 function Game:on_selected_unit(args)
   if args[1]._squadron.player == self._round._current_turn._player then
     if self._current_unit then
-      self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
+      self._current_unit:fireEvent("deselect:unit",self._current_unit)
     end
     self._current_unit = args[1]
     self._current_unit_panel._unit = self._current_unit
-    self._current_unit:fireEvent("select:unit",self._current_unit,0)
+    self._current_unit:fireEvent("select:unit",self._current_unit)
   end
   print("game:track event"..args[1].name)
 end
@@ -297,10 +316,10 @@ function Game:on_over(args)
   end
   if self._current_over then
     if self._current_over == new_current then
-      self:fireEvent("overobject",{self._current_over,col},0)
+      self:fireEvent("overobject",{self._current_over,col})
       return false
     else
-      self._current_over:fireEvent("leave",{self._current_over},0)
+      self._current_over:fireEvent("leave",{self._current_over})
     end
   end
   self._current_over = new_current
@@ -371,7 +390,7 @@ function Game:start()
   self._round = Round(self,20)
   self._round:addEvent("endturn",function(args)
     if self._current_unit then
-      self._current_unit:fireEvent("deselect:unit",self._current_unit,0)
+      self._current_unit:fireEvent("deselect:unit",self._current_unit)
     end
     self._current_unit = nil
     self._current_unit_panel._unit = nil

@@ -13,6 +13,8 @@ ElfObject.__m["Object"] = {n="Object",t={},f={}}
 ElfObject.__m["GuiObject"] = {n="GuiObject",t={},f={}}
 ElfObject.__m["Actor"] = {n="Actor",t={},f={}}
 
+ElfObject.__used_names = {}
+
 ElfObject.__esp = {
   {
     properties={'x','y','z'},
@@ -73,14 +75,24 @@ for k,v in pairs(elf) do
 end
 
 function ElfObject:initialize(obj,...)
+  local name = ''
   if #arg == 0 then
     self._elf_obj = obj
+    name = self:get('Name')
   else
     self._elf_obj = elf["Create"..ElfObject.__m[obj].n](arg[1])
     if #arg==2 then
       self:sets(arg[2])
     end
+    name = arg[1]
   end
+  if name ~= '' then
+    ElfObject.__used_names[name] = self
+  end
+end
+
+function ElfObject.find(name)
+  return ElfObject.__used_names[name]
 end
 
 function ElfObject:method(t,prop)
@@ -145,7 +157,18 @@ function ElfObject:get(prop,...)
   end
 end
 
+function ElfObject:selfAndParents()
+  local ret = {}
+  local cont = self
+  while cont do
+    if cont._elf_obj then ret[#ret+1] = cont end
+    cont = cont._parent
+  end
+  return ret
+end
+
 function ElfObject:addTo(parent)
+  local passparent = parent
   if parent and parent._elf_obj then
     parent = parent._elf_obj
   end
@@ -156,7 +179,7 @@ function ElfObject:addTo(parent)
   else
     print('Unknow add',ElfObject.__m[elf.GetObjectType(self._elf_obj)].n)
   end
-  self._parent = parent
+  self._parent = passparent
 end
 
 

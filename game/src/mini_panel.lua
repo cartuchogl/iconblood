@@ -12,6 +12,12 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
   self._move_bar:set('Position',7,93)
   self._life_bar:set('Position',7,82)
   self._picture = ElfObject(elf.PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={6,4}})
+  self._picture:addEvent('click',function(args)
+    if self._unit then
+      -- FIXME: global use
+      game:fireEvent('selected:unit',{self._unit})
+    end
+  end)
   self._picture:addTo(self)
   self._select_pic = ElfObject(elf.PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,4},Texture=select})
   self._select_pic:addTo(self)

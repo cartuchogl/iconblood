@@ -103,11 +103,11 @@ function Unit:loadElfObjects(pak,scene)
     "Unit."..self.id
   )
   -- FIXME: temporal hack for model
-  -- ElfObject(self._elf_entity):sets({
-  --   Scale={0.025,0.025,0.0258},
-  --   Rotation={90,0,0},
-  --   Position={0,0,1}
-  -- })
+  ElfObject(self._elf_entity):sets({
+    Scale={0.025,0.025,0.0258},
+    Rotation={90,0,0},
+    Position={0,0,1}
+  })
   self._elf_obj = self._elf_entity
   self._elf_stand = ElfObject(duplicate_entity(
     elf.GetEntityByName(self._unit_pak, "stand"),

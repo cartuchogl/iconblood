@@ -16,7 +16,7 @@ function Turn:pass(player)
 end
 
 function Turn:endTurn()
-  self:fireEvent("endturn",{self},0)
+  self:fireEvent("endturn",{self})
 end
 
 

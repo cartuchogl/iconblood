@@ -42,6 +42,9 @@ function EventDispatcher:removeEvents(events)
 end
 
 function EventDispatcher:fireEvent(etype, args, delay)
+  if args and type(args)=='table' and args[1] and args[1]._elf_obj then
+    print(etype,args[1]:get('Name'))
+  end
   if self._events and self._events[etype] then
     if type(delay)=='number' and delay>0 then
       _.each(self._events[etype],function(i) setTimeout(function() i(args) end,delay) end)

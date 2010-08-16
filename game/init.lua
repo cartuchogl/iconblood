@@ -33,13 +33,15 @@ loader:batch({
 })
 
 local initime
-loader:addEvent('inibatch',function(args)
-  initime = elf.GetTime()
-end)
 
-loader:addEvent('endbatch',function(args)
-  print((elf.GetTime()-initime).."sg [Assets loading]")
-end)
+loader:addEvents({
+  inibatch=function(args)
+    initime = elf.GetTime()
+  end,
+  endbatch=function(args)
+    print((elf.GetTime()-initime).."sg [Assets loading]")
+  end
+})
 
 dofile("example.ibg.lua")
 game = Game(_local_game,gui,loader)

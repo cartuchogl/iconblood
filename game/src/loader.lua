@@ -117,12 +117,12 @@ function Loader:loadAny()
   elseif #self._loading.unit>0 then
     self._next_type = 'unit'
   else
-    self:fireEvent('endbatch',{self},0)
+    self:fireEvent('endbatch',{self})
   end
   if self._next_type then 
     setTimeout(function()
       if self._loaded == 0 then
-        self:fireEvent('inibatch',{self},0)
+        self:fireEvent('inibatch',{self})
       end
       local ele = self._loading[self._next_type][1]
       if type(ele) == 'table' then
