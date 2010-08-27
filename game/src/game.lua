@@ -377,6 +377,7 @@ function Game:visibility(from,to)
   local destinations = to:visibilityPoints()
   orig.x = orig.x+from:get('x')
   orig.y = orig.y+from:get('y')
+  local cont = 0
   _.each(destinations,function(i)
     local kk = {x=i.x+to:get('x'),y=i.y+to:get('y'),z=i.z}
     local tmp = from:rayWithoutMe(orig,kk)
