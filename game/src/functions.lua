@@ -4,7 +4,7 @@ settimeout_table = {}
 function setTimeoutLaunch()
   local now = getTime()
   local tmp = {}
-  for i=1,#settimeout_table,1 do
+  for i=1,#settimeout_table do
     local item = settimeout_table[i]
     local diff = now-item[1]
     if diff >= item[2] then
@@ -29,7 +29,7 @@ end
 function findPath(path,expreg)
   local kk = elf.ReadDirectory(path)
   local l = elf.GetDirectoryItemCount(kk)
-  for i = 0,l-1,1 do
+  for i = 0,l-1 do
     local object = elf.GetDirectoryItem(kk, i)
     local name = elf.GetDirectoryItemName(object)
     if string.byte(name) ~= string.byte(".") then
@@ -59,7 +59,7 @@ end
 function array_from_list(list)
   ret = {}
   if elf.IsObject(list) and elf.GetListLength(list) > 0 then
-    for i = 0,elf.GetListLength(list)-1,1 do
+    for i = 0,elf.GetListLength(list)-1 do
       ret[i+1] = elf.GetItemFromList(list,i)
     end
   end

@@ -26,6 +26,8 @@ _local_game = {
           force = 3,
           skill = 3,
           resistance = 6,
+          intelligence = 3,
+          agility = 3,
           options = {
             {
               id = 1,
@@ -54,6 +56,8 @@ _local_game = {
           force = 3,
           skill = 3,
           resistance = 6,
+          intelligence = 3,
+          agility = 3,
           options = {
             {
               id = 1,
@@ -82,6 +86,8 @@ _local_game = {
           force = 3,
           skill = 3,
           resistance = 6,
+          intelligence = 3,
+          agility = 3,
           options = {
             {
               id = 1,
@@ -110,6 +116,8 @@ _local_game = {
           force = 3,
           skill = 3,
           resistance = 6,
+          intelligence = 3,
+          agility = 3,
           options = {
             {
               id = 1,
@@ -138,6 +146,8 @@ _local_game = {
             force = 3,
             skill = 3,
             resistance = 6,
+            intelligence = 3,
+            agility = 3,
             options = {
               {
                 id = 1,
@@ -178,6 +188,8 @@ _local_game = {
             force = 3,
             skill = 3,
             resistance = 6,
+            intelligence = 3,
+            agility = 3,
             options = {
               {
                 id = 1,
@@ -206,6 +218,8 @@ _local_game = {
             force = 3,
             skill = 3,
             resistance = 6,
+            intelligence = 3,
+            agility = 3,
             options = {
               {
                 id = 1,
@@ -234,6 +248,8 @@ _local_game = {
             force = 3,
             skill = 3,
             resistance = 6,
+            intelligence = 3,
+            agility = 3,
             options = {
               {
                 id = 1,
@@ -262,6 +278,8 @@ _local_game = {
             force = 3,
             skill = 3,
             resistance = 6,
+            intelligence = 3,
+            agility = 3,
             options = {
               {
                 id = 1,
@@ -290,6 +308,8 @@ _local_game = {
             force = 3,
             skill = 3,
             resistance = 6,
+            intelligence = 3,
+            agility = 3,
             options = {
               {
                 id = 1,

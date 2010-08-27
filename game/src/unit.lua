@@ -7,19 +7,15 @@ function Unit:initialize(obj,squadron)
     self.options = _.map(tmp,function(i) return Option(i) end)
   end
   self:addEvent('select:unit',function(args)
-    print("select:"..self.name)
     self:setStand('select')
   end)
   self:addEvent('deselect:unit',function(args)
-    print("deselect:"..self.name)
     self:setStand('normal')
   end)
   self:addEvent('enter',function(args)
-    print("enter:"..self.name)
     self:setStand('over')
   end)
   self:addEvent('leave',function(args)
-    print("leave:"..self.name)
     if game:currentPlayer():hasUnit(self) then
       if game._current_unit==self then
         self:setStand('select')
@@ -35,30 +31,68 @@ function Unit:initialize(obj,squadron)
   self._squadron = squadron
 end
 
-function Unit:canBe(x,y)
+function Unit:visibilityPoints()
+  -- FIXME: better points
   local model = elf.GetEntityModel(self._elf_stand._elf_obj)
   local min = elf.GetModelBoundingBoxMin(model)
   local max = elf.GetModelBoundingBoxMax(model)
   local s = self._elf_stand:get('Scale')
-  local funcall = function(v,s,x,y)
-    ini = {x=v.x*s.x+self:get('x'),y=v.y*s.y+self:get('y'),z=v.z*s.z}
-    fin = {x=v.x*s.x+x,y=v.y*s.y+y,z=v.z*s.z}
-    local cols = elf.GetSceneRayCastResults(self._scene,
-      ini.x, ini.y, ini.z,
-      fin.x, fin.y, fin.z
-    )
-    local ret = array_from_list(cols)
-    local tmp = _.reject(ret,function(i) 
-      local aa = elf.GetActorName(elf.GetCollisionActor(i))
-      return aa=="Unit."..self.id or aa=="StandMax."..self.id
-    end)
+  local height = self:modelHeight()
+  -- harcoding the life ;)
+  return {
+    {x=min.x*s.x,y=min.y*s.y,z=0.2}, {x=max.x*s.x,y=max.y*s.y,z=0.2},
+    {x=-1*min.x*s.x,y=min.y*s.y,z=0.2}, {x=-1*max.x*s.x,y=max.y*s.y,z=0.2},
+    {x=min.x*s.x,y=min.y*s.y,z=height}, {x=max.x*s.x,y=max.y*s.y,z=height},
+    {x=-1*min.x*s.x,y=min.y*s.y,z=height}, {x=-1*max.x*s.x,y=max.y*s.y,z=height},
+    {x=(min.x+max.x)/2*s.x,y=(min.y+max.x)/2*s.y,z=height},
+    {x=(min.x+max.x)/2*s.x,y=(min.y+max.x)/2*s.y,z=height/2},
+    {x=(min.x+max.x)/2*s.x,y=(min.y+max.x)/2*s.y,z=0.2},
+  }
+end
+
+function Unit:modelHeight()
+  local model = elf.GetEntityModel(self._elf_obj)
+  local min = elf.GetModelBoundingBoxMin(model)
+  local max = elf.GetModelBoundingBoxMax(model)
+  local s = self:get('Scale')
+  return math.max(min.z*s.z+self:get('z'),max.z*s.z+self:get('z'))
+end
+
+function Unit:seePoint()
+  -- FIXME: center?
+  local model = elf.GetEntityModel(self._elf_stand._elf_obj)
+  local min = elf.GetModelBoundingBoxMin(model)
+  local max = elf.GetModelBoundingBoxMax(model)
+  local s = self._elf_stand:get('Scale')
+  local height = self:modelHeight()
+  return {x=(min.x+max.x)/2*s.x,y=(min.y+max.x)/2*s.y,z=height}
+end
+
+function Unit:rayWithoutMe(ini,fin)
+  local cols = elf.GetSceneRayCastResults(self._scene,
+    ini.x, ini.y, ini.z,
+    fin.x, fin.y, fin.z
+  )
+  local ret = array_from_list(cols)
+  local tmp = _.reject(ret,function(i) 
+    local aa = elf.GetActorName(elf.GetCollisionActor(i))
+    return aa=="Unit."..self.id or aa=="StandMax."..self.id
+  end)
+  return tmp
+end
+
+function Unit:canBe(x,y)
+  local points = self:visibilityPoints()
+  local funcall = function(v,x,y)
+    local ini = {x=v.x+self:get('x'),y=v.y+self:get('y'),z=v.z}
+    local fin = {x=v.x+x,y=v.y+y,z=v.z}
+    local tmp = self:rayWithoutMe(ini,fin)
     return #tmp>0
   end
   
-  min.z = 0.2
-  max.z = 0.2
-  if funcall(min,s,x,y) then return false end
-  if funcall(max,s,x,y) then return false end
+  for i=1,#points do
+    if funcall(points[i],x,y) then return false end
+  end
   return true
 end
 

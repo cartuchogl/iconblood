@@ -186,7 +186,7 @@ function Game:on_loader_end(args)
     self._loader:get('font','fonts/medium.ttf').target,
   nil)
   
-  self._current_squadron_panel = UnitsPanel(self._gui,self._current_unit_panel:get('Size').x+10,
+  self._current_squadron_panel = UnitsPanel(self._gui,154,--self._current_unit_panel:get('Size').x+10,
     self._loader:get('img',"mini_panel.png").target,
     self._loader:get('img',"select_mini_panel.png").target,
     self._loader:get('img',"move_mini_progress_bg.png").target,
@@ -219,8 +219,12 @@ function Game:on_selected_unit(args)
     self._current_unit = args[1]
     self._current_unit_panel._unit = self._current_unit
     self._current_unit:fireEvent("select:unit",self._current_unit)
+  else
+    if self._current_unit then
+      print(self._current_unit.name,args[1].name,self:visibility(self._current_unit,args[1]))
+    end
   end
-  print("game:track event"..args[1].name)
+  print("game:track event "..args[1].name)
 end
 
 function Game:on_plane(args)
@@ -232,12 +236,17 @@ function Game:on_plane(args)
       local y = v.y-self._current_unit:get('y')
       local cost = math.ceil(math.sqrt(x*x+y*y)*10)/10.0
       if cost > self._current_unit._mg then
-        local kk = normalize2d({x=x,y=y},self._current_unit._mg)
-        kk.x = self._current_unit:get('x')+kk.x
-        kk.y = self._current_unit:get('y')+kk.y
-        self._current_unit:seeTo(v.x,v.y)
-        local unit = self._current_unit
-        tweener:addTween(self._current_unit,{x=kk.x,y=kk.y,
+        cost = self._current_unit._mg
+        if cost > 0 then
+          local kk = normalize2d({x=x,y=y},self._current_unit._mg)
+          v.x = self._current_unit:get('x')+kk.x
+          v.y = self._current_unit:get('y')+kk.y
+        end
+      end
+      self._current_unit:seeTo(v.x,v.y)
+      local unit = self._current_unit
+      if cost > 0 then
+        tweener:addTween(self._current_unit,{x=v.x,y=v.y,
           time = cost/8,
           transition = 'linear',
           onComplete=function()
@@ -248,23 +257,7 @@ function Game:on_plane(args)
             elf.LoopEntityArmature(unit._elf_entity,580,595,25)
           end
         })
-        self._current_unit._mg = 0
-        return false
       end
-      elf.LoopEntityArmature(self._current_unit._elf_entity,580,595,25)
-      self._current_unit:seeTo(v.x,v.y)
-      local unit = self._current_unit
-      tweener:addTween(self._current_unit,{x=v.x,y=v.y,
-        time = cost/8,
-        transition = 'linear',
-        onComplete=function()
-          elf.StopEntityArmature(unit._elf_entity)
-          elf.SetEntityArmatureFrame(unit._elf_entity,1)
-        end,
-        onStart=function()
-          elf.LoopEntityArmature(unit._elf_entity,580,595,25)
-        end
-      })
       self._current_unit._mg = self._current_unit._mg-cost
     end
   end
@@ -329,7 +322,6 @@ function Game:loadEnvironment()
   local kk = elf.GetActorBoundingLengths(self._plane)
   local ss = elf.GetEntityScale(self._plane)
   self._resolution = { x = ss.x*kk.x, y = ss.y*kk.y }
-  -- self._debug:on(self._scene)
   return self._scene
 end
 
@@ -378,6 +370,19 @@ function Game:updateStands()
   end
   _.each(all_units,function(i) i:setStand('enemy') end)
   _.each(current_units,function(i) i:setStand('normal') end)
+end
+
+function Game:visibility(from,to)
+  local orig = from:seePoint()
+  local destinations = to:visibilityPoints()
+  orig.x = orig.x+from:get('x')
+  orig.y = orig.y+from:get('y')
+  _.each(destinations,function(i)
+    local kk = {x=i.x+to:get('x'),y=i.y+to:get('y'),z=i.z}
+    local tmp = from:rayWithoutMe(orig,kk)
+    if #tmp==0 then cont = cont + 1 end
+  end)
+  return cont/#destinations
 end
 
 function Game:start()
