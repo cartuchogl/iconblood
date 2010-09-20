@@ -18,4 +18,6 @@ dofile "src/loader.lua"
 dofile "src/progress_bar.lua"
 dofile "src/mini_panel.lua"
 dofile "src/units_panel.lua"
+dofile "src/weapon.lua"
+dofile "src/weapon_panel.lua"
 

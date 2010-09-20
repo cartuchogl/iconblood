@@ -6,6 +6,8 @@ function Unit:initialize(obj,squadron)
     local tmp = self.options
     self.options = _.map(tmp,function(i) return Option(i) end)
   end
+  if self.primary then self.primary = Weapon(self.primary) end
+  if self.secondary then self.secondary = Weapon(self.secondary) end
   self:addEvent('select:unit',function(args)
     self:setStand('select')
   end)
@@ -29,6 +31,7 @@ function Unit:initialize(obj,squadron)
   self:addEvent('update:attributte',_.curry(self.updatedPosition,self))
   self._mg = self.move
   self._squadron = squadron
+  self.action = nil
 end
 
 function Unit:visibilityPoints()
@@ -76,7 +79,8 @@ function Unit:rayWithoutMe(ini,fin)
   local ret = array_from_list(cols)
   local tmp = _.reject(ret,function(i) 
     local aa = elf.GetActorName(elf.GetCollisionActor(i))
-    return aa=="Unit."..self.id or aa=="StandMax."..self.id
+    aa=aa=="Unit."..self.id or aa=="StandMax."..self.id
+    return aa
   end)
   return tmp
 end

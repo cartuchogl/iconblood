@@ -397,6 +397,11 @@ function Game:visibility(from,to)
   _.each(destinations,function(i)
     local kk = {x=i.x+to:get('x'),y=i.y+to:get('y'),z=i.z}
     local tmp = from:rayWithoutMe(orig,kk)
+    tmp = _.reject(tmp,function(i) 
+      local aa = elf.GetActorName(elf.GetCollisionActor(i))
+      aa=aa=="Unit."..to.id or aa=="StandMax."..to.id
+      return aa
+    end)
     if #tmp==0 then cont = cont + 1 end
   end)
   return cont/#destinations

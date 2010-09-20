@@ -27,7 +27,7 @@ function Round:start(...)
   self._current_turn = Turn(self,self.players[self._current_player_indx])
   self._current_turn:addEvent("endturn",function(args)
     print("endturn")
-    args[1]._player.squadron:resetMove()
+    args[1]._player.squadron:reset()
     if self._current_player_indx+1>#self.players then
       self:fireEvent("endround",{self})
     else

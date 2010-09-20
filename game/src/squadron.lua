@@ -13,7 +13,10 @@ function Squadron:initialize(obj)
   end
 end
 
-function Squadron:resetMove()
-  _.each(self.units,function(i) i._mg = i.move end)
+function Squadron:reset()
+  _.each(self.units,function(i)
+    i._mg = i.move
+    i.action = nil
+  end)
 end
 

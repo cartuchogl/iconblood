@@ -13,6 +13,44 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   self.lab_attr = ElfObject(elf.LABEL,"lab_attr",{Font = font,Text = 'attr'})
   self._picture = ElfObject(elf.PICTURE,'large_pic',{Position={10,6}})
   self._picture:addTo(self)
+  self._picture_action = ElfObject(elf.PICTURE,'current_action_pic',{Position={118,7},Texture=game._loader:get('img','action.png').target})
+  self._picture_action:addTo(self)
+    
+  self._button_chars = ElfObject(elf.BUTTON,"btn_chars",{
+    OffTexture = game._loader:get('img','chars.png').target,
+    OverTexture = game._loader:get('img','chars_over.png').target,
+    OnTexture = game._loader:get('img','chars_on.png').target,
+    Position = {160,100}
+  })
+  self._button_chars:addTo(self)
+  
+  self._button_habs = ElfObject(elf.BUTTON,"btn_habs",{
+    OffTexture = game._loader:get('img','habs.png').target,
+    OverTexture = game._loader:get('img','habs_over.png').target,
+    OnTexture = game._loader:get('img','habs_on.png').target,
+    Position = {160+46,100}
+  })
+  self._button_habs:addTo(self)
+  
+  self._button_inv = ElfObject(elf.BUTTON,"btn_inv",{
+    OffTexture = game._loader:get('img','inv.png').target,
+    OverTexture = game._loader:get('img','inv_over.png').target,
+    OnTexture = game._loader:get('img','inv_on.png').target,
+    Position = {160+46*2,100}
+  })
+  self._button_inv:addTo(self)
+  
+  self.primary_panel = WeaponPanel(self,game._loader:get('img','weapon_bg.png').target,font,
+  game._loader:get('img','reload.png').target,
+  game._loader:get('img','reload_on.png').target,
+  game._loader:get('img','reload_over.png').target)
+  self.primary_panel:set('Position',{9,149})
+  
+  self.secondary_panel = WeaponPanel(self,game._loader:get('img','weapon_bg.png').target,font,
+  game._loader:get('img','reload.png').target,
+  game._loader:get('img','reload_on.png').target,
+  game._loader:get('img','reload_over.png').target)
+  self.secondary_panel:set('Position',{9,197})
   
   self._null_tex = elf.CreateTextureFromImage(elf.CreateEmptyImage(128,128,8))
 
@@ -29,16 +67,21 @@ function CurrentPanel:initialize(parent,bg,font,unit)
 end
 
 function CurrentPanel:update()
-  local unit = {name='nobody',exp='0',level='0',cost='0',move='0',force='0',skill='0',resistance='0',_mg='0',agility='0',intelligence='0'}
+  local unit = {name='nobody',exp='0',level='0',cost='0',move='0',force='0',skill='0',resistance='0',_mg='0',agility='0',intelligence='0',action=1}
   if self._unit then
     unit = self._unit
     self._picture:set('Texture',self._unit._large_image)
   else
     self._picture:set('Texture',self._null_tex)
   end
-  self.lab_level:set('Text','LEVEL '..unit.level.." ("..unit.exp..'px)')
+  self.lab_level:set('Text','Level '..unit.level.." ("..unit.exp..'px)')
   self.lab_name:set('Text',string.upper(unit.name))
   self.lab_cost:set('Text','$'..unit.cost)
   self.lab_move:set('Text','Move: '..unit._mg..'/'..unit.move)
   self.lab_attr:set('Text','F'..unit.force..' A'..unit.agility..' R'..unit.resistance..' S'..unit.skill..' I'..unit.intelligence)
+  self._picture_action:set('Visible',unit.action==nil)
+  if unit.primary then self.primary_panel.weapon = unit.primary else self.primary_panel.weapon = nil end
+  if unit.secondary then self.secondary_panel.weapon = unit.secondary else self.secondary_panel.weapon = nil end
+  self.primary_panel:update()
+  self.secondary_panel:update()
 end
