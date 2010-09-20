@@ -28,6 +28,8 @@ function Game:initialize(ibg,gui,loader)
   self:addEvent("over", _.curry(self.on_over,self))
   self:addEvent("overobject", _.curry(self.on_over_object,self))
   
+  self._fix_wheel = 0
+  
   self._debug = Debug(gui)
 end
 
@@ -120,26 +122,33 @@ end
 
 function Game:cameraCheck()
   local wheel = elf.GetMouseWheel()
-  elf.MoveActorLocal(self._cam, 0.0, 0.0, (self._last_wheel-wheel)*self._key_move*4)
-  self._last_wheel = wheel
+  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then
+    self._fix_wheel = self._fix_wheel+1
+  end
+  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then
+    self._fix_wheel = self._fix_wheel-1
+  end
+  elf.MoveActorLocal(self._cam, 0.0, 0.0, (self._last_wheel-(wheel+self._fix_wheel))*self._key_move*4)
+  self._last_wheel = wheel+self._fix_wheel
   
   local d = elf.GetActorOrientation(self._cam)
   local orient = elf.GetActorOrientation(self._cam)
   local dir = elf.MulQuaVec3f(orient, self._cam_dir)
   local dir = normalize(dir, self._key_move)
   -- move camera across
-  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then
+  if elf.GetKeyState(elf.KEY_W) ~= elf.UP then
     elf.MoveActor(self._cam, dir.x, dir.y, 0.0)
   end
-  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then
+  if elf.GetKeyState(elf.KEY_S) ~= elf.UP then
     elf.MoveActor(self._cam, -dir.x, -dir.y, 0.0)
   end
-  if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then
+  if elf.GetKeyState(elf.KEY_A) ~= elf.UP then
     elf.MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0)
   end
-  if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then
+  if elf.GetKeyState(elf.KEY_D) ~= elf.UP then
     elf.MoveActorLocal(self._cam, self._key_move, 0.0, 0.0)
   end
+    
   -- move with borders on fullscreen
   if elf.IsFullscreen() then
     local pos = elf.GetMousePosition()
@@ -156,6 +165,13 @@ function Game:cameraCheck()
     local mf = elf.GetMouseForce()
     self._imfx = (self._imfx*2.0+mf.x)/4.0
     elf.RotateActor(self._cam, 0.0, 0.0, -self._imfx*10.0)
+  end
+  
+  if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then
+    elf.RotateActor(self._cam, 0.0, 0.0, self._key_move*10.0)
+  end
+  if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then
+    elf.RotateActor(self._cam, 0.0, 0.0, -self._key_move*10.0)
   end
 end
 
