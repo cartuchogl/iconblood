@@ -33,6 +33,7 @@ function Unit:initialize(obj,squadron)
   self._mg = self.move
   self._squadron = squadron
   self.action = nil
+  self._pv = self.resistance*10
 end
 
 function Unit:visibilityPoints()
@@ -105,7 +106,7 @@ function Unit:seeTo(x,y)
   local center = self:get('Position')
   local c = x-center.x
   local a = y-center.y
-  if a~=0 and c~=0 then
+  if a~=0 or c~=0 then
     local bpow = a*a+c*c
     local b = math.sqrt(bpow)
     local alpha = math.deg(math.asin(((bpow+c*c)-a*a)/(2*b*c)))
@@ -181,4 +182,7 @@ function Unit:setMax(x,y)
   self._elf_stand_max:set('Position',x,y,0.01)
 end
 
+function Unit:calculatedSkill()
+  return self.skill
+end
 

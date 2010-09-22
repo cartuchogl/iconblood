@@ -17,6 +17,7 @@ function Squadron:reset()
   _.each(self.units,function(i)
     i._mg = i.move
     i.action = nil
+    elf.SetEntityArmatureFrame(i._elf_obj,1)
   end)
 end
 

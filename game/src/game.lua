@@ -241,6 +241,32 @@ function Game:on_selected_unit(args)
     self._current_unit:fireEvent("select:unit",self._current_unit)
   else
     if self._current_unit then
+      if self:enemy_unit(args[1]) then
+        local cu = self._current_unit
+        if cu.action then
+          print('already fire...')
+        else
+          local v,l = self:visibility(cu,args[1])
+          local s = (cu:calculatedSkill()+cu.current_weapon:skillMod(l))/10
+          s = 100*v*s
+          if s > 0 then
+            cu:seeTo(args[1]:get('x'),args[1]:get('y'))
+            elf.PlayEntityArmature(cu._elf_obj,375,384,25)
+            cu.action = 'fire'
+            local dice = math.random(100)
+            if dice <= s then
+              args[1]:seeTo(cu:get('x'),cu:get('y'))
+              elf.PlayEntityArmature(args[1]._elf_obj,651,671,25)
+              local damage = cu.current_weapon:damage_fire(l)
+              args[1]._pv = args[1]._pv-damage
+              if args[1]._pv < 0 then args[1]._pv = 0 end
+              print('('..dice..')Hit:'..damage)
+            else
+              print("("..dice..")Fail")
+            end
+          end
+        end
+      end
       print(self._current_unit.name,args[1].name,self:visibility(self._current_unit,args[1]))
     end
   end
@@ -308,7 +334,16 @@ function Game:on_over_object(args)
     if self._current_unit then
       self._current_unit:setMax(self._current_unit:get('x'),self._current_unit:get('y'))
       if self:enemy_unit(args[1]) then
-        self._lab_tooltip:set('Text',math.ceil(100*self:visibility(self._current_unit,args[1]))..'%')
+        local cu = self._current_unit
+        local v,l = self:visibility(cu,args[1])
+        local s = (cu:calculatedSkill()+cu.current_weapon:skillMod(l))/10
+        s = 100*v*s
+        if s > 0 then
+          local d = cu.current_weapon:damage_range(l)
+          self._lab_tooltip:set('Text',math.ceil(l)..'m '..math.ceil(s)..'%,d['..d[1]..'-'..d[2]..']')
+        else
+          self._lab_tooltip:set('Text',math.ceil(l)..'m '..math.ceil(s)..'%')
+        end
       else
         self._lab_tooltip:set('Text','')
       end
@@ -412,7 +447,10 @@ function Game:visibility(from,to)
     end)
     if #tmp==0 then cont = cont + 1 end
   end)
-  return cont/#destinations
+  local dest = to:seePoint()
+  dest.x = dest.x+to:get('x')
+  dest.y = dest.y+to:get('y')
+  return cont/#destinations, distance(orig,dest)
 end
 
 function Game:start()

@@ -179,6 +179,61 @@ function get_objects_over_mouse(scn)
   return array_from_list(col)
 end
 
+-- calculate a dice launch as for 2d6
+-- val can be nil normal launch, 'max' for the max possible result and 'min' for the min result
+function calculate_token(str,val)
+  local ret = 0
+  local pos = string.find(str,'d')
+  if pos then
+    local i = tonumber(string.sub(str,1,pos-1))
+    local t = tonumber(string.sub(str,pos+1))
+    for j=1,i do
+      if val and val == 'max' then
+        ret = ret + t
+      elseif val and val == 'min' then
+        ret = ret + 1
+      else
+        ret = ret + math.random(t)
+      end
+    end
+  else
+    ret = tonumber(str)
+  end
+  return ret
+end
+
+-- calculate a string with for as 10+2d6-1d4
+-- use calculate_token params
+function calculate_string(str,val)
+  local ret = {}
+  local pos = string.find(str,'[+-]')
+  while pos do
+    ret[#ret+1] = calculate_token(string.sub(str,1,pos-1),val)
+    ret[#ret+1] = string.sub(str,pos,pos)
+    str = string.sub(str,pos+1)
+    pos = string.find(str,'[+-]')
+  end
+  if string.len(str)>0 then
+    ret[#ret+1] = calculate_token(str,val)
+  end
+  local final = 0
+  local mod = 1
+  _.each(ret,function(i)
+    if type(tonumber(i)) == "number" then
+      final = final + mod*i
+    elseif i == '+' then
+      mod = 1
+    elseif i == '-' then
+      mod = -1
+    end
+  end)
+  return final
+end
+
+function distance(v1,v2)
+  return math.sqrt((v1.x-v2.x)^2+(v1.y-v2.y)^2+(v1.z-v2.z)^2)
+end
+
 -- from http://otfans.net/showthread.php?112204-table.find-%28matching-isInArray%29
 FIND_NOCASE = 0
 FIND_PATTERN = 1
