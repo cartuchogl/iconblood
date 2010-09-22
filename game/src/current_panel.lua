@@ -43,13 +43,15 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   self.primary_panel = WeaponPanel(self,game._loader:get('img','weapon_bg.png').target,font,
   game._loader:get('img','reload.png').target,
   game._loader:get('img','reload_on.png').target,
-  game._loader:get('img','reload_over.png').target)
+  game._loader:get('img','reload_over.png').target,
+  game._loader:get('img','weapon_select.png').target)
   self.primary_panel:set('Position',{9,149})
   
   self.secondary_panel = WeaponPanel(self,game._loader:get('img','weapon_bg.png').target,font,
   game._loader:get('img','reload.png').target,
   game._loader:get('img','reload_on.png').target,
-  game._loader:get('img','reload_over.png').target)
+  game._loader:get('img','reload_over.png').target,
+  game._loader:get('img','weapon_select.png').target)
   self.secondary_panel:set('Position',{9,197})
   
   self._null_tex = elf.CreateTextureFromImage(elf.CreateEmptyImage(128,128,8))

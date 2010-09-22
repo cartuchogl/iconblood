@@ -6,8 +6,9 @@ function Unit:initialize(obj,squadron)
     local tmp = self.options
     self.options = _.map(tmp,function(i) return Option(i) end)
   end
-  if self.primary then self.primary = Weapon(self.primary) end
-  if self.secondary then self.secondary = Weapon(self.secondary) end
+  if self.primary then self.primary = Weapon(self.primary,self) end
+  if self.secondary then self.secondary = Weapon(self.secondary,self) end
+  self.current_weapon = self.primary
   self:addEvent('select:unit',function(args)
     self:setStand('select')
   end)
