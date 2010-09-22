@@ -227,6 +227,10 @@ function Game:on_loader_end(args)
   self._imfx = 0
 end
 
+function Game:enemy_unit(unit)
+  return unit._squadron.player ~= self._round._current_turn._player
+end
+
 function Game:on_selected_unit(args)
   if args[1]._squadron.player == self._round._current_turn._player then
     if self._current_unit then
@@ -303,7 +307,11 @@ function Game:on_over_object(args)
   elseif instanceOf(Unit,args[1]) then
     if self._current_unit then
       self._current_unit:setMax(self._current_unit:get('x'),self._current_unit:get('y'))
-      self._lab_tooltip:set('Text','')
+      if self:enemy_unit(args[1]) then
+        self._lab_tooltip:set('Text',math.ceil(100*self:visibility(self._current_unit,args[1]))..'%')
+      else
+        self._lab_tooltip:set('Text','')
+      end
     end
   end
 end
