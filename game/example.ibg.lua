@@ -93,19 +93,54 @@ _local_game = {
           resistance = 6,
           intelligence = 3,
           agility = 3,
-          options = {
-            {
-              id = 1,
-              name = 'ak47',
-              cost = 50,
-              move = 0,
-              force = 0,
-              skill = 1,
-              resistance = 0,
-              fly = false,
-              use = 4,
-              quantity = 50
-            }
+          primary = {
+            id = 1,
+            name = 'Rifle estandard',
+            cost = 50,
+            damage = "10+2d6",
+            clip = 32,
+            total = 120,
+            vshort = 10,
+            vshort_bonus = 0,
+            vshort_damage = 0,
+            short = 30,
+            short_bonus = 1,
+            short_damage = 0,
+            long = 60,
+            long_bonus = 0,
+            long_damage = 0,
+            vlong = 90,
+            vlong_bonus = -2,
+            vlong_damage = "-1d4"
+          },
+          secondary = {
+            id = 2,
+            name = 'Accesorio lanzagranadas',
+            cost = 70,
+            damage = "6+4d8",
+            clip = 1,
+            total = 2,
+            vshort = 10,
+            vshort_bonus = -1,
+            vshort_damage = 0,
+            short = 30,
+            short_bonus = 0,
+            short_damage = 0,
+            long = 60,
+            long_bonus = 0,
+            long_damage = 0,
+            vlong = 90,
+            vlong_bonus = -2,
+            vlong_damage = 0
+          },
+          characteristics = {
+            {name='runner',level=1}
+          },
+          habilities = {
+            {name='run',level=1}
+          },
+          equip = {
+            {name='bulletproof'}
           }
         },
         {
@@ -123,19 +158,54 @@ _local_game = {
           resistance = 6,
           intelligence = 3,
           agility = 3,
-          options = {
-            {
-              id = 1,
-              name = 'ak47',
-              cost = 50,
-              move = 0,
-              force = 0,
-              skill = 1,
-              resistance = 0,
-              fly = false,
-              use = 4,
-              quantity = 50
-            }
+          primary = {
+            id = 1,
+            name = 'Rifle estandard',
+            cost = 50,
+            damage = "10+2d6",
+            clip = 32,
+            total = 120,
+            vshort = 10,
+            vshort_bonus = 0,
+            vshort_damage = 0,
+            short = 30,
+            short_bonus = 1,
+            short_damage = 0,
+            long = 60,
+            long_bonus = 0,
+            long_damage = 0,
+            vlong = 90,
+            vlong_bonus = -2,
+            vlong_damage = "-1d4"
+          },
+          secondary = {
+            id = 2,
+            name = 'Accesorio lanzagranadas',
+            cost = 70,
+            damage = "6+4d8",
+            clip = 1,
+            total = 2,
+            vshort = 10,
+            vshort_bonus = -1,
+            vshort_damage = 0,
+            short = 30,
+            short_bonus = 0,
+            short_damage = 0,
+            long = 60,
+            long_bonus = 0,
+            long_damage = 0,
+            vlong = 90,
+            vlong_bonus = -2,
+            vlong_damage = 0
+          },
+          characteristics = {
+            {name='runner',level=1}
+          },
+          habilities = {
+            {name='run',level=1}
+          },
+          equip = {
+            {name='bulletproof'}
           }
         },
         {
@@ -153,19 +223,54 @@ _local_game = {
           resistance = 6,
           intelligence = 3,
           agility = 3,
-          options = {
-            {
-              id = 1,
-              name = 'ak47',
-              cost = 50,
-              move = 0,
-              force = 0,
-              skill = 1,
-              resistance = 0,
-              fly = false,
-              use = 4,
-              quantity = 50
-            }
+          primary = {
+            id = 1,
+            name = 'Rifle estandard',
+            cost = 50,
+            damage = "10+2d6",
+            clip = 32,
+            total = 120,
+            vshort = 10,
+            vshort_bonus = 0,
+            vshort_damage = 0,
+            short = 30,
+            short_bonus = 1,
+            short_damage = 0,
+            long = 60,
+            long_bonus = 0,
+            long_damage = 0,
+            vlong = 90,
+            vlong_bonus = -2,
+            vlong_damage = "-1d4"
+          },
+          secondary = {
+            id = 2,
+            name = 'Accesorio lanzagranadas',
+            cost = 70,
+            damage = "6+4d8",
+            clip = 1,
+            total = 2,
+            vshort = 10,
+            vshort_bonus = -1,
+            vshort_damage = 0,
+            short = 30,
+            short_bonus = 0,
+            short_damage = 0,
+            long = 60,
+            long_bonus = 0,
+            long_damage = 0,
+            vlong = 90,
+            vlong_bonus = -2,
+            vlong_damage = 0
+          },
+          characteristics = {
+            {name='runner',level=1}
+          },
+          habilities = {
+            {name='run',level=1}
+          },
+          equip = {
+            {name='bulletproof'}
           }
         }  ,
           {
@@ -183,19 +288,54 @@ _local_game = {
             resistance = 6,
             intelligence = 3,
             agility = 3,
-            options = {
-              {
-                id = 1,
-                name = 'ak47',
-                cost = 50,
-                move = 0,
-                force = 0,
-                skill = 1,
-                resistance = 0,
-                fly = false,
-                use = 4,
-                quantity = 50
-              }
+            primary = {
+              id = 1,
+              name = 'Rifle estandard',
+              cost = 50,
+              damage = "10+2d6",
+              clip = 32,
+              total = 120,
+              vshort = 10,
+              vshort_bonus = 0,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 1,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = "-1d4"
+            },
+            secondary = {
+              id = 2,
+              name = 'Accesorio lanzagranadas',
+              cost = 70,
+              damage = "6+4d8",
+              clip = 1,
+              total = 2,
+              vshort = 10,
+              vshort_bonus = -1,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 0,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = 0
+            },
+            characteristics = {
+              {name='runner',level=1}
+            },
+            habilities = {
+              {name='run',level=1}
+            },
+            equip = {
+              {name='bulletproof'}
             }
           }
         
@@ -225,19 +365,54 @@ _local_game = {
             resistance = 6,
             intelligence = 3,
             agility = 3,
-            options = {
-              {
-                id = 1,
-                name = 'ak47',
-                cost = 50,
-                move = 0,
-                force = 0,
-                skill = 1,
-                resistance = 0,
-                fly = false,
-                use = 4,
-                quantity = 50
-              }
+            primary = {
+              id = 1,
+              name = 'Rifle estandard',
+              cost = 50,
+              damage = "10+2d6",
+              clip = 32,
+              total = 120,
+              vshort = 10,
+              vshort_bonus = 0,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 1,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = "-1d4"
+            },
+            secondary = {
+              id = 2,
+              name = 'Accesorio lanzagranadas',
+              cost = 70,
+              damage = "6+4d8",
+              clip = 1,
+              total = 2,
+              vshort = 10,
+              vshort_bonus = -1,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 0,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = 0
+            },
+            characteristics = {
+              {name='runner',level=1}
+            },
+            habilities = {
+              {name='run',level=1}
+            },
+            equip = {
+              {name='bulletproof'}
             }
           },
           {
@@ -255,19 +430,54 @@ _local_game = {
             resistance = 6,
             intelligence = 3,
             agility = 3,
-            options = {
-              {
-                id = 1,
-                name = 'ak47',
-                cost = 50,
-                move = 0,
-                force = 0,
-                skill = 1,
-                resistance = 0,
-                fly = false,
-                use = 4,
-                quantity = 50
-              }
+            primary = {
+              id = 1,
+              name = 'Rifle estandard',
+              cost = 50,
+              damage = "10+2d6",
+              clip = 32,
+              total = 120,
+              vshort = 10,
+              vshort_bonus = 0,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 1,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = "-1d4"
+            },
+            secondary = {
+              id = 2,
+              name = 'Accesorio lanzagranadas',
+              cost = 70,
+              damage = "6+4d8",
+              clip = 1,
+              total = 2,
+              vshort = 10,
+              vshort_bonus = -1,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 0,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = 0
+            },
+            characteristics = {
+              {name='runner',level=1}
+            },
+            habilities = {
+              {name='run',level=1}
+            },
+            equip = {
+              {name='bulletproof'}
             }
           },
           {
@@ -285,19 +495,54 @@ _local_game = {
             resistance = 6,
             intelligence = 3,
             agility = 3,
-            options = {
-              {
-                id = 1,
-                name = 'ak47',
-                cost = 50,
-                move = 0,
-                force = 0,
-                skill = 1,
-                resistance = 0,
-                fly = false,
-                use = 4,
-                quantity = 50
-              }
+            primary = {
+              id = 1,
+              name = 'Rifle estandard',
+              cost = 50,
+              damage = "10+2d6",
+              clip = 32,
+              total = 120,
+              vshort = 10,
+              vshort_bonus = 0,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 1,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = "-1d4"
+            },
+            secondary = {
+              id = 2,
+              name = 'Accesorio lanzagranadas',
+              cost = 70,
+              damage = "6+4d8",
+              clip = 1,
+              total = 2,
+              vshort = 10,
+              vshort_bonus = -1,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 0,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = 0
+            },
+            characteristics = {
+              {name='runner',level=1}
+            },
+            habilities = {
+              {name='run',level=1}
+            },
+            equip = {
+              {name='bulletproof'}
             }
           },
           {
@@ -315,19 +560,54 @@ _local_game = {
             resistance = 6,
             intelligence = 3,
             agility = 3,
-            options = {
-              {
-                id = 1,
-                name = 'ak47',
-                cost = 50,
-                move = 0,
-                force = 0,
-                skill = 1,
-                resistance = 0,
-                fly = false,
-                use = 4,
-                quantity = 50
-              }
+            primary = {
+              id = 1,
+              name = 'Rifle estandard',
+              cost = 50,
+              damage = "10+2d6",
+              clip = 32,
+              total = 120,
+              vshort = 10,
+              vshort_bonus = 0,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 1,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = "-1d4"
+            },
+            secondary = {
+              id = 2,
+              name = 'Accesorio lanzagranadas',
+              cost = 70,
+              damage = "6+4d8",
+              clip = 1,
+              total = 2,
+              vshort = 10,
+              vshort_bonus = -1,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 0,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = 0
+            },
+            characteristics = {
+              {name='runner',level=1}
+            },
+            habilities = {
+              {name='run',level=1}
+            },
+            equip = {
+              {name='bulletproof'}
             }
           },
           {
@@ -345,19 +625,54 @@ _local_game = {
             resistance = 6,
             intelligence = 3,
             agility = 3,
-            options = {
-              {
-                id = 1,
-                name = 'ak47',
-                cost = 50,
-                move = 0,
-                force = 0,
-                skill = 1,
-                resistance = 0,
-                fly = false,
-                use = 4,
-                quantity = 50
-              }
+            primary = {
+              id = 1,
+              name = 'Rifle estandard',
+              cost = 50,
+              damage = "10+2d6",
+              clip = 32,
+              total = 120,
+              vshort = 10,
+              vshort_bonus = 0,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 1,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = "-1d4"
+            },
+            secondary = {
+              id = 2,
+              name = 'Accesorio lanzagranadas',
+              cost = 70,
+              damage = "6+4d8",
+              clip = 1,
+              total = 2,
+              vshort = 10,
+              vshort_bonus = -1,
+              vshort_damage = 0,
+              short = 30,
+              short_bonus = 0,
+              short_damage = 0,
+              long = 60,
+              long_bonus = 0,
+              long_damage = 0,
+              vlong = 90,
+              vlong_bonus = -2,
+              vlong_damage = 0
+            },
+            characteristics = {
+              {name='runner',level=1}
+            },
+            habilities = {
+              {name='run',level=1}
+            },
+            equip = {
+              {name='bulletproof'}
             }
           }
 
