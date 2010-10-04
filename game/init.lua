@@ -1,9 +1,9 @@
-elf.SetTitle("iconblood alpha1")
+SetTitle("iconblood alpha1")
 dofile("includes.lua")
-elf.SetFpsLimit(50)
+SetFpsLimit(50)
 -- create and set a gui
-gui = elf.CreateGui()
-elf.SetGui(gui)
+gui = CreateGui()
+SetGui(gui)
 
 loader = Loader('../resources','load.png','fonts/default.ttf',gui,'loader_bg.png','loader_fg.png')
 loader:batch({
@@ -53,27 +53,27 @@ local initime
 
 loader:addEvents({
   inibatch=function(args)
-    initime = elf.GetTime()
+    initime = GetTime()
   end,
   endbatch=function(args)
-    print((elf.GetTime()-initime).."sg [Assets loading]")
+    print((GetTime()-initime).."sg [Assets loading]")
   end
 })
 
 dofile("example.ibg.lua")
 game = Game(_local_game,gui,loader)
 
-fps_counter = ElfObject(elf.LABEL,'fps_counter',{Font = loader._default_font,parent=gui})
+fps_counter = ElfObject(LABEL,'fps_counter',{Font = loader._default_font,parent=gui})
 
-print(elf.GetTime().."sg [To main loop]")
-while elf.Run() == true do
+print(GetTime().."sg [To main loop]")
+while Run() == true do
   if game:running() then
     game:fireEvent('onframe',{game})
   end
   -- for setTimeout
   setTimeoutLaunch()
-  if elf.GetKeyState(elf.KEY_ESC) == elf.PRESSED then elf.Quit() end
-  fps_counter:set('Text','FPS: '..elf.GetFps())
+  if GetKeyState(KEY_ESC) == PRESSED then Quit() end
+  fps_counter:set('Text','FPS: '..GetFps())
 end
 
 -- end of file

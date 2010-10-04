@@ -1,12 +1,12 @@
 ProgressBar = class('ProgressBar', ElfObject)
 
 function ProgressBar:initialize(parent,name,bg,fg)
-  super.initialize(self,elf.SCREEN,name,{Position={0,0},Texture=bg})
+  super.initialize(self,SCREEN,name,{Position={0,0},Texture=bg})
   self:addTo(parent)
   self._parent = parent
   self._max = 1
   self._current = 0.5
-  self._bar = ElfObject(elf.PICTURE,name..'_bar',{Texture=fg})
+  self._bar = ElfObject(PICTURE,name..'_bar',{Texture=fg})
   self._bar:addTo(self)
   self:update()
 end
@@ -35,7 +35,7 @@ function ProgressBar:current(...)
 end
 
 function ProgressBar:update()
-  local w = elf.GetTextureWidth(self._bar:get('Texture'))
+  local w = GetTextureWidth(self._bar:get('Texture'))
   self._bar:set('Position',-w+w*self._current/self._max,0)
 end
 

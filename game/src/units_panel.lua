@@ -1,12 +1,12 @@
 UnitsPanel = class('UnitsPanel', ElfObject)
 
 function UnitsPanel:initialize(parent,x,ubg,select,mbg,mfg,lbg,lfg)
-  self._width = elf.GetWindowWidth()-x-10
-  self._height = elf.GetTextureHeight(ubg)
-  self._bg_pic = elf.CreateEmptyImage(self._width,self._height,24)
-  self._bg_tex = elf.CreateTextureFromImage(self._bg_pic)
-  super.initialize(self,elf.SCREEN,'units_panel',{Texture=self._bg_tex,Color={1,1,1,0.37}})
-  self:set('Position',x,elf.GetWindowHeight()-self._height)
+  self._width = GetWindowWidth()-x-10
+  self._height = GetTextureHeight(ubg)
+  self._bg_pic = CreateEmptyImage(self._width,self._height,24)
+  self._bg_tex = CreateTextureFromImage(self._bg_pic)
+  super.initialize(self,SCREEN,'units_panel',{Texture=self._bg_tex,Color={1,1,1,0.37}})
+  self:set('Position',x,GetWindowHeight()-self._height)
   self:addTo(parent)
   self._units = nil
   self._panels = {}
@@ -27,7 +27,7 @@ function UnitsPanel:update()
         self._panels[cont]:set('Visible',true)
       else
         self._panels[cont] = MiniPanel(self,self._ubg,self._select,self._mbg,self._mfg,self._lbg,self._lfg)
-        self._panels[cont]:set('Position',elf.GetTextureWidth(self._ubg)*(cont-1),0)
+        self._panels[cont]:set('Position',GetTextureWidth(self._ubg)*(cont-1),0)
       end
       cont = cont + 1
     end)

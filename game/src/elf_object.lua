@@ -2,13 +2,13 @@ ElfObject = class('ElfObject')
 ElfObject:includes(EventDispatcher)
 -- mapping the world!
 ElfObject.__m = {}
-ElfObject.__m[elf.SCREEN] = {n="Screen",t={'GuiObject'},f={}}
-ElfObject.__m[elf.PICTURE] = {n="Picture",t={'GuiObject'},f={}}
-ElfObject.__m[elf.TEXT_FIELD] = {n="TextField",t={'GuiObject'},f={}}
-ElfObject.__m[elf.TEXT_LIST] = {n="TextList",t={'GuiObject'},f={}}
-ElfObject.__m[elf.BUTTON] = {n="Button",t={'GuiObject'},f={}}
-ElfObject.__m[elf.LABEL] = {n="Label",t={'GuiObject'},f={}}
-ElfObject.__m[elf.ENTITY] = {n="Entity",t={'Actor'},f={}}
+ElfObject.__m[SCREEN] = {n="Screen",t={'GuiObject'},f={}}
+ElfObject.__m[PICTURE] = {n="Picture",t={'GuiObject'},f={}}
+ElfObject.__m[TEXT_FIELD] = {n="TextField",t={'GuiObject'},f={}}
+ElfObject.__m[TEXT_LIST] = {n="TextList",t={'GuiObject'},f={}}
+ElfObject.__m[BUTTON] = {n="Button",t={'GuiObject'},f={}}
+ElfObject.__m[LABEL] = {n="Label",t={'GuiObject'},f={}}
+ElfObject.__m[ENTITY] = {n="Entity",t={'Actor'},f={}}
 ElfObject.__m["Object"] = {n="Object",t={},f={}}
 ElfObject.__m["GuiObject"] = {n="GuiObject",t={},f={}}
 ElfObject.__m["Actor"] = {n="Actor",t={},f={}}
@@ -25,9 +25,9 @@ ElfObject.__esp = {
         local get = self:get('Position')
         get[prop] = val
         local a = {}
-        if get.x then a[#a+1] =  get.x end
-        if get.y then a[#a+1] =  get.y end
-        if get.z then a[#a+1] =  get.z end
+        if type(get.x)=='number' then a[#a+1] =  get.x end
+        if type(get.y)=='number' then a[#a+1] =  get.y end
+        if type(get.z)=='number' then a[#a+1] =  get.z end
         self:set('Position',unpack(a))
       end
     end
@@ -64,7 +64,7 @@ for k,v in pairs(ElfObject.__m) do
   ElfObject.__m[k].r = "^[S|G]et"..v.n
   table.insert(ElfObject.__m[k].t,'Object')
 end
-for k,v in pairs(elf) do
+for k,v in pairs(_G) do
   if type(v)=='function' then
     for k2,v2 in pairs(ElfObject.__m) do
       if string.find(k,v2.r) then
@@ -80,7 +80,7 @@ function ElfObject:initialize(obj,...)
     self._elf_obj = obj
     name = self:get('Name')
   else
-    self._elf_obj = elf["Create"..ElfObject.__m[obj].n](arg[1])
+    self._elf_obj = _G["Create"..ElfObject.__m[obj].n](arg[1])
     if #arg==2 then
       self:sets(arg[2])
     end
@@ -96,7 +96,7 @@ function ElfObject.find(name)
 end
 
 function ElfObject:method(t,prop)
-  local tp = ElfObject.__m[elf.GetObjectType(self._elf_obj)]
+  local tp = ElfObject.__m[GetObjectType(self._elf_obj)]
   local m = _.detect(tp.f,function(i) return string.find(i,t..tp.n..prop..'$') end)
   if m then
     return m
@@ -123,9 +123,9 @@ function ElfObject:set(prop,...)
     local func = self:method('Set',prop)
     if func then
       if type(...)=='table' then
-        elf[func](self._elf_obj,unpack(...))
+        _G[func](self._elf_obj,unpack(...))
       else
-        elf[func](self._elf_obj,...)
+        _G[func](self._elf_obj,...)
       end
       self:fireEvent('update:attributte',{obj=self,attr=prop})
     end
@@ -150,9 +150,9 @@ function ElfObject:get(prop,...)
   local func = self:method('Get',prop)
   if func then
     if ... and type(...)=='table' then
-      return elf[func](self._elf_obj,unpack(...))
+      return _G[func](self._elf_obj,unpack(...))
     else
-      return elf[func](self._elf_obj,...)
+      return _G[func](self._elf_obj,...)
     end
   end
 end
@@ -161,23 +161,27 @@ function ElfObject:selfAndParents()
   local ret = {}
   local cont = self
   while cont do
-    if cont._elf_obj then ret[#ret+1] = cont end
-    cont = cont._parent
+    if type(cont)=='table' then
+      if cont._elf_obj then ret[#ret+1] = cont end
+      cont = cont._parent
+    else
+      cont = nil
+    end
   end
   return ret
 end
 
 function ElfObject:addTo(parent)
   local passparent = parent
-  if parent and parent._elf_obj then
+  if parent and type(parent)=='table' and parent._elf_obj then
     parent = parent._elf_obj
   end
-  if _.include(ElfObject.__m[elf.GetObjectType(self._elf_obj)].t,'GuiObject') then
-    elf.AddGuiObject(parent,self._elf_obj)
-  elseif ElfObject.__m[elf.GetObjectType(self._elf_obj)].n=='Entity' then
-    elf.AddEntityToScene(parent,self._elf_obj)
+  if _.include(ElfObject.__m[GetObjectType(self._elf_obj)].t,'GuiObject') then
+    AddGuiObject(parent,self._elf_obj)
+  elseif ElfObject.__m[GetObjectType(self._elf_obj)].n=='Entity' then
+    AddSceneEntity(parent,self._elf_obj)
   else
-    print('Unknow add',ElfObject.__m[elf.GetObjectType(self._elf_obj)].n)
+    print('Unknow add',ElfObject.__m[GetObjectType(self._elf_obj)].n)
   end
   self._parent = passparent
 end

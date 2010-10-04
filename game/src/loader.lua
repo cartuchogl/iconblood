@@ -17,13 +17,13 @@ function Loader:initialize(path,img,font,gui,pbg,pfg)
   local fg = self:get('img',pfg).target
   local font = self:get('font',font).target
   
-  self._loader_gui = ElfObject(elf.SCREEN,"loader",{
+  self._loader_gui = ElfObject(SCREEN,"loader",{
     Texture = image,
     Visible = true,
     Color = {1.0, 1.0, 1.0, 0.95},
     Position = {
-      (elf.GetWindowWidth()-elf.GetTextureWidth(image))/2, 
-      (elf.GetWindowHeight()-elf.GetTextureHeight(image))/2
+      (GetWindowWidth()-GetTextureWidth(image))/2, 
+      (GetWindowHeight()-GetTextureHeight(image))/2
     }
   })
   self._loader_gui:addTo(gui)
@@ -44,24 +44,24 @@ end
 
 function Loader:_load_img(name,args)
   print("[Loader][img] "..self._path..'/'..name)
-  return elf.CreateTextureFromFile(self._path..'/'..name)
+  return CreateTextureFromFile(self._path..'/'..name)
 end
 
 function Loader:_load_font(name,args)
   print("[Loader][font] "..self._path..'/'..name)
-  return elf.CreateFontFromFile(self._path..'/'..name,args)
+  return CreateFontFromFile(self._path..'/'..name,args)
 end
 
 function Loader:_load_env(id,args)
   local path = findPath("../environments/","0*"..id.."_*.*").."/level.pak"
   print("[Loader][env] "..path)
-  return elf.CreateSceneFromFile(path)
+  return CreateSceneFromFile(path)
 end
 
 function Loader:_load_fac(id,args)
   local path = findPath("../factions/","0*"..id.."_*.*").."/units.pak"
   print("[Loader][fac] "..path)
-  return elf.CreateSceneFromFile(path)
+  return CreateSceneFromFile(path)
 end
 
 function Loader:_load_unit(name,args)
@@ -71,7 +71,7 @@ function Loader:_load_unit(name,args)
   table.insert(self._loading.img,path_img1)
   table.insert(self._loading.img,path_img2)
   print("[Loader][unit] "..path)
-  return elf.CreateSceneFromFile(path)
+  return CreateSceneFromFile(path)
 end
 
 function Loader:get(type,name)

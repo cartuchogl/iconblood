@@ -41,10 +41,10 @@ function Game:on_frame(args)
   self:cameraCheck()
   self:interaction()
   -- save a screenshot on F5
-  if elf.GetKeyState(elf.KEY_F5) == elf.PRESSED then
-    local name = "screenshot-"..os.time()..".png"
-    if elf.SaveScreenShot(name) == true then
-      print("screen shot saved to " .. elf.GetCurrentDirectory() .. "/"..name)
+  if GetKeyState(KEY_F5) == PRESSED then
+    local name = "screens/screenshot-"..os.time()..".png"
+    if SaveScreenShot(name) == true then
+      print("screen shot saved to " .. GetCurrentDirectory() .. "/"..name)
     end
   end
   self:update()
@@ -55,16 +55,16 @@ function Game:on_frame(args)
 end
 
 function Game:interaction()
-  local pos = elf.GetMousePosition()
+  local pos = GetMousePosition()
   self._lab_tooltip:sets({x=pos.x-14,y=pos.y-24})
-  local gui_trace = elf.GetGuiTrace(self._gui)
-  if elf.IsObject(gui_trace) then
-    local guiobj = ElfObject.find(elf.GetGuiObjectName(gui_trace))
+  local gui_trace = GetGuiTrace(self._gui)
+  if gui_trace and IsGuiObject(gui_trace) then
+    local guiobj = ElfObject.find(GetGuiObjectName(gui_trace))
     local new_pull = guiobj:selfAndParents()
     _.each(self._gui_pull,function(i) if not table.find(new_pull,i) then i:fireEvent('leave',{i}) end end)
     _.each(new_pull,function(i) if not table.find(self._gui_pull,i) then i:fireEvent('enter',{i}) end end)
     self._gui_pull = new_pull
-    if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
+    if GetMouseButtonState(BUTTON_LEFT) == PRESSED then
       self._gui_pull[1]:fireEvent('click',{self._last_click})
     end
   else
@@ -74,10 +74,10 @@ function Game:interaction()
     end
     local objs = get_objects_over_mouse(self._scene)
     if #objs > 0 then
-      if elf.GetMouseButtonState(elf.BUTTON_LEFT) == elf.PRESSED then
+      if GetMouseButtonState(BUTTON_LEFT) == PRESSED then
         local capture = false
         local names = _.map(objs,function(i) 
-          return(elf.GetActorName(elf.GetCollisionActor(i)))
+          return(GetActorName(GetCollisionActor(i)))
         end)
         local units = _.select(names,function(i) return string.match(i,"Unit\.(%d+)") end)
         if _.first(units) then
@@ -89,8 +89,8 @@ function Game:interaction()
         end
         if capture == false then
           names = _.map(objs,function(i) 
-            local a = elf.GetCollisionActor(i)
-            return({elf.GetActorName(a),a,i}) 
+            local a = GetCollisionActor(i)
+            return({GetActorName(a),a,i}) 
           end)
           local plane = _.select(names,function(i) return string.match(i[1],"Plane") end)[1]
           if plane then
@@ -99,8 +99,8 @@ function Game:interaction()
         end
       else
         names = _.map(objs,function(i) 
-          local a = elf.GetCollisionActor(i)
-          return({elf.GetActorName(a),a,i}) 
+          local a = GetCollisionActor(i)
+          return({GetActorName(a),a,i}) 
         end)
         local obj = _.select(names,function(i) 
           return string.match(i[1],"Unit") 
@@ -121,57 +121,57 @@ function Game:interaction()
 end
 
 function Game:cameraCheck()
-  local wheel = elf.GetMouseWheel()
-  if elf.GetKeyState(elf.KEY_UP) ~= elf.UP then
+  local wheel = GetMouseWheel()
+  if GetKeyState(KEY_UP) ~= UP then
     self._fix_wheel = self._fix_wheel+1
   end
-  if elf.GetKeyState(elf.KEY_DOWN) ~= elf.UP then
+  if GetKeyState(KEY_DOWN) ~= UP then
     self._fix_wheel = self._fix_wheel-1
   end
-  elf.MoveActorLocal(self._cam, 0.0, 0.0, (self._last_wheel-(wheel+self._fix_wheel))*self._key_move*4)
+  MoveActorLocal(self._cam, 0.0, 0.0, (self._last_wheel-(wheel+self._fix_wheel))*self._key_move*4)
   self._last_wheel = wheel+self._fix_wheel
   
-  local d = elf.GetActorOrientation(self._cam)
-  local orient = elf.GetActorOrientation(self._cam)
-  local dir = elf.MulQuaVec3f(orient, self._cam_dir)
+  local d = GetActorOrientation(self._cam)
+  local orient = GetActorOrientation(self._cam)
+  local dir = MulQuaVec3f(orient, self._cam_dir)
   local dir = normalize(dir, self._key_move)
   -- move camera across
-  if elf.GetKeyState(elf.KEY_W) ~= elf.UP then
-    elf.MoveActor(self._cam, dir.x, dir.y, 0.0)
+  if GetKeyState(KEY_W) ~= UP then
+    MoveActor(self._cam, dir.x, dir.y, 0.0)
   end
-  if elf.GetKeyState(elf.KEY_S) ~= elf.UP then
-    elf.MoveActor(self._cam, -dir.x, -dir.y, 0.0)
+  if GetKeyState(KEY_S) ~= UP then
+    MoveActor(self._cam, -dir.x, -dir.y, 0.0)
   end
-  if elf.GetKeyState(elf.KEY_A) ~= elf.UP then
-    elf.MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0)
+  if GetKeyState(KEY_A) ~= UP then
+    MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0)
   end
-  if elf.GetKeyState(elf.KEY_D) ~= elf.UP then
-    elf.MoveActorLocal(self._cam, self._key_move, 0.0, 0.0)
+  if GetKeyState(KEY_D) ~= UP then
+    MoveActorLocal(self._cam, self._key_move, 0.0, 0.0)
   end
     
   -- move with borders on fullscreen
-  if elf.IsFullscreen() then
-    local pos = elf.GetMousePosition()
-    if pos.x == 0 then elf.MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0) end
+  if IsFullscreen() then
+    local pos = GetMousePosition()
+    if pos.x == 0 then MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0) end
     if pos.x == elf.GetWindowWidth()-1 then 
-      elf.MoveActorLocal(self._cam, self._key_move, 0.0, 0.0) 
+      MoveActorLocal(self._cam, self._key_move, 0.0, 0.0) 
     end
-    if pos.y == 0 then elf.MoveActor(self._cam, dir.x, dir.y, 0.0) end
-    if pos.y == elf.GetWindowHeight()-1 then elf.MoveActor(self._cam, -dir.x, -dir.y, 0.0) end
+    if pos.y == 0 then MoveActor(self._cam, dir.x, dir.y, 0.0) end
+    if pos.y == GetWindowHeight()-1 then MoveActor(self._cam, -dir.x, -dir.y, 0.0) end
   end
 
   -- rotate the camera
-  if elf.GetMouseButtonState(2) == elf.DOWN then
-    local mf = elf.GetMouseForce()
+  if GetMouseButtonState(2) == DOWN then
+    local mf = GetMouseForce()
     self._imfx = (self._imfx*2.0+mf.x)/4.0
-    elf.RotateActor(self._cam, 0.0, 0.0, -self._imfx*10.0)
+    RotateActor(self._cam, 0.0, 0.0, -self._imfx*10.0)
   end
   
-  if elf.GetKeyState(elf.KEY_LEFT) ~= elf.UP then
-    elf.RotateActor(self._cam, 0.0, 0.0, self._key_move*10.0)
+  if GetKeyState(KEY_LEFT) ~= UP then
+    RotateActor(self._cam, 0.0, 0.0, self._key_move*10.0)
   end
-  if elf.GetKeyState(elf.KEY_RIGHT) ~= elf.UP then
-    elf.RotateActor(self._cam, 0.0, 0.0, -self._key_move*10.0)
+  if GetKeyState(KEY_RIGHT) ~= UP then
+    RotateActor(self._cam, 0.0, 0.0, -self._key_move*10.0)
   end
 end
 
@@ -179,15 +179,12 @@ function Game:on_loader_end(args)
   self:loadEnvironment()
   self:loadUnits()
   setTimeout(function() self._loader._loader_gui:set('Visible',false) end,800)
-
   -- get the camera for camera movement
-  self._cam = elf.GetSceneActiveCamera(self._scene)
+  self._cam = GetSceneActiveCamera(self._scene)
 
   -- set camera to detect objects
   set_camera(self._cam)
-
   self:start()
-
   self._turn_panel = TurnPanel(self._gui,
     self._loader:get('img','rect2817.png').target,
     self._loader:get('font','fonts/big.ttf').target,
@@ -196,12 +193,10 @@ function Game:on_loader_end(args)
     self._loader:get('img','end_turn_on.png').target,
     self._round
   )
-  
   self._current_unit_panel = CurrentPanel(self._gui,
     self._loader:get('img',"current_bg.png").target,
     self._loader:get('font','fonts/medium.ttf').target,
   nil)
-  
   self._current_squadron_panel = UnitsPanel(self._gui,154,--self._current_unit_panel:get('Size').x+10,
     self._loader:get('img',"mini_panel.png").target,
     self._loader:get('img',"select_mini_panel.png").target,
@@ -210,19 +205,16 @@ function Game:on_loader_end(args)
     self._loader:get('img',"life_mini_progress_bg.png").target,
     self._loader:get('img',"life_mini_progress.png").target
   )
-  
-  self._lab_tooltip = ElfObject(elf.LABEL,"lab_tooltip",{
+  self._lab_tooltip = ElfObject(LABEL,"lab_tooltip",{
     Font = self._loader:get('font','fonts/big.ttf').target,
     x = 270,
     y = 10,
     Text = ''
   })
   self._lab_tooltip:addTo(self._gui)
-
   self._last_wheel = 0
 
-  self._cam_dir = elf.CreateVec3f()
-  self._cam_dir.z = -1000.0
+  self._cam_dir = CreateVec3f(0,0,-1000)
   self._key_move = 12.0
   self._imfx = 0
 end
@@ -251,12 +243,12 @@ function Game:on_selected_unit(args)
           s = 100*v*s
           if s > 0 then
             cu:seeTo(args[1]:get('x'),args[1]:get('y'))
-            elf.PlayEntityArmature(cu._elf_obj,375,384,25)
+            PlayEntityArmature(cu._elf_obj,375,384,25)
             cu.action = 'fire'
             local dice = math.random(100)
             if dice <= s then
               args[1]:seeTo(cu:get('x'),cu:get('y'))
-              elf.PlayEntityArmature(args[1]._elf_obj,651,671,25)
+              PlayEntityArmature(args[1]._elf_obj,651,671,25)
               local damage = cu.current_weapon:damage_fire(l)
               args[1]._pv = args[1]._pv-damage
               if args[1]._pv < 0 then args[1]._pv = 0 end
@@ -264,6 +256,8 @@ function Game:on_selected_unit(args)
             else
               print("("..dice..")Fail")
             end
+          else
+            print('could not target')
           end
         end
       end
@@ -276,7 +270,7 @@ end
 function Game:on_plane(args)
   print("onplane")
   if self._current_unit then
-    local v = elf.GetCollisionPosition(args[1])
+    local v = GetCollisionPosition(args[1])
     if self._current_unit:canBe(v.x,v.y) then
       local x = v.x-self._current_unit:get('x')
       local y = v.y-self._current_unit:get('y')
@@ -296,11 +290,11 @@ function Game:on_plane(args)
           time = cost/8,
           transition = 'linear',
           onComplete=function()
-            elf.StopEntityArmature(unit._elf_entity)
-            elf.SetEntityArmatureFrame(unit._elf_entity,1)
+            StopEntityArmature(unit._elf_entity)
+            SetEntityArmatureFrame(unit._elf_entity,1)
           end,
           onStart=function()
-            elf.LoopEntityArmature(unit._elf_entity,580,595,25)
+            LoopEntityArmature(unit._elf_entity,580,595,25)
           end
         })
       end
@@ -312,7 +306,7 @@ end
 function Game:on_over_object(args)
   if instanceOf(Game,args[1]) then
     if self._current_unit then
-      local v = elf.GetCollisionPosition(args[2])
+      local v = GetCollisionPosition(args[2])
       if self._current_unit:canBe(v.x,v.y) then
         local x = v.x-self._current_unit:get('x')
         local y = v.y-self._current_unit:get('y')
@@ -353,8 +347,8 @@ end
 
 function Game:on_over(args)
   local col = args[1]
-  local actor = elf.GetCollisionActor(col)
-  local name = elf.GetActorName(actor)
+  local actor = GetCollisionActor(col)
+  local name = GetActorName(actor)
   local new_current = nil
   if string.match(name,"Plane") then
     new_current = self
@@ -375,11 +369,11 @@ end
 
 function Game:loadEnvironment()
   self._scene = self._loader:get('env',self.environment).target
-  elf.SetScene(self._scene)
-  elf.SetSceneAmbientColor(self._scene,0.25,0.25,0.45,1.0)
-  self._plane = elf.GetEntityByName(self._scene,'Plane') 
-  local kk = elf.GetActorBoundingLengths(self._plane)
-  local ss = elf.GetEntityScale(self._plane)
+  SetScene(self._scene)
+  SetSceneAmbientColor(self._scene,0.25,0.25,0.45,1.0)
+  self._plane = GetSceneEntity(self._scene,'Plane') 
+  local kk = GetActorBoundingLengths(self._plane)
+  local ss = GetEntityScale(self._plane)
   self._resolution = { x = ss.x*kk.x, y = ss.y*kk.y }
   return self._scene
 end
@@ -441,7 +435,7 @@ function Game:visibility(from,to)
     local kk = {x=i.x+to:get('x'),y=i.y+to:get('y'),z=i.z}
     local tmp = from:rayWithoutMe(orig,kk)
     tmp = _.reject(tmp,function(i) 
-      local aa = elf.GetActorName(elf.GetCollisionActor(i))
+      local aa = GetActorName(GetCollisionActor(i))
       aa=aa=="Unit."..to.id or aa=="StandMax."..to.id
       return aa
     end)

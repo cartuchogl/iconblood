@@ -22,16 +22,16 @@ end
 
 -- return current game time in ms
 function getTime()
-  return math.ceil(elf.GetTime()*1000)
+  return math.ceil(GetTime()*1000)
 end
 
 -- if found expreg in directory on path return full path otherside return false
 function findPath(path,expreg)
-  local kk = elf.ReadDirectory(path)
-  local l = elf.GetDirectoryItemCount(kk)
+  local kk = ReadDirectory(path)
+  local l = GetDirectoryItemCount(kk)
   for i = 0,l-1 do
-    local object = elf.GetDirectoryItem(kk, i)
-    local name = elf.GetDirectoryItemName(object)
+    local object = GetDirectoryItem(kk, i)
+    local name = GetDirectoryItemName(object)
     if string.byte(name) ~= string.byte(".") then
       if string.match(name,expreg) then
         return path..name
@@ -58,9 +58,9 @@ end
 -- return a ElfList as lua array
 function array_from_list(list)
   ret = {}
-  if elf.IsObject(list) and elf.GetListLength(list) > 0 then
-    for i = 0,elf.GetListLength(list)-1 do
-      ret[i+1] = elf.GetItemFromList(list,i)
+  if list and GetListLength(list) > 0 then
+    for i = 0,GetListLength(list)-1 do
+      ret[i+1] = GetListObject(list,i)
     end
   end
   return ret
@@ -68,7 +68,7 @@ end
 
 -- normalize elf_vec3f, if pass a second param then return the vector scaled to that length
 function normalize(v,size)
-  local n = elf.CreateVec3f()
+  local n = CreateVec3f(0,0,0)
   local a = math.sqrt(v.x*v.x+v.y*v.y+v.z*v.z)
   if size then
     q = size
@@ -97,50 +97,50 @@ end
 
 -- return a copy of entity
 function duplicate_entity(ent,new_name)
-  local scale =  elf.GetEntityScale(ent)
-  local ret = elf.CreateEntity(new_name)
-  local armature = elf.GetEntityArmature(ent)
-  elf.SetEntityModel(ret,elf.GetEntityModel(ent))
-  if elf.IsObject(armature) then elf.SetEntityArmature(ret,armature) end
-  for i=0,elf.GetEntityMaterialCount(ent)-1 do
-    elf.SetEntityMaterial(ret,i,elf.GetEntityMaterial(ent,i))
+  local scale =  GetEntityScale(ent)
+  local ret = CreateEntity(new_name)
+  local armature = GetEntityArmature(ent)
+  SetEntityModel(ret,GetEntityModel(ent))
+  if armature then SetEntityArmature(ret,armature) end
+  for i=0,GetEntityMaterialCount(ent)-1 do
+    SetEntityMaterial(ret,i,GetEntityMaterial(ent,i))
   end
-  elf.SetEntityScale(ret, scale.x, scale.y, scale.z)
-  elf.SetEntityPhysics(ret,elf.GetActorShape(ent),elf.GetActorMass(ent))
+  SetEntityScale(ret, scale.x, scale.y, scale.z)
+  SetEntityPhysics(ret,GetActorShape(ent),GetActorMass(ent))
   return ret
 end
 
 -- return a copy of material
 function duplicate_material(mat,new_name)
-  local ret = elf.CreateMaterial(new_name)
-  local d = elf.GetMaterialDiffuseColor( mat )
-  local s = elf.GetMaterialSpecularColor( mat )
-  local a = elf.GetMaterialAmbientColor( mat )
-  local power = elf.GetMaterialSpecularPower( mat )
-  local lighting = elf.GetMaterialLighting( mat )
+  local ret = CreateMaterial(new_name)
+  local d = GetMaterialDiffuseColor( mat )
+  local s = GetMaterialSpecularColor( mat )
+  local a = GetMaterialAmbientColor( mat )
+  local power = GetMaterialSpecularPower( mat )
+  local lighting = GetMaterialLighting( mat )
   
-  elf.SetMaterialDiffuseColor( ret, d.r, d.g, d.b, d.a )
-  elf.SetMaterialSpecularColor( ret, s.r, s.g, s.b, s.a )
-  elf.SetMaterialAmbientColor( ret, a.r, a.g, a.b, a.a )
-  elf.SetMaterialSpecularPower( ret, power )
-  elf.SetMaterialLighting( ret, lighting )
+  SetMaterialDiffuseColor( ret, d.r, d.g, d.b, d.a )
+  SetMaterialSpecularColor( ret, s.r, s.g, s.b, s.a )
+  SetMaterialAmbientColor( ret, a.r, a.g, a.b, a.a )
+  SetMaterialSpecularPower( ret, power )
+  SetMaterialLighting( ret, lighting )
   
-  local difusse = elf.GetMaterialDiffuseMap(mat)
-  if elf.IsObject(difusse) then
-    elf.SetMaterialDiffuseMap(ret,difusse)
+  local difusse = GetMaterialDiffuseMap(mat)
+  if difusse then
+    SetMaterialDiffuseMap(ret,difusse)
   end
   return ret
 end
 
 -- set camera perspective for detect objects
 function set_camera(cam)
-  if elf.IsObject(cam) == true then
-    local fov = elf.GetCameraFov(cam)
-    local aspect = elf.GetCameraAspect(cam)
-    local clip = elf.GetCameraClip(cam)
+  if cam then
+    local fov = GetCameraFov(cam)
+    local aspect = GetCameraAspect(cam)
+    local clip = GetCameraClip(cam)
     if clip.x < 0.0001 then clip.x = 0.0001 end
     if clip.y < 100.0 then clip.y = 100.0 end
-    elf.SetCameraPerspective(cam, fov, aspect, clip.x, clip.y)
+    SetCameraPerspective(cam, fov, aspect, clip.x, clip.y)
   end
 end
 
@@ -148,30 +148,30 @@ end
 function get_objects_over_mouse(scn)
 
   -- get active camero from passed scene
-  local camera = elf.GetSceneActiveCamera(scn)
+  local camera = GetSceneActiveCamera(scn)
   
   -- get the ray starting position
-  local raystart = elf.GetActorPosition(camera)
+  local raystart = GetActorPosition(camera)
 
   -- next we calculate the end position of the ray
-  local mouse_pos = elf.GetMousePosition()
-  local wwidth = elf.GetWindowWidth()
-  local wheight = elf.GetWindowHeight()
-  local clip = elf.GetCameraClip(camera)
-  local fpsize = elf.GetCameraFarPlaneSize(camera)
+  local mouse_pos = GetMousePosition()
+  local wwidth = GetWindowWidth()
+  local wheight = GetWindowHeight()
+  local clip = GetCameraClip(camera)
+  local fpsize = GetCameraFarPlaneSize(camera)
 
-  local rayend = elf.CreateVec3f()
+  local rayend = CreateVec3f(0,0,0)
   rayend.x = mouse_pos.x/wwidth*fpsize.x-fpsize.x/2
   rayend.y = (wheight-mouse_pos.y)/wheight*fpsize.y-fpsize.y/2
   rayend.z = -clip.y
 
   -- now we have the end position of the ray, but we still have to positon and orient it according 
   -- to the camera
-  local orient = elf.GetActorOrientation(camera)
-  rayend = elf.MulQuaVec3f(orient, rayend)
-  rayend = elf.AddVec3fVec3f(raystart, rayend)
+  local orient = GetActorOrientation(camera)
+  rayend = MulQuaVec3f(orient, rayend)
+  rayend = AddVec3fVec3f(raystart, rayend)
   -- perform raycast
-  local col = elf.GetSceneRayCastResults(scn, 
+  local col = GetSceneRayCastResults(scn, 
     raystart.x, raystart.y, raystart.z,
     rayend.x,   rayend.y,   rayend.z
   )

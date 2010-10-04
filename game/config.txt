@@ -1,4 +1,4 @@
-window_size 1024 720
+windowSize 1100 600
 fullscreen FALSE
-texture_anisotropy 1.0
-shadow_map_size 512
+textureAnisotropy 1.0
+shadowMapSize 256

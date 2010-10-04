@@ -1,22 +1,24 @@
 CurrentPanel = class('CurrentPanel', ElfObject)
 
 function CurrentPanel:initialize(parent,bg,font,unit)
-  local y = elf.GetWindowHeight()-elf.GetTextureHeight(bg)
-  super.initialize(self,elf.SCREEN,'current_panel',{Position={0,y},Texture=bg})
+  local y = GetWindowHeight()-GetTextureHeight(bg)
+  super.initialize(self,SCREEN,'current_panel',{Position={0,y},Texture=bg})
   self:addTo(parent)
   self._unit = unit
   
-  self.lab_level = ElfObject(elf.LABEL,"lab_level",{Font = font,Text = 'level'})
-  self.lab_name = ElfObject(elf.LABEL,"lab_name",{Font = font,Text = 'name',Color={0.22,1,0.53,1}})
-  self.lab_cost = ElfObject(elf.LABEL,"lab_cost",{Font = font,Text = 'cost'})
-  self.lab_move = ElfObject(elf.LABEL,"lab_move",{Font = font,Text = 'move'})
-  self.lab_attr = ElfObject(elf.LABEL,"lab_attr",{Font = font,Text = 'attr'})
-  self._picture = ElfObject(elf.PICTURE,'large_pic',{Position={10,6}})
+  self.lab_level = ElfObject(LABEL,"lab_level",{Font = font,Text = 'level'})
+  self.lab_name = ElfObject(LABEL,"lab_name",{Font = font,Text = 'name',Color={0.22,1,0.53,1}})
+  self.lab_cost = ElfObject(LABEL,"lab_cost",{Font = font,Text = 'cost'})
+  self.lab_move = ElfObject(LABEL,"lab_move",{Font = font,Text = 'move'})
+  self.lab_attr = ElfObject(LABEL,"lab_attr",{Font = font,Text = 'attr'})
+  self._picture = ElfObject(PICTURE,'large_pic',{Position={10,6}})
   self._picture:addTo(self)
-  self._picture_action = ElfObject(elf.PICTURE,'current_action_pic',{Position={118,7},Texture=game._loader:get('img','action.png').target})
+  self._picture_action = ElfObject(PICTURE,'current_action_pic',{
+    Position={118,7},Texture=game._loader:get('img','action.png').target
+  })
   self._picture_action:addTo(self)
     
-  self._button_chars = ElfObject(elf.BUTTON,"btn_chars",{
+  self._button_chars = ElfObject(BUTTON,"btn_chars",{
     OffTexture = game._loader:get('img','chars.png').target,
     OverTexture = game._loader:get('img','chars_over.png').target,
     OnTexture = game._loader:get('img','chars_on.png').target,
@@ -24,7 +26,7 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   })
   self._button_chars:addTo(self)
   
-  self._button_habs = ElfObject(elf.BUTTON,"btn_habs",{
+  self._button_habs = ElfObject(BUTTON,"btn_habs",{
     OffTexture = game._loader:get('img','habs.png').target,
     OverTexture = game._loader:get('img','habs_over.png').target,
     OnTexture = game._loader:get('img','habs_on.png').target,
@@ -32,7 +34,7 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   })
   self._button_habs:addTo(self)
   
-  self._button_inv = ElfObject(elf.BUTTON,"btn_inv",{
+  self._button_inv = ElfObject(BUTTON,"btn_inv",{
     OffTexture = game._loader:get('img','inv.png').target,
     OverTexture = game._loader:get('img','inv_over.png').target,
     OnTexture = game._loader:get('img','inv_on.png').target,
@@ -54,7 +56,7 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   game._loader:get('img','weapon_select.png').target)
   self.secondary_panel:set('Position',{9,197})
   
-  self._null_tex = elf.CreateTextureFromImage(elf.CreateEmptyImage(128,128,8))
+  self._null_tex = CreateTextureFromImage(CreateEmptyImage(128,128,8))
 
   local tmp_y = 0
   _.each({

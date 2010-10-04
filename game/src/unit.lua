@@ -38,9 +38,9 @@ end
 
 function Unit:visibilityPoints()
   -- FIXME: better points
-  local model = elf.GetEntityModel(self._elf_stand._elf_obj)
-  local min = elf.GetModelBoundingBoxMin(model)
-  local max = elf.GetModelBoundingBoxMax(model)
+  local model = GetEntityModel(self._elf_stand._elf_obj)
+  local min = GetModelBoundingBoxMin(model)
+  local max = GetModelBoundingBoxMax(model)
   local s = self._elf_stand:get('Scale')
   local height = self:modelHeight()
   -- harcoding the life ;)
@@ -56,31 +56,31 @@ function Unit:visibilityPoints()
 end
 
 function Unit:modelHeight()
-  local model = elf.GetEntityModel(self._elf_obj)
-  local min = elf.GetModelBoundingBoxMin(model)
-  local max = elf.GetModelBoundingBoxMax(model)
+  local model = GetEntityModel(self._elf_obj)
+  local min = GetModelBoundingBoxMin(model)
+  local max = GetModelBoundingBoxMax(model)
   local s = self:get('Scale')
   return math.max(min.z*s.z+self:get('z'),max.z*s.z+self:get('z'))
 end
 
 function Unit:seePoint()
   -- FIXME: center?
-  local model = elf.GetEntityModel(self._elf_stand._elf_obj)
-  local min = elf.GetModelBoundingBoxMin(model)
-  local max = elf.GetModelBoundingBoxMax(model)
+  local model = GetEntityModel(self._elf_stand._elf_obj)
+  local min = GetModelBoundingBoxMin(model)
+  local max = GetModelBoundingBoxMax(model)
   local s = self._elf_stand:get('Scale')
   local height = self:modelHeight()
   return {x=(min.x+max.x)/2*s.x,y=(min.y+max.x)/2*s.y,z=height}
 end
 
 function Unit:rayWithoutMe(ini,fin)
-  local cols = elf.GetSceneRayCastResults(self._scene,
+  local cols = GetSceneRayCastResults(self._scene,
     ini.x, ini.y, ini.z,
     fin.x, fin.y, fin.z
   )
   local ret = array_from_list(cols)
   local tmp = _.reject(ret,function(i) 
-    local aa = elf.GetActorName(elf.GetCollisionActor(i))
+    local aa = GetActorName(GetCollisionActor(i))
     aa=aa=="Unit."..self.id or aa=="StandMax."..self.id
     return aa
   end)
@@ -119,7 +119,7 @@ function Unit:loadElfObjects(pak,scene)
   self._unit_pak = pak
   self._scene = scene
   self._elf_entity = duplicate_entity(
-    elf.GetEntityByName(self._unit_pak, 'unit'),
+    GetSceneEntity(self._unit_pak, 'unit'),
     "Unit."..self.id
   )
   -- FIXME: temporal hack for model
@@ -130,14 +130,14 @@ function Unit:loadElfObjects(pak,scene)
   -- })
   self._elf_obj = self._elf_entity
   self._elf_stand = ElfObject(duplicate_entity(
-    elf.GetEntityByName(self._unit_pak, "stand"),
+    GetSceneEntity(self._unit_pak, "stand"),
     'Stand.'..self.id
   ))
   self._elf_stand:set('Material',0,
     duplicate_material(self._elf_stand:get('Material',0),'Stand.'..self.id..'.Material')
   )
   self._elf_stand_max = ElfObject(duplicate_entity(
-    elf.GetEntityByName(self._unit_pak, "stand"),
+    GetSceneEntity(self._unit_pak, "stand"),
     'StandMax.'..self.id
   ))
   local path1 = 'factions/'..self.faction_name..'/'..self.name_unit..'.png'
@@ -169,7 +169,7 @@ function Unit:setStand(typ)
     ary = {0.75,0.75,0,0.9}
     self._elf_stand_max:set('Visible',true)
   end
-  elf.SetMaterialDiffuseColor(elf.GetEntityMaterial(self._elf_stand._elf_obj,0), unpack(ary)) 
+  SetMaterialDiffuseColor(GetEntityMaterial(self._elf_stand._elf_obj,0), unpack(ary)) 
 end
 
 function Unit:updatedPosition()
