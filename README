@@ -9,5 +9,7 @@ For run test game you need export with blender to .pak in the same folder:
 
 Remember before change to absolute path on File ->External Data ...
 
+You need the cartu branch of my fork of blendelf
+http://github.com/cartuchogl/BlendELF/tree/cartu
 Copy yours executable of blendelf to game folder and execute it.
 
