@@ -29,7 +29,7 @@ function Loader:initialize(path,img,font,gui,pbg,pfg)
   self._loader_gui:addTo(gui)
   
   self._loader_bar = ProgressBar(self._loader_gui,'loader_bar',bg,fg)
-  self._loader_bar:sets({Position={39,180}})
+  self._loader_bar:sets({Position={50,399}})
   
   self._default_font = font
 end

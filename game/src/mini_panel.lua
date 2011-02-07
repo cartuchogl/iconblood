@@ -8,10 +8,12 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
   self._unit = nil
   
   self._move_bar = ProgressBar(self,'mini_bar_move'..MiniPanel._instance_count,mbg,mfg)
+  self._move_bar:direction("ver")
   self._life_bar = ProgressBar(self,'mini_bar_life'..MiniPanel._instance_count,lbg,lfg)
-  self._move_bar:set('Position',7,93)
-  self._life_bar:set('Position',7,82)
-  self._picture = ElfObject(PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={6,4}})
+  self._life_bar:direction("ver")
+  self._move_bar:set('Position',7,3)
+  self._life_bar:set('Position',13,3)
+  self._picture = ElfObject(PICTURE,'mini_pic'..MiniPanel._instance_count,{Position={24,6}})
   self._picture:addEvent('click',function(args)
     if self._unit then
       -- FIXME: global use
@@ -19,9 +21,9 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
     end
   end)
   self._picture:addTo(self)
-  self._picture_action = ElfObject(PICTURE,'current_action_pic'..MiniPanel._instance_count,{Position={57,8},Texture=game._loader:get('img','action.png').target})
+  self._picture_action = ElfObject(PICTURE,'current_action_pic'..MiniPanel._instance_count,{Position={67,10},Texture=game._loader:get('img','action.png').target})
   self._picture_action:addTo(self)
-  self._select_pic = ElfObject(PICTURE,'select_pic'..MiniPanel._instance_count,{Position={6,4},Texture=select})
+  self._select_pic = ElfObject(PICTURE,'select_pic'..MiniPanel._instance_count,{Position={24,6},Texture=select})
   self._select_pic:addTo(self)
 end
 

@@ -64,7 +64,7 @@ loader:addEvents({
 dofile("example.ibg.lua")
 game = Game(_local_game,gui,loader)
 
-fps_counter = ElfObject(LABEL,'fps_counter',{Font = loader._default_font,parent=gui})
+fps_counter = ElfObject(LABEL,'fps_counter',{Font = loader._default_font,parent=gui,Position={2,40}})
 
 print(GetTime().."sg [To main loop]")
 while Run() == true do

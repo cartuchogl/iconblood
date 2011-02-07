@@ -186,25 +186,14 @@ function Game:on_loader_end(args)
   set_camera(self._cam)
   self:start()
   self._turn_panel = TurnPanel(self._gui,
-    self._loader:get('img','rect2817.png').target,
-    self._loader:get('font','fonts/big.ttf').target,
-    self._loader:get('img','end_turn.png').target,
-    self._loader:get('img','end_turn_over.png').target,
-    self._loader:get('img','end_turn_on.png').target,
+    self._loader,
     self._round
   )
   self._current_unit_panel = CurrentPanel(self._gui,
     self._loader:get('img',"current_bg.png").target,
     self._loader:get('font','fonts/medium.ttf').target,
   nil)
-  self._current_squadron_panel = UnitsPanel(self._gui,154,--self._current_unit_panel:get('Size').x+10,
-    self._loader:get('img',"mini_panel.png").target,
-    self._loader:get('img',"select_mini_panel.png").target,
-    self._loader:get('img',"move_mini_progress_bg.png").target,
-    self._loader:get('img',"move_mini_progress.png").target,
-    self._loader:get('img',"life_mini_progress_bg.png").target,
-    self._loader:get('img',"life_mini_progress.png").target
-  )
+  self._current_squadron_panel = UnitsPanel(self._gui,self._loader)
   self._lab_tooltip = ElfObject(LABEL,"lab_tooltip",{
     Font = self._loader:get('font','fonts/big.ttf').target,
     x = 270,

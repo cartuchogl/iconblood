@@ -11,7 +11,7 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   self.lab_cost = ElfObject(LABEL,"lab_cost",{Font = font,Text = 'cost'})
   self.lab_move = ElfObject(LABEL,"lab_move",{Font = font,Text = 'move'})
   self.lab_attr = ElfObject(LABEL,"lab_attr",{Font = font,Text = 'attr'})
-  self._picture = ElfObject(PICTURE,'large_pic',{Position={10,6}})
+  self._picture = ElfObject(PICTURE,'large_pic',{Position={5,44}})
   self._picture:addTo(self)
   self._picture_action = ElfObject(PICTURE,'current_action_pic',{
     Position={118,7},Texture=game._loader:get('img','action.png').target
@@ -47,16 +47,16 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   game._loader:get('img','reload_on.png').target,
   game._loader:get('img','reload_over.png').target,
   game._loader:get('img','weapon_select.png').target)
-  self.primary_panel:set('Position',{9,149})
+  self.primary_panel:set('Position',{134,39})
   
   self.secondary_panel = WeaponPanel(self,game._loader:get('img','weapon_bg.png').target,font,
   game._loader:get('img','reload.png').target,
   game._loader:get('img','reload_on.png').target,
   game._loader:get('img','reload_over.png').target,
   game._loader:get('img','weapon_select.png').target)
-  self.secondary_panel:set('Position',{9,197})
+  self.secondary_panel:set('Position',{134,120})
   
-  self._null_tex = CreateTextureFromImage('null',CreateEmptyImage(128,128,8))
+  self._null_tex = CreateTextureFromImage('null',CreateEmptyImage(124,122,8))
 
   local tmp_y = 0
   _.each({
@@ -64,7 +64,7 @@ function CurrentPanel:initialize(parent,bg,font,unit)
     self.lab_attr,
     self.lab_move
   },function(i)
-    i:sets({Position={161,6+tmp_y*18}})
+    i:sets({Position={277,45+tmp_y*18}})
     i:addTo(self)
     tmp_y = tmp_y + 1
   end)
