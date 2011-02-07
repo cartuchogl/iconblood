@@ -1,20 +1,26 @@
 CurrentPanel = class('CurrentPanel', ElfObject)
 
-function CurrentPanel:initialize(parent,bg,font,unit)
+function CurrentPanel:initialize(parent,loader,unit)
+  self._loader = loader
+  local bg = self._loader:get('img',"current_bg.png").target
+  local font = self._loader:get('font','fonts/medium.ttf').target
+  
   local y = GetWindowHeight()-GetTextureHeight(bg)
-  super.initialize(self,SCREEN,'current_panel',{Position={0,y},Texture=bg})
+  local x = (GetWindowWidth()-GetTextureWidth(bg))/2
+  super.initialize(self,SCREEN,'current_panel',{Position={x,y},Texture=bg})
   self:addTo(parent)
   self._unit = unit
   
   self.lab_level = ElfObject(LABEL,"lab_level",{Font = font,Text = 'level'})
-  self.lab_name = ElfObject(LABEL,"lab_name",{Font = font,Text = 'name',Color={0.22,1,0.53,1}})
+  self.lab_name = ElfObject(LABEL,"lab_name",{Font = font,Text = 'name',Color={0.21,0.21,0.21,1},Position={15,9}})
+  self.lab_name:addTo(self)
   self.lab_cost = ElfObject(LABEL,"lab_cost",{Font = font,Text = 'cost'})
   self.lab_move = ElfObject(LABEL,"lab_move",{Font = font,Text = 'move'})
   self.lab_attr = ElfObject(LABEL,"lab_attr",{Font = font,Text = 'attr'})
   self._picture = ElfObject(PICTURE,'large_pic',{Position={5,44}})
   self._picture:addTo(self)
   self._picture_action = ElfObject(PICTURE,'current_action_pic',{
-    Position={118,7},Texture=game._loader:get('img','action.png').target
+    Position={117,49},Texture=game._loader:get('img','action.png').target
   })
   self._picture_action:addTo(self)
     
@@ -60,7 +66,7 @@ function CurrentPanel:initialize(parent,bg,font,unit)
 
   local tmp_y = 0
   _.each({
-    self.lab_name,self.lab_level,self.lab_cost,
+    self.lab_level,self.lab_cost,
     self.lab_attr,
     self.lab_move
   },function(i)

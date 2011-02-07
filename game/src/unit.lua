@@ -34,6 +34,7 @@ function Unit:initialize(obj,squadron)
   self._squadron = squadron
   self.action = nil
   self._pv = self.resistance*10
+  self._gain_exp = 0
 end
 
 function Unit:visibilityPoints()

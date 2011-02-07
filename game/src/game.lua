@@ -189,10 +189,7 @@ function Game:on_loader_end(args)
     self._loader,
     self._round
   )
-  self._current_unit_panel = CurrentPanel(self._gui,
-    self._loader:get('img',"current_bg.png").target,
-    self._loader:get('font','fonts/medium.ttf').target,
-  nil)
+  self._current_unit_panel = CurrentPanel(self._gui,self._loader,nil)
   self._current_squadron_panel = UnitsPanel(self._gui,self._loader)
   self._lab_tooltip = ElfObject(LABEL,"lab_tooltip",{
     Font = self._loader:get('font','fonts/big.ttf').target,
