@@ -106,7 +106,9 @@ function duplicate_entity(ent,new_name)
     SetEntityMaterial(ret,i,GetEntityMaterial(ent,i))
   end
   SetEntityScale(ret, scale.x, scale.y, scale.z)
-  SetEntityPhysics(ret,GetActorShape(ent),GetActorMass(ent))
+  SetActorPhysics(ret,true)
+  SetActorShape(ret,GetActorShape(ent))
+  SetActorMass(ret,GetActorMass(ent))
   return ret
 end
 
@@ -140,7 +142,10 @@ function set_camera(cam)
     local clip = GetCameraClip(cam)
     if clip.x < 0.0001 then clip.x = 0.0001 end
     if clip.y < 100.0 then clip.y = 100.0 end
-    SetCameraPerspective(cam, fov, aspect, clip.x, clip.y)
+    SetCameraMode(cam,PERSPECTIVE)
+    SetCameraFov(cam,fov)
+    SetCameraAspect(cam,aspect)
+    SetCameraClip(cam,clip.x,clip.y)
   end
 end
 
@@ -175,7 +180,6 @@ function get_objects_over_mouse(scn)
     raystart.x, raystart.y, raystart.z,
     rayend.x,   rayend.y,   rayend.z
   )
-  
   return array_from_list(col)
 end
 

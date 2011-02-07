@@ -56,7 +56,7 @@ function CurrentPanel:initialize(parent,bg,font,unit)
   game._loader:get('img','weapon_select.png').target)
   self.secondary_panel:set('Position',{9,197})
   
-  self._null_tex = CreateTextureFromImage(CreateEmptyImage(128,128,8))
+  self._null_tex = CreateTextureFromImage('null',CreateEmptyImage(128,128,8))
 
   local tmp_y = 0
   _.each({

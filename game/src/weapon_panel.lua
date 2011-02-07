@@ -32,7 +32,7 @@ function WeaponPanel:initialize(parent,bg,font,off,over,on,select)
   })
   self._weapon_select:addTo(self)
   
-  self._null_tex = CreateTextureFromImage(CreateEmptyImage(101,30,8))
+  self._null_tex = CreateTextureFromImage('null',CreateEmptyImage(101,30,8))
   
   self._picture:addEvent('click',function(args)
     if self.weapon then

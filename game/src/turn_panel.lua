@@ -16,6 +16,9 @@ function TurnPanel:initialize(parent,bg,font,off,over,on,round)
     Position = {0,self:get('Size').y-GetTextureHeight(off)},
     Script = exscr
   })
+  self._button_end_turn:addEvent('click',function(args)
+    game._round._current_turn:endTurn()
+  end)
   self._button_end_turn:addTo(self)
   
   self._label_round = ElfObject(LABEL,"lab_round",{

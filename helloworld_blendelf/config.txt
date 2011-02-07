@@ -1,5 +1,0 @@
-window_size 1280 720
-fullscreen FALSE
-texture_anisotropy 16.0
-shadow_map_size 1024
-start levels/level1.pak

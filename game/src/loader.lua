@@ -44,7 +44,7 @@ end
 
 function Loader:_load_img(name,args)
   print("[Loader][img] "..self._path..'/'..name)
-  return CreateTextureFromFile(self._path..'/'..name)
+  return CreateTextureFromFile(self._path..'/'..name,self._path..'/'..name)
 end
 
 function Loader:_load_font(name,args)
@@ -53,13 +53,13 @@ function Loader:_load_font(name,args)
 end
 
 function Loader:_load_env(id,args)
-  local path = findPath("../environments/","0*"..id.."_*.*").."/level.pak"
+  local path = findPath(self._path.."/environments/","0*"..id.."_*.*").."/level.pak"
   print("[Loader][env] "..path)
-  return CreateSceneFromFile(path)
+  return CreateSceneFromFile(id,path)
 end
 
 function Loader:_load_fac(id,args)
-  local path = findPath("../factions/","0*"..id.."_*.*").."/units.pak"
+  local path = findPath("factions/","0*"..id.."_*.*").."/units.pak"
   print("[Loader][fac] "..path)
   return CreateSceneFromFile(path)
 end
@@ -71,7 +71,7 @@ function Loader:_load_unit(name,args)
   table.insert(self._loading.img,path_img1)
   table.insert(self._loading.img,path_img2)
   print("[Loader][unit] "..path)
-  return CreateSceneFromFile(path)
+  return CreateSceneFromFile(name,path)
 end
 
 function Loader:get(type,name)

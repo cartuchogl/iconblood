@@ -1,11 +1,12 @@
 SetTitle("iconblood alpha1")
-dofile("includes.lua")
+dofile("src/includes.lua")
 SetFpsLimit(50)
 -- create and set a gui
 gui = CreateGui()
 SetGui(gui)
 
-loader = Loader('../resources','load.png','fonts/default.ttf',gui,'loader_bg.png','loader_fg.png')
+loader = Loader('data','load.png','fonts/default.ttf',gui,'loader_bg.png','loader_fg.png')
+
 loader:batch({
   img = {
     "rect2816.png",

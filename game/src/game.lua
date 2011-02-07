@@ -153,7 +153,7 @@ function Game:cameraCheck()
   if IsFullscreen() then
     local pos = GetMousePosition()
     if pos.x == 0 then MoveActorLocal(self._cam, -self._key_move, 0.0, 0.0) end
-    if pos.x == elf.GetWindowWidth()-1 then 
+    if pos.x == GetWindowWidth()-1 then 
       MoveActorLocal(self._cam, self._key_move, 0.0, 0.0) 
     end
     if pos.y == 0 then MoveActor(self._cam, dir.x, dir.y, 0.0) end

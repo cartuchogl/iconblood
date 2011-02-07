@@ -4,7 +4,7 @@ function UnitsPanel:initialize(parent,x,ubg,select,mbg,mfg,lbg,lfg)
   self._width = GetWindowWidth()-x-10
   self._height = GetTextureHeight(ubg)
   self._bg_pic = CreateEmptyImage(self._width,self._height,24)
-  self._bg_tex = CreateTextureFromImage(self._bg_pic)
+  self._bg_tex = CreateTextureFromImage('null',self._bg_pic)
   super.initialize(self,SCREEN,'units_panel',{Texture=self._bg_tex,Color={1,1,1,0.37}})
   self:set('Position',x,GetWindowHeight()-self._height)
   self:addTo(parent)

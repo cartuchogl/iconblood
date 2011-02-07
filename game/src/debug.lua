@@ -19,7 +19,7 @@ function Debug:initialize(gui)
     function() return("GetSceneParticlesCount: " .. GetSceneParticlesCount( self._scene )) end,
     function() return("GetSceneSpriteCount: " .. GetSceneSpriteCount( self._scene )) end
   }
-  self._debug_scene = CreateSceneFromFile("../resources/debug/scene.pak")
+  -- self._debug_scene = CreateSceneFromFile("../resources/debug/scene.pak")
   self._track_count = 0
   self._tracked_points = {}
   

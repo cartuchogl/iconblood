@@ -422,7 +422,5 @@ end
 
 wrap_functions_for_oo_support()
 
-_ = Underscore.funcs
-
 return Underscore:new()
 

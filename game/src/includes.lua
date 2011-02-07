@@ -1,4 +1,4 @@
-dofile "src/underscore.lua"
+_ = dofile("src/underscore.lua")
 dofile "src/MiddleClass.lua"
 dofile "src/event.lua"
 dofile "src/elf_object.lua"
