@@ -11,11 +11,11 @@ function UnitsPanel:initialize(parent,loader)
   self._lfg = self._loader:get('img',"life_mini_progress.png").target
   
   self._width = GetTextureWidth(self._ubg) 
-  self._height = GetWindowHeight()-10
+  self._height = GetWindowHeight()
   self._bg_pic = CreateEmptyImage(self._width,self._height,24)
   self._bg_tex = CreateTextureFromImage('null',self._bg_pic)
   super.initialize(self,SCREEN,'units_panel',{Texture=self._bg_tex,Color={1,1,1,0.17}})
-  self:set('Position',GetWindowWidth()-self._width,0)
+  self:set('Position',0,0)
   self:addTo(parent)
   self._units = nil
   self._panels = {}
@@ -30,7 +30,7 @@ function UnitsPanel:update()
         self._panels[cont]:set('Visible',true)
       else
         self._panels[cont] = MiniPanel(self,self._ubg,self._select,self._mbg,self._mfg,self._lbg,self._lfg)
-        self._panels[cont]:set('Position',0,GetWindowHeight()-GetTextureHeight(self._ubg)*(cont)-10)
+        self._panels[cont]:set('Position',0,GetWindowHeight()-GetTextureHeight(self._ubg)*(cont))
       end
       cont = cont + 1
     end)
