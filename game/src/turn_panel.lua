@@ -10,7 +10,7 @@ function TurnPanel:initialize(parent,loader,round)
   local on = self._loader:get('img','end_turn_on.png').target
   
   local x = GetTextureWidth(bg)-GetTextureWidth(off)
-  super.initialize(self,SCREEN,'turn_panel',{Position={0,0},Texture={bg}})
+  super.initialize(self,SCREEN,'turn_panel',{Position={15,28},Texture={bg}})
   self:addTo(parent)
   self._round = round
   

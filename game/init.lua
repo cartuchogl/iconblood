@@ -44,9 +44,10 @@ loader:batch({
     "weapon_select.png"
   },
   font = {
-    {"fonts/small.ttf",12},
-    {"fonts/medium.ttf",14},
-    {"fonts/big.ttf",15}
+    {"fonts/small.ttf",10},
+    {"fonts/medium.ttf",13},
+    {"fonts/big.ttf",16},
+    {"fonts/console.ttf",13}
   }
 })
 
@@ -64,7 +65,7 @@ loader:addEvents({
 dofile("example.ibg.lua")
 game = Game(_local_game,gui,loader)
 
-fps_counter = ElfObject(LABEL,'fps_counter',{Font = loader._default_font,parent=gui,Position={2,40}})
+fps_counter = ElfObject(LABEL,'fps_counter',{Font = loader._default_font,parent=gui,Position={2,4}})
 
 print(GetTime().."sg [To main loop]")
 while Run() == true do

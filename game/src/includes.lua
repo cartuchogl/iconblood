@@ -2,6 +2,7 @@ _ = dofile("src/underscore.lua")
 dofile "src/MiddleClass.lua"
 dofile "src/event.lua"
 dofile "src/elf_object.lua"
+dofile "src/typed_string.lua"
 dofile "src/game.lua"
 dofile "src/unit.lua"
 dofile "src/squadron.lua"
