@@ -1,15 +1,15 @@
 Prototyping ...
 Modeling db ...
 Scaffolding web backend ...
+Making a game ...
 
 For run test game you need export with blender to .pak in the same folder:
-- environment/001/level.blend
-- resources/factions/humans/00?.blend
-- resources/debug/scene.blend
+- game/data/environment/001/level.blend
+- game/data/factions/humans/00?.blend
 
 Remember before change to absolute path on File ->External Data ...
 
 You need the capi branch of my fork of blendelf
-http://github.com/cartuchogl/BlendELF/tree/cartu
+http://github.com/cartuchogl/BlendELF/tree/capi
 Copy yours executable of blendelf to game folder and execute it.
 
