@@ -35,7 +35,22 @@ function Unit:initialize(obj,squadron)
   self.action = nil
   self._pv = self.resistance*10
   self._gain_exp = 0
+  self:addEvent('dead',function(args)
+    PlayEntityArmature(self._elf_entity,689,707,25)
+  end)
 end
+
+function Unit:isAlive()
+  return self._pv > 0
+end
+
+function Unit:takeDamage(damage)
+  local lived = self:isAlive()
+  self._pv = self._pv-damage
+  if self._pv<=0 and lived then
+    self:fireEvent('dead',self)
+  end
+end 
 
 function Unit:visibilityPoints()
   -- FIXME: better points

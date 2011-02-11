@@ -236,8 +236,7 @@ function Game:on_selected_unit(args)
               args[1]:seeTo(cu:get('x'),cu:get('y'))
               PlayEntityArmature(args[1]._elf_obj,651,671,25)
               local damage = cu.current_weapon:damage_fire(l)
-              args[1]._pv = args[1]._pv-damage
-              if args[1]._pv < 0 then args[1]._pv = 0 end
+              args[1]:takeDamage(damage)
               print('('..dice..')Hit:'..damage)
             else
               print("("..dice..")Fail")
@@ -250,7 +249,7 @@ function Game:on_selected_unit(args)
       print(self._current_unit.name,args[1].name,self:visibility(self._current_unit,args[1]))
     end
   end
-  print("game:track event "..args[1].name)
+  -- print("game:track event "..args[1].name)
 end
 
 function Game:on_plane(args)
@@ -277,7 +276,9 @@ function Game:on_plane(args)
           transition = 'linear',
           onComplete=function()
             StopEntityArmature(unit._elf_entity)
-            SetEntityArmatureFrame(unit._elf_entity,1)
+            if unit:isAlive() then
+              SetEntityArmatureFrame(unit._elf_entity,1)
+            end
           end,
           onStart=function()
             LoopEntityArmature(unit._elf_entity,580,595,25)
