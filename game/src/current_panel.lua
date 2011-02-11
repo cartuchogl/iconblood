@@ -122,8 +122,10 @@ function CurrentPanel:update()
   if self._unit then
     unit = self._unit
     self._picture:set('Texture',self._unit._large_image)
+    self._picture:set('Color',{1,1,1,1})
   else
     self._picture:set('Texture',self._null_tex)
+    self._picture:set('Color',{1,1,1,0})
   end
   self.lab_level:set('Text','/LEVEL '..unit.level.."."..unit.exp..'PX')
   self.lab_name:set('Text',string.upper(unit.name))

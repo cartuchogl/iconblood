@@ -1,7 +1,7 @@
 MiniPanel = class('MiniPanel', ElfObject)
 MiniPanel._instance_count = 0
 
-function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
+function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg,font)
   MiniPanel._instance_count = MiniPanel._instance_count + 1
   super.initialize(self,SCREEN,'mini_panel'..MiniPanel._instance_count,{Texture=bg})
   self:addTo(parent)
@@ -25,6 +25,35 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg)
   self._picture_action:addTo(self)
   self._select_pic = ElfObject(PICTURE,'select_pic'..MiniPanel._instance_count,{Position={24,6},Texture=select})
   self._select_pic:addTo(self)
+  
+  self._weapon_name = ElfObject(LABEL,'weapon_name'..MiniPanel._instance_count,{
+    Position={88,6},
+    Font=font,
+    Color={1,1,1,1},
+    Text="Arma"
+  })
+  self._weapon_name:addTo(self)
+  self._weapon_clip_damage = ElfObject(LABEL,'weapon_clip_damage'..MiniPanel._instance_count,{
+    Position={88,20},
+    Font=font,
+    Color={0,1,1,1},
+    Text="0/0  1+1d4"
+  })
+  self._weapon_clip_damage:addTo(self)
+  self._status = ElfObject(LABEL,'unit_status'..MiniPanel._instance_count,{
+    Position={88,40},
+    Font=font,
+    Color={1,1,1,1},
+    Text="not ready"
+  })
+  self._status:addTo(self)
+  self._status = ElfObject(LABEL,'unit_bonus'..MiniPanel._instance_count,{
+    Position={88,54},
+    Font=font,
+    Color={1,1,1,1},
+    Text="Ninguno"
+  })
+  self._status:addTo(self)
 end
 
 function MiniPanel:update()
@@ -36,6 +65,9 @@ function MiniPanel:update()
     self._picture:set('Texture',self._unit._mini_image)
     self._select_pic:set('Visible',self._unit == game._current_unit)
     self._picture_action:set('Visible',self._unit.action==nil)
+    
+    self._weapon_name:set('Text', self._unit.current_weapon.name)
+    self._weapon_clip_damage:set('Text',self._unit.current_weapon._current_clip..'/'..self._unit.current_weapon._current_total.." "..self._unit.current_weapon.damage)
   else
     self._move_bar:max(1)
     self._move_bar:current(0)
@@ -43,5 +75,8 @@ function MiniPanel:update()
     self._life_bar:current(0)
     self._select_pic:set('Visible',false)
     self._picture_action:set('Visible',false)
+    
+    self._weapon_name:set('Text', 'nothing')
+    self._weapon_clip_damage:set('Text','nothing')
   end
 end
