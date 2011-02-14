@@ -71,9 +71,11 @@ function MiniPanel:update()
     if self._unit:isAlive() then
       self:set("Color",{1,1,1,1})
       self._picture:set("Color",{1,1,1,1})
+      self._picture_action:set("Color",{1,1,1,1})
     else
       self:set("Color",{1,1,1,0.45})
       self._picture:set("Color",{1,1,1,0.25})
+      self._picture_action:set("Color",{1,1,1,0})
     end
   else
     self._move_bar:max(1)
