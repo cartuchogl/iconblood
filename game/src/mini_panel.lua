@@ -21,7 +21,7 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg,font)
     end
   end)
   self._picture:addTo(self)
-  self._picture_action = ElfObject(PICTURE,'current_action_pic'..MiniPanel._instance_count,{Position={67,10},Texture=game._loader:get('img','action.png').target})
+  self._picture_action = ElfObject(PICTURE,'current_action_pic'..MiniPanel._instance_count,{Position={67,9},Texture=game._loader:get('img','action.png').target})
   self._picture_action:addTo(self)
   self._select_pic = ElfObject(PICTURE,'select_pic'..MiniPanel._instance_count,{Position={24,6},Texture=select})
   self._select_pic:addTo(self)
