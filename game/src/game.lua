@@ -82,7 +82,7 @@ function Game:interaction()
         local units = _.select(names,function(i) return string.match(i,"Unit\.(%d+)") end)
         if _.first(units) then
           local unit = game:findUnit(tonumber(string.match(_.first(units),"Unit\.(%d+)")))
-          if unit then
+          if unit and unit:isAlive() then
             capture = true
             self:fireEvent('selected:unit',{unit})
           end
@@ -250,12 +250,14 @@ function Game:on_selected_unit(args)
     if self._current_unit then
       self._current_unit:fireEvent("deselect:unit",self._current_unit)
     end
-    self._current_unit = args[1]
-    self._current_unit_panel._unit = self._current_unit
-    self._current_unit:fireEvent("select:unit",self._current_unit)
+    if args[1]:isAlive() then
+      self._current_unit = args[1]
+      self._current_unit_panel._unit = self._current_unit
+      self._current_unit:fireEvent("select:unit",self._current_unit)
+    end
   else
     if self._current_unit then
-      if self:enemy_unit(args[1]) then
+      if self:enemy_unit(args[1]) and args[1]:isAlive() then
         local cu = self._current_unit
         if cu.action then
           print('already fire...')
@@ -290,7 +292,7 @@ end
 
 function Game:on_plane(args)
   print("onplane")
-  if self._current_unit then
+  if self._current_unit and self._current_unit:isAlive() then
     local v = GetCollisionPosition(args[1])
     if self._current_unit:canBe(v.x,v.y) then
       local x = v.x-self._current_unit:get('x')
@@ -348,7 +350,7 @@ function Game:on_over_object(args)
       end
     end
   elseif instanceOf(Unit,args[1]) then
-    if self._current_unit then
+    if self._current_unit and self._current_unit:isAlive() then
       self._current_unit:setMax(self._current_unit:get('x'),self._current_unit:get('y'))
       if self:enemy_unit(args[1]) then
         local cu = self._current_unit

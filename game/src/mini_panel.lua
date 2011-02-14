@@ -68,6 +68,13 @@ function MiniPanel:update()
     
     self._weapon_name:set('Text', self._unit.current_weapon.name)
     self._weapon_clip_damage:set('Text',self._unit.current_weapon._current_clip..'/'..self._unit.current_weapon._current_total.." "..self._unit.current_weapon.damage)
+    if self._unit:isAlive() then
+      self:set("Color",{1,1,1,1})
+      self._picture:set("Color",{1,1,1,1})
+    else
+      self:set("Color",{1,1,1,0.45})
+      self._picture:set("Color",{1,1,1,0.25})
+    end
   else
     self._move_bar:max(1)
     self._move_bar:current(0)
