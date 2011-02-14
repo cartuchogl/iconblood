@@ -82,7 +82,7 @@ function Game:interaction()
         local units = _.select(names,function(i) return string.match(i,"Unit\.(%d+)") end)
         if _.first(units) then
           local unit = game:findUnit(tonumber(string.match(_.first(units),"Unit\.(%d+)")))
-          if unit then
+          if unit and unit:isAlive() then
             capture = true
             self:fireEvent('selected:unit',{unit})
           end
@@ -148,7 +148,43 @@ function Game:cameraCheck()
   if GetKeyState(KEY_D) ~= UP then
     MoveActorLocal(self._cam, self._key_move, 0.0, 0.0)
   end
-    
+  
+  if GetKeyState(KEY_K) ~= UP then
+    if self._current_unit then
+      look_at(self._cam,self._current_unit)
+    end
+  end
+  
+  if GetKeyState(KEY_E) ~= UP then
+    if self._current_unit then
+      local v1 = GetActorPosition(self._current_unit._elf_obj)
+      local v2 = GetActorPosition(self._cam)
+      
+      local x = v2.x-v1.x
+      local y = v2.y-v1.y
+      local a = 0.05
+      local xp = x*math.cos(a)-y*math.sin(a)+v1.x
+      local yp = x*math.sin(a)+y*math.cos(a)+v1.y
+      SetActorPosition(self._cam,xp,yp,v2.z)
+      look_at(self._cam,self._current_unit)
+    end
+  end
+  
+  if GetKeyState(KEY_Q) ~= UP then
+    if self._current_unit then
+      local v1 = GetActorPosition(self._current_unit._elf_obj)
+      local v2 = GetActorPosition(self._cam)
+      
+      local x = v2.x-v1.x
+      local y = v2.y-v1.y
+      local a = -0.05
+      local xp = x*math.cos(a)-y*math.sin(a)+v1.x
+      local yp = x*math.sin(a)+y*math.cos(a)+v1.y
+      SetActorPosition(self._cam,xp,yp,v2.z)
+      look_at(self._cam,self._current_unit)
+    end
+  end
+  
   -- move with borders on fullscreen
   if IsFullscreen() then
     local pos = GetMousePosition()
@@ -178,7 +214,7 @@ end
 function Game:on_loader_end(args)
   self:loadEnvironment()
   self:loadUnits()
-  setTimeout(function() self._loader._loader_gui:set('Visible',false) end,800)
+  setTimeout(function() self._loader._loader_gui:set('Visible',false) end,100)
   -- get the camera for camera movement
   self._cam = GetSceneActiveCamera(self._scene)
 
@@ -214,12 +250,14 @@ function Game:on_selected_unit(args)
     if self._current_unit then
       self._current_unit:fireEvent("deselect:unit",self._current_unit)
     end
-    self._current_unit = args[1]
-    self._current_unit_panel._unit = self._current_unit
-    self._current_unit:fireEvent("select:unit",self._current_unit)
+    if args[1]:isAlive() then
+      self._current_unit = args[1]
+      self._current_unit_panel._unit = self._current_unit
+      self._current_unit:fireEvent("select:unit",self._current_unit)
+    end
   else
     if self._current_unit then
-      if self:enemy_unit(args[1]) then
+      if self:enemy_unit(args[1]) and args[1]:isAlive() then
         local cu = self._current_unit
         if cu.action then
           print('already fire...')
@@ -236,8 +274,7 @@ function Game:on_selected_unit(args)
               args[1]:seeTo(cu:get('x'),cu:get('y'))
               PlayEntityArmature(args[1]._elf_obj,651,671,25)
               local damage = cu.current_weapon:damage_fire(l)
-              args[1]._pv = args[1]._pv-damage
-              if args[1]._pv < 0 then args[1]._pv = 0 end
+              args[1]:takeDamage(damage)
               print('('..dice..')Hit:'..damage)
             else
               print("("..dice..")Fail")
@@ -250,12 +287,12 @@ function Game:on_selected_unit(args)
       print(self._current_unit.name,args[1].name,self:visibility(self._current_unit,args[1]))
     end
   end
-  print("game:track event "..args[1].name)
+  -- print("game:track event "..args[1].name)
 end
 
 function Game:on_plane(args)
   print("onplane")
-  if self._current_unit then
+  if self._current_unit and self._current_unit:isAlive() then
     local v = GetCollisionPosition(args[1])
     if self._current_unit:canBe(v.x,v.y) then
       local x = v.x-self._current_unit:get('x')
@@ -277,7 +314,9 @@ function Game:on_plane(args)
           transition = 'linear',
           onComplete=function()
             StopEntityArmature(unit._elf_entity)
-            SetEntityArmatureFrame(unit._elf_entity,1)
+            if unit:isAlive() then
+              SetEntityArmatureFrame(unit._elf_entity,1)
+            end
           end,
           onStart=function()
             LoopEntityArmature(unit._elf_entity,580,595,25)
@@ -311,7 +350,7 @@ function Game:on_over_object(args)
       end
     end
   elseif instanceOf(Unit,args[1]) then
-    if self._current_unit then
+    if self._current_unit and self._current_unit:isAlive() then
       self._current_unit:setMax(self._current_unit:get('x'),self._current_unit:get('y'))
       if self:enemy_unit(args[1]) then
         local cu = self._current_unit

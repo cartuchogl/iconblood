@@ -19,7 +19,6 @@ function TurnPanel:initialize(parent,loader,round)
     OverTexture = over,
     Position = {x,0},
     Text = 'END TURN >',
-    Color = {0.85,1,0,1},
     Font = font
   })
   self._button_end_turn:addEvent('click',function(args)

@@ -21,7 +21,7 @@ function MiniPanel:initialize(parent,bg,select,mbg,mfg,lbg,lfg,font)
     end
   end)
   self._picture:addTo(self)
-  self._picture_action = ElfObject(PICTURE,'current_action_pic'..MiniPanel._instance_count,{Position={67,10},Texture=game._loader:get('img','action.png').target})
+  self._picture_action = ElfObject(PICTURE,'current_action_pic'..MiniPanel._instance_count,{Position={67,9},Texture=game._loader:get('img','action.png').target})
   self._picture_action:addTo(self)
   self._select_pic = ElfObject(PICTURE,'select_pic'..MiniPanel._instance_count,{Position={24,6},Texture=select})
   self._select_pic:addTo(self)
@@ -68,6 +68,15 @@ function MiniPanel:update()
     
     self._weapon_name:set('Text', self._unit.current_weapon.name)
     self._weapon_clip_damage:set('Text',self._unit.current_weapon._current_clip..'/'..self._unit.current_weapon._current_total.." "..self._unit.current_weapon.damage)
+    if self._unit:isAlive() then
+      self:set("Color",{1,1,1,1})
+      self._picture:set("Color",{1,1,1,1})
+      self._picture_action:set("Color",{1,1,1,1})
+    else
+      self:set("Color",{1,1,1,0.45})
+      self._picture:set("Color",{1,1,1,0.25})
+      self._picture_action:set("Color",{1,1,1,0})
+    end
   else
     self._move_bar:max(1)
     self._move_bar:current(0)

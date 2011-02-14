@@ -35,7 +35,24 @@ function Unit:initialize(obj,squadron)
   self.action = nil
   self._pv = self.resistance*10
   self._gain_exp = 0
+  self:addEvent('dead',function(args)
+    SetActorPhysics(self._elf_entity,false)
+    PlayEntityArmature(self._elf_entity,689,707,25)
+    self._mg = 0
+  end)
 end
+
+function Unit:isAlive()
+  return self._pv > 0
+end
+
+function Unit:takeDamage(damage)
+  local lived = self:isAlive()
+  self._pv = self._pv-damage
+  if self._pv<=0 and lived then
+    self:fireEvent('dead',self)
+  end
+end 
 
 function Unit:visibilityPoints()
   -- FIXME: better points
@@ -153,24 +170,29 @@ function Unit:loadElfObjects(pak,scene)
 end
 
 function Unit:setStand(typ)
-  local ary = {1,1,1,1}
-  if typ=='normal' then
-    ary = {0,1,0,0.9}
+  if self:isAlive() then
+    local ary = {1,1,1,1}
+    if typ=='normal' then
+      ary = {0,1,0,0.9}
+      self._elf_stand_max:set('Visible',false)
+    elseif typ=='move' then
+      ary = {0,0,1,0.9}
+      self._elf_stand_max:set('Visible',false)
+    elseif typ=='over' then
+      ary = {0,0.75,0.75,0.9}
+      self._elf_stand_max:set('Visible',false)
+    elseif typ=='enemy' then
+      ary = {1,0,0,0.9}
+      self._elf_stand_max:set('Visible',false)
+    elseif typ=='select' then
+      ary = {0.75,0.75,0,0.9}
+      self._elf_stand_max:set('Visible',true)
+    end
+    SetMaterialDiffuseColor(GetEntityMaterial(self._elf_stand._elf_obj,0), unpack(ary)) 
+  else
     self._elf_stand_max:set('Visible',false)
-  elseif typ=='move' then
-    ary = {0,0,1,0.9}
-    self._elf_stand_max:set('Visible',false)
-  elseif typ=='over' then
-    ary = {0,0.75,0.75,0.9}
-    self._elf_stand_max:set('Visible',false)
-  elseif typ=='enemy' then
-    ary = {1,0,0,0.9}
-    self._elf_stand_max:set('Visible',false)
-  elseif typ=='select' then
-    ary = {0.75,0.75,0,0.9}
-    self._elf_stand_max:set('Visible',true)
+    self._elf_stand:set('Visible',false)
   end
-  SetMaterialDiffuseColor(GetEntityMaterial(self._elf_stand._elf_obj,0), unpack(ary)) 
 end
 
 function Unit:updatedPosition()
