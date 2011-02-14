@@ -148,7 +148,43 @@ function Game:cameraCheck()
   if GetKeyState(KEY_D) ~= UP then
     MoveActorLocal(self._cam, self._key_move, 0.0, 0.0)
   end
-    
+  
+  if GetKeyState(KEY_K) ~= UP then
+    if self._current_unit then
+      look_at(self._cam,self._current_unit)
+    end
+  end
+  
+  if GetKeyState(KEY_E) ~= UP then
+    if self._current_unit then
+      local v1 = GetActorPosition(self._current_unit._elf_obj)
+      local v2 = GetActorPosition(self._cam)
+      
+      local x = v2.x-v1.x
+      local y = v2.y-v1.y
+      local a = 0.05
+      local xp = x*math.cos(a)-y*math.sin(a)+v1.x
+      local yp = x*math.sin(a)+y*math.cos(a)+v1.y
+      SetActorPosition(self._cam,xp,yp,v2.z)
+      look_at(self._cam,self._current_unit)
+    end
+  end
+  
+  if GetKeyState(KEY_Q) ~= UP then
+    if self._current_unit then
+      local v1 = GetActorPosition(self._current_unit._elf_obj)
+      local v2 = GetActorPosition(self._cam)
+      
+      local x = v2.x-v1.x
+      local y = v2.y-v1.y
+      local a = -0.05
+      local xp = x*math.cos(a)-y*math.sin(a)+v1.x
+      local yp = x*math.sin(a)+y*math.cos(a)+v1.y
+      SetActorPosition(self._cam,xp,yp,v2.z)
+      look_at(self._cam,self._current_unit)
+    end
+  end
+  
   -- move with borders on fullscreen
   if IsFullscreen() then
     local pos = GetMousePosition()

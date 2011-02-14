@@ -256,3 +256,36 @@ function table.find(t, v, c)
   return false 
 end
 
+--
+function look_at(from, to)
+  local posc
+  local rotc
+  local obj
+  if type(from)=="table" and from["_elf_obj"] then
+    obj = from._elf_obj
+    posc = GetActorPosition(from._elf_obj)
+    rotc = GetActorRotation(from._elf_obj)
+  else
+    obj = from
+    posc = GetActorPosition(from)
+    rotc = GetActorRotation(from)
+  end
+  
+  local pos
+  if to["_elf_obj"] then
+    pos = GetActorPosition(to._elf_obj)
+  else
+    pos = GetActorPosition(to)
+  end
+  
+  local c = pos.x-posc.x
+  local a = pos.y-posc.y
+  if a~=0 or c~=0 then
+    local bpow = a*a+c*c
+    local b = math.sqrt(bpow)
+    local alpha = math.deg(math.asin(((bpow+c*c)-a*a)/(2*b*c)))
+    if a>0 then alpha = 180-alpha end
+    SetActorRotation(obj, rotc.x, rotc.y, 180-(360-alpha))
+  end
+end
+
