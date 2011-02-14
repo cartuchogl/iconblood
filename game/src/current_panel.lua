@@ -133,7 +133,12 @@ function CurrentPanel:update()
   self.title_line:update()
   self.lab_life:set("Text",unit._pv..'/'..(unit.resistance*10).." LIFE")
   self.lab_move:set('Text','Move: '..unit._mg..'/'..unit.move)
-  self.lab_attr:set('Text','F'..unit.force..' A'..unit.agility..' R'..unit.resistance..' S'..unit.skill..' I'..unit.intelligence)
+  self.lab_force:set('Text', 'FORCE '..unit.force)
+  self.lab_resis:set('Text', 'RESISTENCE '..unit.resistance)
+  self.lab_agili:set('Text', 'AGILITY '..unit.agility)
+  self.lab_skill:set('Text', 'SKILLS '..unit.skill)
+  self.lab_intel:set('Text', 'INTELLIGENCY '..unit.intelligence)
+  self.lab_move:set('Text', 'MOVE '..unit.move)
   self._picture_action:set('Visible',unit.action==nil)
   if unit.primary then self.primary_panel.weapon = unit.primary else self.primary_panel.weapon = nil end
   if unit.secondary then self.secondary_panel.weapon = unit.secondary else self.secondary_panel.weapon = nil end
