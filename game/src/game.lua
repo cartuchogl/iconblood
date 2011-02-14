@@ -214,7 +214,7 @@ end
 function Game:on_loader_end(args)
   self:loadEnvironment()
   self:loadUnits()
-  setTimeout(function() self._loader._loader_gui:set('Visible',false) end,800)
+  setTimeout(function() self._loader._loader_gui:set('Visible',false) end,100)
   -- get the camera for camera movement
   self._cam = GetSceneActiveCamera(self._scene)
 
