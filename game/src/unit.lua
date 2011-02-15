@@ -2,10 +2,6 @@ Unit = class('Unit',ElfObject)
 
 function Unit:initialize(obj,squadron)
   _.extend(self,obj)
-  if self.options then
-    local tmp = self.options
-    self.options = _.map(tmp,function(i) return Option(i) end)
-  end
   if self.primary then self.primary = Weapon(self.primary,self) end
   if self.secondary then self.secondary = Weapon(self.secondary,self) end
   self.current_weapon = self.primary
