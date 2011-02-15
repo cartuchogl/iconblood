@@ -1,9 +1,0 @@
-- title "Edit Page"
-
-%p.model_actions
-  = link_to "Show", @background ? background_page_path(@background,@page) : page_path(@page)
-  |
-  = link_to "View All", @background ? background_pages_path(@background) : pages_path
-
-= render :partial => 'form'
-
