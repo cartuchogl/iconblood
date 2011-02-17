@@ -1,9 +1,0 @@
-one:
-  alias: MyString
-  email: MyString
-  image_id: 1
-
-two:
-  alias: MyString
-  email: MyString
-  image_id: 1
