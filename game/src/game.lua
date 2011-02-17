@@ -155,6 +155,15 @@ function Game:cameraCheck()
     end
   end
   
+  if GetKeyState(KEY_L) ~= UP then
+    if self._current_unit then
+      local v1 = GetActorPosition(self._current_unit._elf_obj)
+      local v2 = GetActorPosition(self._cam)
+      SetActorPosition(self._cam,v1.x+13,v1.y+13,v1.z+12)
+      look_at(self._cam,self._current_unit)
+    end
+  end
+  
   if GetKeyState(KEY_E) ~= UP then
     if self._current_unit then
       local v1 = GetActorPosition(self._current_unit._elf_obj)
