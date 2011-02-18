@@ -7,8 +7,6 @@ function WeaponPanel:initialize(parent,bg,font,off,over,on,select)
   self:addTo(parent)
   self.weapon = nil
   
-  self._picture = ElfObject(PICTURE,'weapon_pic'..WeaponPanel._instance_count,{Position={6,0}})
-  self._picture:addTo(self)
   self._label_clip = ElfObject(LABEL,'label_clip'..WeaponPanel._instance_count,{
     Position={8,46},
     Text='0/0',
@@ -23,6 +21,9 @@ function WeaponPanel:initialize(parent,bg,font,off,over,on,select)
     Font=font
   })
   self._label_name:addTo(self)
+  
+  self._picture = ElfObject(PICTURE,'weapon_pic'..WeaponPanel._instance_count,{Position={6,0}})
+  self._picture:addTo(self)
   
   self._weapon_select = ElfObject(PICTURE,'weapon_select'..WeaponPanel._instance_count,{
     Texture = select,
