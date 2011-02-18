@@ -40,6 +40,8 @@ loader:batch({
     "reload_on.png",
     "factions/humans/weapons/1.png",
     "factions/humans/weapons/2.png",
+    "factions/humans/weapons/3.png",
+    "factions/humans/weapons/4.png",
     "weapon_bg.png",
     "weapon_select.png"
   },
