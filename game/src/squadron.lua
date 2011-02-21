@@ -13,6 +13,35 @@ function Squadron:initialize(obj)
   end
 end
 
+function Squadron:nextUnit(unit)
+  local found
+  if not unit then
+    found = 0
+  else
+    for i=1,#self.units do
+      if self.units[i]==unit then
+        found = i
+        break
+      end
+    end
+  end
+  if found then
+    found = found +1
+    if found>#self.units then
+      found = 1
+    end
+    while not self.units[found]:isAlive() do
+      found = found +1
+      if found>#self.units then
+        found = 1
+      end
+    end
+    return self.units[found]
+  else
+    return nil
+  end
+end
+
 function Squadron:reset()
   _.each(self.units,function(i)
     if i:isAlive() then

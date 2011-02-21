@@ -218,6 +218,19 @@ function Game:cameraCheck()
   if GetKeyState(KEY_RIGHT) ~= UP then
     RotateActor(self._cam, 0.0, 0.0, -self._key_move*10.0)
   end
+  
+  if GetKeyState(KEY_N) ~= UP then
+    if self._key_n_press then
+      
+    else
+      self._key_n_press = true
+      self:fireEvent('selected:unit',{self._round._current_turn._player.squadron:nextUnit(self._current_unit)})
+    end
+  end
+  
+  if GetKeyState(KEY_N) == UP then
+    self._key_n_press = false
+  end
 end
 
 function Game:on_loader_end(args)
