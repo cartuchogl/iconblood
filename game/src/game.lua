@@ -226,7 +226,23 @@ function Game:on_loader_end(args)
   setTimeout(function() self._loader._loader_gui:set('Visible',false) end,100)
   -- get the camera for camera movement
   self._cam = GetSceneActiveCamera(self._scene)
-
+  
+  self._options_panel = OptionsPanel(self._gui,
+    self._loader:get('font','fonts/medium.ttf').target
+  )
+  self._options_panel:set("Visible",false)
+  self._help_panel = HelpPanel(self._gui,
+    self._loader:get('img','help_panel.png').target,
+    self._loader:get('font','fonts/medium.ttf').target
+  )
+  self._help_panel:set("Visible",false)
+  self._exit_panel = ExitPanel(self._gui,
+    self._loader:get('font','fonts/medium.ttf').target
+  )
+  self._exit_panel:set("Visible",false)
+  
+  self._menu_panel = MenuPanel(self._gui, self._loader)
+  
   -- set camera to detect objects
   set_camera(self._cam)
   self:start()

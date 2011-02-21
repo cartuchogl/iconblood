@@ -12,6 +12,7 @@ loader:batch({
     "rect2816.png",
     "rect2817.png",
     "text_field400.png",
+    "help_panel.png",
     "execute.png",
     "execute_over.png",
     "execute_on.png",

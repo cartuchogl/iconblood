@@ -8,6 +8,8 @@ ElfObject.__m[TEXT_FIELD] = {n="TextField",t={'GuiObject'},f={}}
 ElfObject.__m[TEXT_LIST] = {n="TextList",t={'GuiObject'},f={}}
 ElfObject.__m[BUTTON] = {n="Button",t={'GuiObject'},f={}}
 ElfObject.__m[LABEL] = {n="Label",t={'GuiObject'},f={}}
+ElfObject.__m[CHECK_BOX] = {n="CheckBox",t={'GuiObject'},f={}}
+ElfObject.__m[SLIDER] = {n="Slider",t={'GuiObject'},f={}}
 ElfObject.__m[ENTITY] = {n="Entity",t={'Actor'},f={}}
 ElfObject.__m["Object"] = {n="Object",t={},f={}}
 ElfObject.__m["GuiObject"] = {n="GuiObject",t={},f={}}

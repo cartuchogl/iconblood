@@ -20,4 +20,8 @@ dofile "src/mini_panel.lua"
 dofile "src/units_panel.lua"
 dofile "src/weapon.lua"
 dofile "src/weapon_panel.lua"
+dofile "src/options_panel.lua"
+dofile "src/menu_panel.lua"
+dofile "src/help_panel.lua"
+dofile "src/exit_panel.lua"
 
