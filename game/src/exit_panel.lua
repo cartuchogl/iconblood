@@ -6,27 +6,29 @@ function ExitPanel:initialize(parent,font)
   local w = GetWindowWidth()
   local h = GetWindowHeight()
   super.initialize(self,SCREEN,'ExitPanel'..ExitPanel._instance_count,{
-    Size={200,120},
-    Position={(w-200)/2,(h-120)/2},
-    Color={1,1,1,0.8}
+    Size = {200,120},
+    Position = {(w-200)/2,(h-120)/2},
+    Color = {1,1,1,0.8},
+    parent = parent
   })
-  self:addTo(parent)
   
   self._label_exit = ElfObject(LABEL,'exit_label'..OptionsPanel._instance_count,{
-    Position={32,32},
-    Text="Are that game shit?",
-    Font=font
+    Position = {32,32},
+    Text = "Are that game shit?",
+    Font = font,
+    parent = self
   })
-  self._label_exit:addTo(self)
   
   self._button_exit = ElfObject(BUTTON,'exit_button_close'..ExitPanel._instance_count,{
-    Position={200-16-(70+10)*1,60},
-    Text="YES",
-    Size={70,40},
-    Font=font
+    Position = {200-16-(70+10)*1,60},
+    Text = "YES",
+    Size = {70,40},
+    Font = font,
+    parent = self,
+    events = {
+      click = function(args) Quit() end
+    }
   })
-  self._button_exit:addTo(self)
-  self._button_exit:addEvent("click",function(args) Quit() end)
 end
 
 function ExitPanel:update()

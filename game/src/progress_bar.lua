@@ -1,13 +1,18 @@
 ProgressBar = class('ProgressBar', ElfObject)
 
 function ProgressBar:initialize(parent,name,bg,fg)
-  super.initialize(self,SCREEN,name,{Position={0,0},Texture=bg})
-  self:addTo(parent)
+  super.initialize(self,SCREEN,name,{
+    Position = {0,0},
+    Texture = bg,
+    parent = parent
+  })
   self._parent = parent
   self._max = 1
   self._current = 0.5
-  self._bar = ElfObject(PICTURE,name..'_bar',{Texture=fg})
-  self._bar:addTo(self)
+  self._bar = ElfObject(PICTURE,name..'_bar',{
+    Texture=fg,
+    parent = self
+  })
   self._direction = "hor"
   self:update()
 end

@@ -59,6 +59,16 @@ ElfObject.__esp = {
         self:addTo(val)
       end
     end
+  },
+  {
+    properties={'events'},
+    func=function(self,t,prop,val)
+      if t=='Get' then
+        return nil -- TODO: return anything?
+      else
+        self:addEvents(val)
+      end
+    end
   }
 }
 
@@ -136,7 +146,7 @@ end
 
 function ElfObject:sets(vars)
   for k,v in pairs(vars) do
-    if type(v)=='table' then
+    if type(v)=='table' and #v>0 then
       self:set(k,unpack(v))
     else
       self:set(k,v)

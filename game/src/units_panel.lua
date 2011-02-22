@@ -15,9 +15,14 @@ function UnitsPanel:initialize(parent,loader)
   self._height = GetWindowHeight()
   self._bg_pic = CreateEmptyImage(self._width,self._height,24)
   self._bg_tex = CreateTextureFromImage('null',self._bg_pic)
-  super.initialize(self,SCREEN,'units_panel',{Texture=self._bg_tex,Color={1,1,1,0.0}})
-  self:set('Position',0,0)
-  self:addTo(parent)
+  
+  super.initialize(self,SCREEN,'units_panel',{
+    Texture = self._bg_tex,
+    Color = {1,1,1,0.0},
+    Position = {0,0},
+    parent = parent
+  })
+  
   self._units = nil
   self._panels = {}
 end

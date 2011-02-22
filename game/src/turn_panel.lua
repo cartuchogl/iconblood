@@ -10,8 +10,11 @@ function TurnPanel:initialize(parent,loader,round)
   local on = self._loader:get('img','end_turn_on.png').target
   
   local x = GetTextureWidth(bg)-GetTextureWidth(off)
-  super.initialize(self,SCREEN,'turn_panel',{Position={15,28},Texture={bg}})
-  self:addTo(parent)
+  super.initialize(self,SCREEN,'turn_panel',{
+    Position = {15,28},
+    Texture = bg,
+    parent = parent
+  })
   self._round = round
   
   self._button_end_turn = ElfObject(BUTTON,"btn_end_turn",{
@@ -19,30 +22,30 @@ function TurnPanel:initialize(parent,loader,round)
     OverTexture = over,
     Position = {x,0},
     Text = 'END TURN >',
-    Font = font
+    Font = font,
+    parent = self,
+    events = {
+      click = function(args)
+        game._round._current_turn:endTurn()
+      end
+    }
   })
-  self._button_end_turn:addEvent('click',function(args)
-    game._round._current_turn:endTurn()
-  end)
-  self._button_end_turn:addTo(self)
   
   self._label_round = ElfObject(LABEL,"lab_round",{
     Font = font,
     Text = 'Round:0/0',
     Position = {8,7},
-    Color = {0.18,0.18,0.19,0.9}
+    Color = {0.18,0.18,0.19,0.9},
+    parent = self
   })
-  self._label_round:addTo(self)
   
   self._label_turn = ElfObject(LABEL,"lab_turn",{
     Font = font2,
     Text = 'anybody turn',
     Position = {100,10},
-    Color = {0.18,0.18,0.19,0.9}
+    Color = {0.18,0.18,0.19,0.9},
+    parent = self
   })
-  self._label_turn:addTo(self)
-  
-  
 end
 
 function TurnPanel:update()

@@ -11,34 +11,37 @@ function WeaponPanel:initialize(parent,bg,font,off,over,on,select)
     Position={8,46},
     Text='0/0',
     Font=font,
-    Color={0.15,0.93,1,1}
+    Color={0.15,0.93,1,1},
+    parent = self
   })
-  self._label_clip:addTo(self)
   
   self._label_name = ElfObject(LABEL,'label_name'..WeaponPanel._instance_count,{
     Position={8,32},
     Text='no name',
-    Font=font
+    Font=font,
+    parent = self
   })
-  self._label_name:addTo(self)
   
-  self._picture = ElfObject(PICTURE,'weapon_pic'..WeaponPanel._instance_count,{Position={6,0}})
-  self._picture:addTo(self)
+  self._picture = ElfObject(PICTURE,'weapon_pic'..WeaponPanel._instance_count,{
+    Position = {6,0},
+    parent = self,
+    events = {
+      click = function(args)
+        if self.weapon then
+          self.weapon._parent.current_weapon = self.weapon
+        end
+      end
+    }
+  })
   
   self._weapon_select = ElfObject(PICTURE,'weapon_select'..WeaponPanel._instance_count,{
     Texture = select,
-    Position={0,0},
-    Visible=false
+    Position = {0,0},
+    Visible = false,
+    parent = self
   })
-  self._weapon_select:addTo(self)
   
   self._null_tex = CreateTextureFromImage('null',CreateEmptyImage(101,30,8))
-  
-  self._picture:addEvent('click',function(args)
-    if self.weapon then
-      self.weapon._parent.current_weapon = self.weapon
-    end
-  end)
 end
 
 function WeaponPanel:update()

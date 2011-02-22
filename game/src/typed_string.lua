@@ -1,9 +1,11 @@
 TypedString = class("TypedString", ElfObject)
 
 function TypedString:initialize(parent,name)
-  super.initialize(self,SCREEN,name,{Position={0,0},Color={1,1,1,0}})
-  -- self:set("Size",{200,200})
-  self:addTo(parent)
+  super.initialize(self,SCREEN,name,{
+    Position = {0,0},
+    Color = {1,1,1,0},
+    parent = parent
+  })
   self._parent = parent
   -- labels
   self._l = {}
