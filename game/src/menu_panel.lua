@@ -52,6 +52,6 @@ function MenuPanel:initialize(parent,loader)
   end)
 end
 
-function TurnPanel:update()
+function MenuPanel:update()
 
 end
