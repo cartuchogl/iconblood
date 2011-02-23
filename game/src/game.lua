@@ -29,8 +29,6 @@ function Game:initialize(ibg,gui,loader)
   self:addEvent("overobject", _.curry(self.on_over_object,self))
   
   self._fix_wheel = 0
-  
-  self._debug = Debug(gui)
 end
 
 function Game:update()
@@ -52,6 +50,7 @@ function Game:on_frame(args)
   self._current_squadron_panel._units = self._round._current_turn._player.squadron.units
   self._current_squadron_panel:update()
   self._debug:update()
+  self._options_panel:update()
 end
 
 function Game:interaction()
@@ -254,6 +253,10 @@ function Game:on_loader_end(args)
   )
   self._exit_panel:set("Visible",false)
   
+  self._debug = DebugPanel(gui,self._loader:get('font','fonts/medium.ttf').target)
+  self._debug:on(self._scene)
+  self._debug:set("Visible",false)
+  
   self._menu_panel = MenuPanel(self._gui, self._loader)
   
   -- set camera to detect objects
@@ -277,6 +280,7 @@ function Game:on_loader_end(args)
   self._cam_dir = CreateVec3f(0,0,-1000)
   self._key_move = 12.0
   self._imfx = 0
+  Message:init(self._gui,self._loader:get('font','fonts/big.ttf').target)
 end
 
 function Game:enemy_unit(unit)

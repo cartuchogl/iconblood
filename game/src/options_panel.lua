@@ -5,10 +5,11 @@ function OptionsPanel:initialize(parent,font)
   OptionsPanel._instance_count = OptionsPanel._instance_count + 1
   local w = GetWindowWidth()
   local h = GetWindowHeight()
+  self._font = font
   super.initialize(self,SCREEN,'OptionsPanel'..OptionsPanel._instance_count,{
+    Texture = game._loader:get('img',"gui_bg.png").target,
     Size={600,250},
     Position={(w-600)/2,(h-250)/2},
-    Color={1,1,1,0.8},
     parent = parent
   })
   
@@ -56,6 +57,13 @@ function OptionsPanel:initialize(parent,font)
     Size={200,28},
     parent = self
   })
+  self._slider_label_ani = ElfObject(LABEL,'opts_slider_label_ani'..OptionsPanel._instance_count, {
+    Position = {300+200+10,66+20},
+    parent = self,
+    Text = '1x',
+    Font = font
+  })
+  self._table_ani = {1,2,4,8,16}
   
   self._label_shadow = ElfObject(LABEL,'opts_label_shadow'..OptionsPanel._instance_count,{
     Position={300,86+40},
@@ -69,6 +77,13 @@ function OptionsPanel:initialize(parent,font)
     Size={200,28},
     parent = self
   })
+  self._slider_label_shadow = ElfObject(LABEL,'opts_slider_label_shadow'..OptionsPanel._instance_count, {
+    Position = {300+200+10,106+40},
+    parent = self,
+    Text = '2048',
+    Font = font
+  })
+  self._table_shadow = {256,1024,2048,4096}
   
   self._button_cancel = ElfObject(BUTTON,'opts_button_cancel'..OptionsPanel._instance_count,{
     Position={600-16-(70+10)*2,190},
@@ -86,10 +101,22 @@ function OptionsPanel:initialize(parent,font)
     Text="SAVE",
     Size={70,40},
     Font=font,
-    parent = self
+    parent = self,
+    events = {
+      click = _.curry(self.on_save, self)
+    }
   })
 end
 
+function OptionsPanel:on_save()
+  print("Not saved really made...")
+  self:set("Visible",false)
+  Message:modal("Will be restart to take effect.")
+end
+
 function OptionsPanel:update()
-  
+  if self:get("Visible") then
+    self._slider_label_shadow:set('Text',self._table_shadow[math.floor(self._slider_shadow:get('Value')*(#self._table_shadow-1))+1])
+    self._slider_label_ani:set('Text',self._table_ani[math.floor(self._slider_ani:get('Value')*(#self._table_ani-1))+1])
+  end
 end

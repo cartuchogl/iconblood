@@ -44,7 +44,8 @@ loader:batch({
     "factions/humans/weapons/3.png",
     "factions/humans/weapons/4.png",
     "weapon_bg.png",
-    "weapon_select.png"
+    "weapon_select.png",
+    "gui_bg.png"
   },
   font = {
     {"fonts/small.ttf",10},

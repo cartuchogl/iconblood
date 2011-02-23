@@ -6,6 +6,7 @@ function HelpPanel:initialize(parent,img,font)
   local w = GetWindowWidth()
   local h = GetWindowHeight()
   super.initialize(self,SCREEN,'HelpPanel'..HelpPanel._instance_count,{
+    Texture = game._loader:get('img',"gui_bg.png").target,
     Size = {600,300},
     Position = {(w-600)/2,(h-300)/2},
     Color = {1,1,1,0.8},

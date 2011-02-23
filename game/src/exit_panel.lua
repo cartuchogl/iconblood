@@ -6,6 +6,7 @@ function ExitPanel:initialize(parent,font)
   local w = GetWindowWidth()
   local h = GetWindowHeight()
   super.initialize(self,SCREEN,'ExitPanel'..ExitPanel._instance_count,{
+    Texture = game._loader:get('img',"gui_bg.png").target,
     Size = {200,120},
     Position = {(w-200)/2,(h-120)/2},
     Color = {1,1,1,0.8},
