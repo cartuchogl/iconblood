@@ -148,13 +148,13 @@ function Game:cameraCheck()
     MoveActorLocal(self._cam, self._key_move, 0.0, 0.0)
   end
   
-  if GetKeyState(KEY_K) ~= UP then
+  if GetKeyState(KEY_F) ~= UP then
     if self._current_unit then
       look_at(self._cam,self._current_unit)
     end
   end
   
-  if GetKeyState(KEY_L) ~= UP then
+  if GetKeyState(KEY_R) ~= UP then
     if self._current_unit then
       local v1 = GetActorPosition(self._current_unit._elf_obj)
       local v2 = GetActorPosition(self._cam)
@@ -218,7 +218,7 @@ function Game:cameraCheck()
     RotateActor(self._cam, 0.0, 0.0, -self._key_move*10.0)
   end
   
-  if GetKeyState(KEY_N) ~= UP then
+  if GetKeyState(KEY_SPACE) ~= UP then
     if self._key_n_press then
       
     else
@@ -227,7 +227,7 @@ function Game:cameraCheck()
     end
   end
   
-  if GetKeyState(KEY_N) == UP then
+  if GetKeyState(KEY_SPACE) == UP then
     self._key_n_press = false
   end
 end
