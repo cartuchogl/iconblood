@@ -35,6 +35,7 @@ function Unit:initialize(obj,squadron)
     SetActorPhysics(self._elf_entity,false)
     PlayEntityArmature(self._elf_entity,689,707,25)
     self._mg = 0
+    game:calculateWin()
   end)
 end
 
@@ -136,12 +137,6 @@ function Unit:loadElfObjects(pak,scene)
     GetSceneEntity(self._unit_pak, 'unit'),
     "Unit."..self.id
   )
-  -- FIXME: temporal hack for model
-  -- ElfObject(self._elf_entity):sets({
-  --   Scale={0.025,0.025,0.0258},
-  --   Rotation={90,0,0},
-  --   Position={0,0,1}
-  -- })
   self._elf_obj = self._elf_entity
   self._elf_stand = ElfObject(duplicate_entity(
     GetSceneEntity(self._unit_pak, "stand"),

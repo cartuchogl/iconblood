@@ -1,11 +1,9 @@
 HelpPanel = class('HelpPanel', ElfObject)
-HelpPanel._instance_count = 0
 
 function HelpPanel:initialize(parent,img,font)
-  HelpPanel._instance_count = HelpPanel._instance_count + 1
   local w = GetWindowWidth()
   local h = GetWindowHeight()
-  super.initialize(self,SCREEN,'HelpPanel'..HelpPanel._instance_count,{
+  super.initialize(self,SCREEN,'HelpPanel',{
     Texture = game._loader:get('img',"gui_bg.png").target,
     Size = {600,300},
     Position = {(w-600)/2,(h-300)/2},
@@ -13,13 +11,48 @@ function HelpPanel:initialize(parent,img,font)
     parent = parent
   })
   
-  self._pic_help = ElfObject(PICTURE,'help_pic'..OptionsPanel._instance_count,{
-    Position = {0,0},
-    Texture = img,
-    parent = self
+  self._labels = {}
+  
+  local sep = 20
+  local ini = 64
+  local iniy = 32
+  
+  self._labels[#self._labels+1] = ElfObject(LABEL,'help_label'..(#self._labels),{parent=self,Font=font,
+    Position = {ini,iniy},
+    Text = "Move camera across : A,W,S and D"
   })
   
-  self._button_close = ElfObject(BUTTON,'help_button_close'..HelpPanel._instance_count,{
+  self._labels[#self._labels+1] = ElfObject(LABEL,'help_label'..(#self._labels),{parent=self,Font=font,
+    Position = {ini,iniy+#self._labels*sep},
+    Text = "Next unit : TAB"
+  })
+  
+  self._labels[#self._labels+1] = ElfObject(LABEL,'help_label'..(#self._labels),{parent=self,Font=font,
+    Position = {ini,iniy+#self._labels*sep},
+    Text = "Move camera to current unit : SPACE" 
+  })
+  
+  self._labels[#self._labels+1] = ElfObject(LABEL,'help_label'..(#self._labels),{parent=self,Font=font,
+    Position = {ini,iniy+#self._labels*sep},
+    Text = "Zoom : Mouse Wheel, key up and down"
+  })
+  
+  self._labels[#self._labels+1] = ElfObject(LABEL,'help_label'..(#self._labels),{parent=self,Font=font,
+    Position = {ini,iniy+#self._labels*sep},
+    Text = "Rotate over current unit : Q and E"
+  })
+  
+  self._labels[#self._labels+1] = ElfObject(LABEL,'help_label'..(#self._labels),{parent=self,Font=font,
+    Position = {ini,iniy+#self._labels*sep},
+    Text = "Select, move and fire : Left Click"
+  })
+  
+  self._labels[#self._labels+1] = ElfObject(LABEL,'help_label'..(#self._labels),{parent=self,Font=font,
+    Position = {ini,iniy+#self._labels*sep},
+    Text = "Rotate camera : Right Click and move, key left and right"
+  })
+  
+  self._button_close = ElfObject(BUTTON,'help_button_close',{
     Position = {600-16-(70+10)*1,230},
     Text = "CLOSE",
     Size = {70,40},

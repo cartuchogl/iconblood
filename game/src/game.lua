@@ -154,7 +154,7 @@ function Game:cameraCheck()
     end
   end
   
-  if GetKeyState(KEY_R) ~= UP then
+  if GetKeyState(KEY_SPACE) ~= UP then
     if self._current_unit then
       local v1 = GetActorPosition(self._current_unit._elf_obj)
       local v2 = GetActorPosition(self._cam)
@@ -218,7 +218,7 @@ function Game:cameraCheck()
     RotateActor(self._cam, 0.0, 0.0, -self._key_move*10.0)
   end
   
-  if GetKeyState(KEY_SPACE) ~= UP then
+  if GetKeyState(KEY_TAB) ~= UP then
     if self._key_n_press then
       
     else
@@ -227,8 +227,30 @@ function Game:cameraCheck()
     end
   end
   
-  if GetKeyState(KEY_SPACE) == UP then
+  if GetKeyState(KEY_TAB) == UP then
     self._key_n_press = false
+  end
+end
+
+function Game:calculateWin()
+  local kkk = _.map(self:players(),function(player)
+      local kk = false
+      _.each(player.squadron.units,function(unit)
+        kk = unit:isAlive() or kk
+      end)
+      return kk
+  end)
+  local luser = false
+  local winner = false
+  for r=1,#kkk do
+    if kkk[r] then
+      winner = self:players()[r]
+    else
+      luser = self:players()[r]
+    end
+  end
+  if winner and luser then
+    Message:modal(winner.alias.." WIN!!!")
   end
 end
 
