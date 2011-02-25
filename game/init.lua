@@ -69,8 +69,6 @@ loader:addEvents({
 dofile("example.ibg.lua")
 game = Game(_local_game,gui,loader)
 
-fps_counter = ElfObject(LABEL,'fps_counter',{Font = loader._default_font,parent=gui,Position={2,4}})
-
 print(GetTime().."sg [To main loop]")
 while Run() == true do
   if game:running() then
@@ -79,7 +77,6 @@ while Run() == true do
   -- for setTimeout
   setTimeoutLaunch()
   if GetKeyState(KEY_ESC) == PRESSED then Quit() end
-  fps_counter:set('Text','FPS: '..GetFps())
 end
 
 -- end of file
