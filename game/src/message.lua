@@ -14,11 +14,6 @@ function Message:modal(message)
   
   local msg = {}
   
-  -- msg._panel = ElfObject(SCREEN,"panel_msg_"..Message._instance_count,{
-  --   Size = {w,h},
-  --   Color = {1,1,1,0},
-  --   parent = Message._gui
-  -- })
   msg._panel_mini = ElfObject(SCREEN,"panel_mini_msg_"..Message._instance_count, {
     Texture = game._loader:get('img',"gui_bg.png").target,
     Size = {500,200},
@@ -40,7 +35,6 @@ function Message:modal(message)
     Font = Message._font,
     events = {
       click = function(args)
-        -- msg._panel:set("Visible",false)
         msg._panel_mini:set("Visible",false)
       end
     }
