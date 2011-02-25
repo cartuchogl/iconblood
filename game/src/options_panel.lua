@@ -30,8 +30,6 @@ function OptionsPanel:initialize(parent,font)
     AddTextListItem(self._text_list_resolution._elf_obj,GetVideoMode(i).x.."x"..GetVideoMode(i).y)
   end
   
-  SetTextListSelection(self._text_list_resolution._elf_obj, 2)
-  
   self._label_fullscreen = ElfObject(LABEL,'opts_label_full_screen'..OptionsPanel._instance_count,{
     Position={300,8},
     Text='Fullscreen',
@@ -106,11 +104,49 @@ function OptionsPanel:initialize(parent,font)
       click = _.curry(self.on_save, self)
     }
   })
+  
+  self:load_config()
+end
+
+function OptionsPanel:load_config()
+  local w = GetWindowWidth()
+  local h = GetWindowHeight()
+  local full = IsFullscreen()
+  local ani = GetTextureAnisotropy()
+  local shadow = GetShadowMapSize()
+  
+  for i=0,GetVideoModeCount()-1 do
+    if GetVideoMode(i).x==w and GetVideoMode(i).y==h then
+      self._text_list_resolution:set("Selection",i)
+      break
+    end
+  end
+  
+  self._check_fullscreen:set("State",full)
+  
+  local found = table.find(self._table_ani, math.floor(ani))
+  if found then
+    self._slider_ani:set("Value",found/#self._table_ani)
+  end
+  
+  found = table.find(self._table_shadow, math.floor(shadow))
+  if found then
+    self._slider_shadow:set("Value",found/#self._table_shadow)
+  end
 end
 
 function OptionsPanel:on_save()
   print("Not saved really made...")
   self:set("Visible",false)
+  
+  local file = io.open ("config.txt", "w+")
+  local i = self._text_list_resolution:get("SelectionIndex")
+  file:write("windowSize "..GetVideoMode(i).x.." "..GetVideoMode(i).y.."\n")
+  file:write("fullscreen "..(self._check_fullscreen:get("State") and "TRUE" or "FALSE").."\n")
+  file:write("textureAnisotropy "..self._table_ani[math.floor(self._slider_ani:get('Value')*(#self._table_ani-1))+1]..".0\n")
+  file:write("shadowMapSize "..self._table_shadow[math.floor(self._slider_shadow:get('Value')*(#self._table_shadow-1))+1].."\n")
+  file:close()
+  
   Message:modal("Will be restart to take effect.")
 end
 
