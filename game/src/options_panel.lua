@@ -25,9 +25,13 @@ function OptionsPanel:initialize(parent,font)
     Font=font,
     parent = self
   })
-  
+  self._skip = 0
   for i=0,GetVideoModeCount()-1 do
-    AddTextListItem(self._text_list_resolution._elf_obj,GetVideoMode(i).x.."x"..GetVideoMode(i).y)
+    if GetVideoMode(i).x>=640 then
+      AddTextListItem(self._text_list_resolution._elf_obj,GetVideoMode(i).x.."x"..GetVideoMode(i).y)
+    else
+      self._skip = self._skip+1
+    end
   end
   
   self._label_fullscreen = ElfObject(LABEL,'opts_label_full_screen'..OptionsPanel._instance_count,{
@@ -140,7 +144,7 @@ function OptionsPanel:on_save()
   self:set("Visible",false)
   
   local file = io.open ("config.txt", "w+")
-  local i = self._text_list_resolution:get("SelectionIndex")
+  local i = self._text_list_resolution:get("SelectionIndex")+self._skip
   file:write("windowSize "..GetVideoMode(i).x.." "..GetVideoMode(i).y.."\n")
   file:write("fullscreen "..(self._check_fullscreen:get("State") and "TRUE" or "FALSE").."\n")
   file:write("textureAnisotropy "..self._table_ani[math.floor(self._slider_ani:get('Value')*(#self._table_ani-1))+1]..".0\n")
