@@ -208,7 +208,9 @@ function Game:cameraCheck()
   if GetMouseButtonState(2) == DOWN then
     local mf = GetMouseForce()
     self._imfx = (self._imfx*2.0+mf.x)/4.0
+    self._imfy = (self._imfy*2.0+mf.y)/4.0
     RotateActor(self._cam, 0.0, 0.0, -self._imfx*10.0)
+    RotateActorLocal(self._cam, self._imfy*10.0,0,0)
   end
   
   if GetKeyState(KEY_LEFT) ~= UP then
@@ -302,6 +304,7 @@ function Game:on_loader_end(args)
   self._cam_dir = CreateVec3f(0,0,-1000)
   self._key_move = 12.0
   self._imfx = 0
+  self._imfy = 0
   Message:init(self._gui,self._loader:get('font','fonts/big.ttf').target)
 end
 
