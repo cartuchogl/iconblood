@@ -17,7 +17,7 @@ function UnitsPanel:initialize(parent,loader)
   self._bg_tex = CreateTextureFromImage('null',self._bg_pic)
   
   super.initialize(self,SCREEN,'units_panel',{
-    Texture = self._bg_tex,
+    Size = {self._width,100},
     Color = {1,1,1,0.0},
     Position = {0,0},
     parent = parent
@@ -29,6 +29,8 @@ end
 
 function UnitsPanel:update()
   if type(self._units)=='table' then
+    self:set('y',self._height-GetTextureHeight(self._ubg)*#self._units)
+    self:set('Size',self._width,GetTextureHeight(self._ubg)*#self._units)
     local cont = 1
     _.each(self._units,function(i)
       if self._panels[cont] then
@@ -36,7 +38,7 @@ function UnitsPanel:update()
         self._panels[cont]:set('Visible',true)
       else
         self._panels[cont] = MiniPanel(self,self._ubg,self._select,self._mbg,self._mfg,self._lbg,self._lfg,self._font)
-        self._panels[cont]:set('Position',0,GetWindowHeight()-GetTextureHeight(self._ubg)*(cont))
+        self._panels[cont]:set('Position',0,GetTextureHeight(self._ubg)*(cont-1))
       end
       cont = cont + 1
     end)
