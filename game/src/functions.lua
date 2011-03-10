@@ -234,6 +234,16 @@ function calculate_string(str,val)
   return final
 end
 
+function over_rectangle(v1,v2,v3)
+  print(v1.x,v1.y)
+  print(v2.x,v2.y)
+  print(v3.x,v3.y)
+  return( 
+    v3.x>math.min(v1.x,v2.x) and v3.x<math.max(v1.x,v2.x) and
+    v3.y>math.min(v1.y,v2.y) and v3.y<math.max(v1.y,v2.y) 
+  )
+end
+
 function distance(v1,v2)
   return math.sqrt((v1.x-v2.x)^2+(v1.y-v2.y)^2+(v1.z-v2.z)^2)
 end

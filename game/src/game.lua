@@ -392,6 +392,9 @@ function Game:on_plane(args)
             if unit:isAlive() then
               SetEntityArmatureFrame(unit._elf_entity,1)
             end
+            if over_rectangle(self._zone_v1,self._zone_v2,unit:get("Position")) then
+              self._log_panel:game("On zone 1")
+            end
           end,
           onStart=function()
             LoopEntityArmature(unit._elf_entity,580,595,25)
@@ -471,10 +474,21 @@ function Game:loadEnvironment()
   self._scene = self._loader:get('env',self.environment).target
   SetScene(self._scene)
   SetSceneAmbientColor(self._scene,0.25,0.25,0.45,1.0)
-  self._plane = GetSceneEntity(self._scene,'Plane') 
+  self._plane = GetSceneEntity(self._scene,'Plane')
+  SetEntityVisible(self._plane,false)
   local kk = GetActorBoundingLengths(self._plane)
   local ss = GetEntityScale(self._plane)
   self._resolution = { x = ss.x*kk.x, y = ss.y*kk.y }
+  
+  self._zone = GetSceneEntity(self._scene,'Zone.001')
+  self._zone_model = GetEntityModel(self._zone)
+  local kk = GetActorBoundingLengths(self._zone)
+  local ss = GetEntityScale(self._zone) 
+  local v = GetModelBoundingBoxMin(self._zone_model)
+  self._zone_v1 = {x=v.x*ss.x,y=v.y*ss.y}
+  v = GetModelBoundingBoxMax(self._zone_model)
+  self._zone_v2 = {x=v.x*ss.x,y=v.y*ss.y}
+  
   return self._scene
 end
 
