@@ -33,6 +33,7 @@ end
 
 function Game:update()
   self._current_unit_panel:update()
+  self._log_panel:update()
 end
 
 function Game:on_frame(args)
@@ -283,6 +284,10 @@ function Game:on_loader_end(args)
   
   self._menu_panel = MenuPanel(self._gui, self._loader)
   
+  self._log_panel = LogPanel(self._gui,
+    self._loader:get('font','fonts/console.ttf').target
+  )
+  
   -- set camera to detect objects
   set_camera(self._cam)
   self:start()
@@ -327,8 +332,9 @@ function Game:on_selected_unit(args)
       if self:enemy_unit(args[1]) and args[1]:isAlive() then
         local cu = self._current_unit
         if cu.action then
-          print('already fire...')
-        else
+          self._log_panel:game(self._current_unit.name..' already fire!')
+        elseif self._current_unit.current_weapon._current_clip > 0 then
+          self._current_unit.current_weapon._current_clip = self._current_unit.current_weapon._current_clip-1
           local v,l = self:visibility(cu,args[1])
           local s = (cu:calculatedSkill()+cu.current_weapon:skillMod(l))/10
           s = 100*v*s
@@ -342,13 +348,15 @@ function Game:on_selected_unit(args)
               PlayEntityArmature(args[1]._elf_obj,651,671,25)
               local damage = cu.current_weapon:damage_fire(l)
               args[1]:takeDamage(damage)
-              print('('..dice..')Hit:'..damage)
+              self._log_panel:game(self._current_unit.name..' fire to '..args[1].name..' ('..dice..') Hit:'..damage)
             else
-              print("("..dice..")Fail")
+              self._log_panel:game(self._current_unit.name..' fire to '..args[1].name.." ("..dice..") Fail")
             end
           else
-            print('could not target')
+            self._log_panel:game(self._current_unit.name..' could not target to '..args[1].name)
           end
+        else
+          self._log_panel:game(self._current_unit.name..' need reload')
         end
       end
       print(self._current_unit.name,args[1].name,self:visibility(self._current_unit,args[1]))

@@ -25,4 +25,5 @@ dofile "src/options_panel.lua"
 dofile "src/menu_panel.lua"
 dofile "src/help_panel.lua"
 dofile "src/exit_panel.lua"
+dofile "src/log_panel.lua"
 
