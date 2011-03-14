@@ -1,4 +1,4 @@
-_local_game = {
+return {
   id = 10,
   environment = 1,
   level = 1,

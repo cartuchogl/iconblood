@@ -65,8 +65,7 @@ loader:addEvents({
   end
 })
 
-dofile("example.ibg.lua")
-game = Game(_local_game,gui,loader)
+game = Game(dofile("example.ibg.lua"),gui,loader)
 
 print(GetTime().."sg [To main loop]")
 while Run() == true do
