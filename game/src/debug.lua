@@ -5,7 +5,7 @@ function DebugPanel:initialize(parent,font)
   local h = GetWindowHeight()
   super.initialize(self,SCREEN,'DebugPanel', {
     Texture = game._loader:get('img',"gui_bg.png").target,
-    Size = {250+16,220},
+    Size = {250+16,230},
     Position = {16,72},
     Color = {1,1,1,0.8},
     parent = parent
@@ -36,7 +36,20 @@ function DebugPanel:initialize(parent,font)
   
   -- create text list for text
   self._txt = ElfObject(TEXT_LIST,'TXTlist',{
-    Font=font, Position={8,8}, Visible=false, Size={#self._functions, 250}, parent=self
+    Font=font, Position={8,24}, Visible=false, Size={#self._functions, 250}, parent=self
+  })
+  
+  self._label = ElfObject(LABEL,'debug_label',{
+    Position={24,8},
+    Text='show debug',
+    Font=font,
+    parent = self
+  })
+  
+  self._check = ElfObject(CHECK_BOX,'debug_check',{
+    Position={8,8},
+    Size={20,20},
+    parent = self
   })
 end
 
@@ -48,6 +61,7 @@ function DebugPanel:update()
       AddTextListItem(self._txt._elf_obj, v() )
     end
   end
+  SetSceneDebugDraw(self._scene,self._check:get("State"))  
 end
 
 function DebugPanel:on(scene)
