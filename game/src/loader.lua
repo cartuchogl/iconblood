@@ -1,7 +1,7 @@
 Loader = class('Loader')
 Loader:includes(EventDispatcher)
 
-function Loader:initialize(path,img,font,gui,pbg,pfg)
+function Loader:initialize(path,img,gui,pbg,pfg)
   self._path = path
   self._gui = gui
   self._assets = {img={},font={},env={},fac={},unit_img={},unit={}}
@@ -10,12 +10,10 @@ function Loader:initialize(path,img,font,gui,pbg,pfg)
   self:load('img',img)
   self:load('img',pbg)
   self:load('img',pfg)
-  self:load('font',font,14)
   
   local image = self:get('img',img).target
   local bg = self:get('img',pbg).target
   local fg = self:get('img',pfg).target
-  local font = self:get('font',font).target
   
   self._loader_gui = ElfObject(SCREEN,"loader",{
     Texture = image,
@@ -31,7 +29,7 @@ function Loader:initialize(path,img,font,gui,pbg,pfg)
   self._loader_bar = ProgressBar(self._loader_gui,'loader_bar',bg,fg)
   self._loader_bar:sets({Position={50,399}})
   
-  self._default_font = font
+  self._default_font = GetDefaultFont()
 end
 
 function Loader:load(type,name,...)
