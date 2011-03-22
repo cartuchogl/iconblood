@@ -111,6 +111,7 @@ function Tweener:addTween(obj, options)
       _.curry(Tweener.eventLoop,this)()
     end
   end, o.delay * 1000)
+  return o
 end
       
 function Tweener:eventLoop()
@@ -121,17 +122,19 @@ function Tweener:eventLoop()
     local t = now - o.startTime
     local d = o.endTime - o.startTime
 
-    if (t >= d) then
-      for property,v in pairs(o.targetPropeties) do
-        local tP = o.targetPropeties[property]
-        pcall(function()
-          local val = o.prefix[property] .. (tP.b + tP.c) .. o.suffix[property]
-          if type(o.target['set'])=='function' then
-            o.target:set(property,val)
-          else
-            o.target[property] = val
-          end
-        end)
+    if (t >= d) or o.canceled then
+      if not o.canceled then
+        for property,v in pairs(o.targetPropeties) do
+          local tP = o.targetPropeties[property]
+          pcall(function()
+            local val = o.prefix[property] .. (tP.b + tP.c) .. o.suffix[property]
+            if type(o.target['set'])=='function' then
+              o.target:set(property,val)
+            else
+              o.target[property] = val
+            end
+          end)
+        end
       end
       -- mark to eliminate
       table.insert(tmp,i)

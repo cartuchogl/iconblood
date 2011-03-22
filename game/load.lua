@@ -1,8 +1,6 @@
 return {
   img = {
-    "rect2816.png",
     "rect2817.png",
-    "text_field400.png",
     "end_turn.png",
     "end_turn_over.png",
     "end_turn_on.png",

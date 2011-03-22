@@ -3,7 +3,9 @@ EventDispatcher = {
   end
 }
 
-function EventDispatcher:addEvent(type,fn)
+function EventDispatcher:addEvent(type,fn,...)
+  local fn = arg[1] and _.curry(fn,arg[1]) or fn
+  
   if not self._events then
     self._events = {}
   end

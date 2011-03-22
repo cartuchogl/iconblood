@@ -45,9 +45,7 @@ end
 function Squadron:reset()
   _.each(self.units,function(i)
     if i:isAlive() then
-      i._mg = i.move
-      i.action = nil
-      SetEntityArmatureFrame(i._elf_obj,1)
+      i:reset()
     else
       i._mg = 0
       i.action = "dead"

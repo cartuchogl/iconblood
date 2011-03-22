@@ -11,6 +11,7 @@ ElfObject.__m[LABEL] = {n="Label",t={'GuiObject'},f={}}
 ElfObject.__m[CHECK_BOX] = {n="CheckBox",t={'GuiObject'},f={}}
 ElfObject.__m[SLIDER] = {n="Slider",t={'GuiObject'},f={}}
 ElfObject.__m[ENTITY] = {n="Entity",t={'Actor'},f={}}
+ElfObject.__m[REQUEST] = {n="Request",t={},f={}}
 ElfObject.__m["Object"] = {n="Object",t={},f={}}
 ElfObject.__m["GuiObject"] = {n="GuiObject",t={},f={}}
 ElfObject.__m["Actor"] = {n="Actor",t={},f={}}

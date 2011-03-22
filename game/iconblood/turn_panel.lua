@@ -21,12 +21,12 @@ function TurnPanel:initialize(parent,loader,round)
     OffTexture = off,
     OverTexture = over,
     Position = {x,0},
-    Text = 'END TURN >',
+    Text = 'NEXT STEP >',
     Font = font,
     parent = self,
     events = {
       click = function(args)
-        game._round._current_turn:endTurn()
+        game._round._current_turn:nextStep()
       end
     }
   })
@@ -49,6 +49,7 @@ function TurnPanel:initialize(parent,loader,round)
 end
 
 function TurnPanel:update()
+  local turn = self._round._current_turn
   self._label_round:set('Text',"ROUND "..self._round._current.."/"..self._round.number)
-  self._label_turn:set('Text',"/"..self._round._current_turn._player.alias)
+  self._label_turn:set('Text',"/"..turn._player.alias.." "..turn.current_step)
 end

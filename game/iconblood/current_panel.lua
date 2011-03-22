@@ -65,7 +65,7 @@ function CurrentPanel:initialize(parent,loader,unit)
   self._button_chars = ElfObject(BUTTON,"btn_chars",{
     OffTexture = game._loader:get('img','chars.png').target,
     OverTexture = game._loader:get('img','chars_over.png').target,
-    Text = "ATTRIBUTES",
+    Text = "RELOAD",
     Font = font2,
     Position = {413,39+33+33},
     parent = self
@@ -77,13 +77,24 @@ function CurrentPanel:initialize(parent,loader,unit)
     Text = "HABILITIES",
     Font = font2,
     Position = {413,39},
-    parent = self
+    parent = self,
+    events = {
+      click = function(args)
+        local request
+        request = Request({Url="http://www.google.com",Method="GET",events={
+          completed = function(args)
+            print(args.response)
+          end
+        }})
+        request:send()
+      end
+    }
   })
   
   self._button_inv = ElfObject(BUTTON,"btn_inv",{
     OffTexture = game._loader:get('img','inv.png').target,
     OverTexture = game._loader:get('img','inv_over.png').target,
-    Text = "EQUIPAMENT",
+    Text = "crouch",
     Font = font2,
     Position = {413,39+33},
     parent = self

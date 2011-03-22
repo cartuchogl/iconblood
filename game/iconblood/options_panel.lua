@@ -27,7 +27,7 @@ function OptionsPanel:initialize(parent,font)
   })
   self._skip = 0
   for i=0,GetVideoModeCount()-1 do
-    if GetVideoMode(i).x>=640 then
+    if GetVideoMode(i).x>800 then
       AddTextListItem(self._text_list_resolution._elf_obj,GetVideoMode(i).x.."x"..GetVideoMode(i).y)
     else
       self._skip = self._skip+1

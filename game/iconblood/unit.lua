@@ -5,38 +5,48 @@ function Unit:initialize(obj,squadron)
   if self.primary then self.primary = Weapon(self.primary,self) end
   if self.secondary then self.secondary = Weapon(self.secondary,self) end
   self.current_weapon = self.primary
-  self:addEvent('select:unit',function(args)
-    self:setStand('select')
-  end)
-  self:addEvent('deselect:unit',function(args)
-    self:setStand('normal')
-  end)
-  self:addEvent('enter',function(args)
-    self:setStand('over')
-  end)
-  self:addEvent('leave',function(args)
-    if game:currentPlayer():hasUnit(self) then
-      if game._current_unit==self then
-        self:setStand('select')
-      else
-        self:setStand('normal')
-      end
-    else
-      self:setStand('enemy')
-    end
-  end)
-  self:addEvent('update:attributte',_.curry(self.updatedPosition,self))
   self._mg = self.move
   self._squadron = squadron
   self.action = nil
   self._pv = self.resistance*10
   self._gain_exp = 0
-  self:addEvent('dead',function(args)
-    SetActorPhysics(self._elf_entity,false)
-    PlayEntityArmature(self._elf_entity,689,707,25)
-    self._mg = 0
-    game:calculateWin()
-  end)
+  
+  self.turn_moves = {self.position}
+  self.moves = {}
+  self.targets = {}
+  self.turn_targets = {}
+  
+  self:addEvent('select:unit', function(args) self:setStand('select') end)
+  self:addEvent('deselect:unit', function(args) self:setStand('normal') end)
+  self:addEvent('enter', function(args) self:setStand('over') end)
+  self:addEvent('leave',self.on_leave,self)
+  self:addEvent('update:attributte',self.updatedPosition,self)
+  self:addEvent('dead',self.on_dead,self)
+end
+
+function Unit:on_leave(args)
+  if game:currentPlayer():hasUnit(self) then
+    if game._current_unit==self then
+      self:setStand('select')
+    else
+      self:setStand('normal')
+    end
+  else
+    self:setStand('enemy')
+  end
+end
+
+function Unit:reset()
+  self._mg = self.move
+  self.action = nil
+  SetEntityArmatureFrame(self._elf_obj,1)
+end
+
+function Unit:on_dead(args)
+  SetActorPhysics(self._elf_entity,false)
+  PlayEntityArmature(self._elf_entity,689,707,25)
+  self._mg = 0
+  game:calculateWin()
 end
 
 function Unit:isAlive()
@@ -156,7 +166,6 @@ function Unit:loadElfObjects(pak,scene)
   self:addTo(self._scene)
   self._elf_stand:addTo(self._scene)
   self._elf_stand_max:addTo(self._scene)
-  
   self:setStand('normal')
 end
 

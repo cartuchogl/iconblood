@@ -13,20 +13,30 @@ function Game:initialize(ibg,gui,loader)
   self._current_unit = nil
   self._gui_pull = {}
   self._loader = loader
-  loader:addEnvBatch(self.environment)
-  loader:addUnitsBatch(uniques(_.flatten(
+  self._path_env = findPath(self._loader._path.."/environments/","0*"..self.environment.."_*.*").."/level.pak"
+  local ids = uniques(_.flatten(
     _.map(self.squadrons,function(i)
       return _.map(i.units,function(j)
-        return(j.faction_name..'/'..j.name_unit)
+        return("factions/"..j.faction_name..'/'..j.name_unit)
       end)
     end)
-  )))
-  loader:addEvent('endbatch',_.curry(self.on_loader_end,self))
+  ))
+  loader:batch({
+    scn={
+      string.sub(self._path_env,#self._loader._path+1),
+      unpack(_.map(ids,function(i) return(i..".pak") end))
+    },
+    img=array_concat(
+      _.map(ids,function(j) return(j..".png") end),
+      _.map(ids,function(k) return(k..".big.png") end)
+    )
+  })
   self:addEvent('onframe', _.curry(self.on_frame,self))
   self:addEvent('selected:unit', _.curry(self.on_selected_unit,self))
   self:addEvent("onplane", _.curry(self.on_plane,self))
   self:addEvent("over", _.curry(self.on_over,self))
   self:addEvent("overobject", _.curry(self.on_over_object,self))
+  self._loader:addEvent('endbatch',_.curry(self.on_loader_end,self))
   
   self._fix_wheel = 0
 end
@@ -258,9 +268,10 @@ function Game:calculateWin()
 end
 
 function Game:on_loader_end(args)
+print("...")
   self:loadEnvironment()
   self:loadUnits()
-  setTimeout(function() self._loader._loader_gui:set('Visible',false) end,100)
+  setTimeout(function() self._loader._loader_gui:set('Visible',false) end,800)
   -- get the camera for camera movement
   self._cam = GetSceneActiveCamera(self._scene)
   
@@ -407,7 +418,7 @@ function Game:on_plane(args)
 end
 
 function Game:on_over_object(args)
-  if instanceOf(Game,args[1]) then
+  if instanceOf(Game,args[1]) and self._round._current_turn.current_step == 'move' then
     if self._current_unit then
       local v = GetCollisionPosition(args[2])
       if self._current_unit:canBe(v.x,v.y) then
@@ -427,7 +438,7 @@ function Game:on_over_object(args)
         self._lab_tooltip:set('Text','')
       end
     end
-  elseif instanceOf(Unit,args[1]) then
+  elseif instanceOf(Unit,args[1]) and self._round._current_turn.current_step == 'targets' then
     if self._current_unit and self._current_unit:isAlive() then
       self._current_unit:setMax(self._current_unit:get('x'),self._current_unit:get('y'))
       if self:enemy_unit(args[1]) then
@@ -471,7 +482,7 @@ function Game:on_over(args)
 end
 
 function Game:loadEnvironment()
-  self._scene = self._loader:get('env',self.environment).target
+  self._scene = self._loader:get('scn',string.sub(self._path_env,#self._loader._path+1)).target
   SetScene(self._scene)
   SetSceneAmbientColor(self._scene,0.25,0.25,0.45,1.0)
   self._plane = GetSceneEntity(self._scene,'Plane')
@@ -496,7 +507,7 @@ function Game:loadUnits()
   _.each(self.squadrons,function(i)
     _.each(i.units,function(j)
       j:loadElfObjects(
-        self._loader:get('unit', j.faction_name..'/'..j.name_unit).target, self._scene
+        self._loader:get('scn', "factions/"..j.faction_name..'/'..j.name_unit..".pak").target, self._scene
       )
       j:sets({x=j.position[1]*self:width(),y=j.position[2]*self:height()})
     end)

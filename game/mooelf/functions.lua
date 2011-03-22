@@ -183,6 +183,27 @@ function get_objects_over_mouse(scn)
   return array_from_list(col)
 end
 
+-- from http://stackoverflow.com/questions/1410862/concatenation-of-tables-in-lua
+-- return a new array containing the concatenation of all of its 
+-- parameters. Scaler parameters are included in place, and array 
+-- parameters have their values shallow-copied to the final array.
+-- Note that userdata and function values are treated as scalar.
+function array_concat(...) 
+    local t = {}
+    for n = 1,select("#",...) do
+        local arg = select(n,...)
+        if type(arg)=="table" then
+            for _,v in ipairs(arg) do
+                t[#t+1] = v
+            end
+        else
+            t[#t+1] = arg
+        end
+    end
+    return t
+end
+
+
 -- calculate a dice launch as for 2d6
 -- val can be nil normal launch, 'max' for the max possible result and 'min' for the min result
 function calculate_token(str,val)

@@ -25,6 +25,36 @@ function Round:start(...)
     self._current = 1
   end
   self._current_turn = Turn(self,self.players[self._current_player_indx])
+  self._current_turn:addEvent("move_wait1",function(args)
+    _.each(self.players[self._current_player_indx].squadron.units,function(unit)
+      unit.moves[#unit.moves+1] = unit.turn_moves
+      unit.turn_moves = {}
+      print(".")
+    end)
+    -- el otro no hace nada
+    self._current_turn:nextStep()
+  end)
+  
+  self._current_turn:addEvent("targets_wait2",function(args)
+    _.each(self.players[self._current_player_indx].squadron.units,function(unit)
+      unit.targets[#unit.targets+1] = unit.turn_targets
+      unit.turn_targets = {}
+      print("..")
+    end)
+    -- el otro no hace nada
+    self._current_turn:nextStep()
+  end)
+  
+  self._current_turn:addEvent("clean_wait_clean",function(args)
+    -- nothing yet
+    -- el otro no hace nada
+    self._current_turn:nextStep()
+  end)
+  
+  self._current_turn:addEvent("wait_clean_move", function(args)
+    self:start(self._current+1)
+  end)
+  
   self._current_turn:addEvent("endturn",function(args)
     print("endturn")
     args[1]._player.squadron:reset()
