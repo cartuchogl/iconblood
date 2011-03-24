@@ -15,8 +15,8 @@ loader:addEvent("endbatch",function(args)
       click = function(args)
         local tween
         local request = Request({
-          Url = "http://www.google.com",
-          Method = "GET",
+          Url = "http://127.0.0.1:3000/true_game/moves/1/1",
+          Method = "POST",
           events = {
             completed = function(args)
               tween.canceled = true,
@@ -32,8 +32,10 @@ loader:addEvent("endbatch",function(args)
             end
           }
         })
+        request:set_post_data("moves=akkdemokk")
         request:send()
       end
     }
   })
+  game:start()
 end)
