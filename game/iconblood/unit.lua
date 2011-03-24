@@ -140,6 +140,23 @@ function Unit:seeTo(x,y)
   end
 end
 
+function Unit:fire(enemy)
+  PlayEntityArmature(self._elf_obj,375,384,25)
+  local v,l = game:visibility(self,enemy)
+  local s = (self:calculatedSkill()+self.current_weapon:skillMod(l))/10
+  s = 100*v*s
+  local dice = math.random(100)
+  if dice <= s then
+    enemy:seeTo(self:get('x'),self:get('y'))
+    PlayEntityArmature(enemy._elf_obj,651,671,25)
+    local damage = self.current_weapon:damage_fire(l)
+    enemy:takeDamage(damage)
+    game._log_panel:game(self.name..' fire to '..enemy.name..' ('..dice..') Hit:'..damage)
+  else
+    game._log_panel:game(self.name..' fire to '..enemy.name.." ("..dice..") Fail")
+  end
+end
+
 function Unit:loadElfObjects(pak,scene)
   self._unit_pak = pak
   self._scene = scene

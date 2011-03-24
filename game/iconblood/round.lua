@@ -35,6 +35,10 @@ function Round:start(...)
     self._current_turn:nextStep()
   end)
   
+  self._current_turn:addEvent("wait1_targets",function(args)
+    -- make moves of other player
+  end)
+  
   self._current_turn:addEvent("targets_wait2",function(args)
     _.each(self.players[self._current_player_indx].squadron.units,function(unit)
       unit.targets[#unit.targets+1] = unit.turn_targets
@@ -45,8 +49,22 @@ function Round:start(...)
     self._current_turn:nextStep()
   end)
   
+  self._current_turn:addEvent("wait2_clean",function(args)
+    _.each(self.players[self._current_player_indx].squadron.units,function(unit)
+      print(unit.targets[#unit.targets][1])
+      if unit.targets[#unit.targets][1] then
+        unit:fire(unit.targets[#unit.targets][1])
+      end
+    end)
+  end)
+  
   self._current_turn:addEvent("clean_wait_clean",function(args)
     -- nothing yet
+    _.each(self.players[self._current_player_indx].squadron.units,function(unit)
+      if unit:isAlive() then
+        unit:reset()
+      end
+    end)
     -- el otro no hace nada
     self._current_turn:nextStep()
   end)

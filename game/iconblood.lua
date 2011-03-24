@@ -340,29 +340,18 @@ function Game:on_selected_unit(args)
     end
   else
     if self._current_unit then
-      if self:enemy_unit(args[1]) and args[1]:isAlive() then
+      if self:enemy_unit(args[1]) and args[1]:isAlive() and self._round._current_turn.current_step == 'targets' then
         local cu = self._current_unit
-        if cu.action then
-          self._log_panel:game(self._current_unit.name..' already fire!')
-        elseif self._current_unit.current_weapon._current_clip > 0 then
-          self._current_unit.current_weapon._current_clip = self._current_unit.current_weapon._current_clip-1
+        if self._current_unit.current_weapon._current_clip > 0 then
+          --self._current_unit.current_weapon._current_clip = self._current_unit.current_weapon._current_clip-1
           local v,l = self:visibility(cu,args[1])
           local s = (cu:calculatedSkill()+cu.current_weapon:skillMod(l))/10
           s = 100*v*s
           if s > 0 then
             cu:seeTo(args[1]:get('x'),args[1]:get('y'))
-            PlayEntityArmature(cu._elf_obj,375,384,25)
-            cu.action = 'fire'
-            local dice = math.random(100)
-            if dice <= s then
-              args[1]:seeTo(cu:get('x'),cu:get('y'))
-              PlayEntityArmature(args[1]._elf_obj,651,671,25)
-              local damage = cu.current_weapon:damage_fire(l)
-              args[1]:takeDamage(damage)
-              self._log_panel:game(self._current_unit.name..' fire to '..args[1].name..' ('..dice..') Hit:'..damage)
-            else
-              self._log_panel:game(self._current_unit.name..' fire to '..args[1].name.." ("..dice..") Fail")
-            end
+            SetEntityArmatureFrame(cu._elf_obj,384)
+            cu.turn_targets = {args[1]}
+            self._log_panel:game(cu.name.." now target to "..args[1].name)
           else
             self._log_panel:game(self._current_unit.name..' could not target to '..args[1].name)
           end
@@ -373,12 +362,10 @@ function Game:on_selected_unit(args)
       print(self._current_unit.name,args[1].name,self:visibility(self._current_unit,args[1]))
     end
   end
-  -- print("game:track event "..args[1].name)
 end
 
 function Game:on_plane(args)
-  print("onplane")
-  if self._current_unit and self._current_unit:isAlive() then
+  if self._round._current_turn.current_step == 'move' and self._current_unit and self._current_unit:isAlive() then
     local v = GetCollisionPosition(args[1])
     if self._current_unit:canBe(v.x,v.y) then
       local x = v.x-self._current_unit:get('x')
